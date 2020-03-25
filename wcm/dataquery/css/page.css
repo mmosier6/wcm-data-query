@@ -1,0 +1,20 @@
+#mainContainer{
+	width: 1000px !important;
+	margin: 2px 2px;
+	float: none !important;
+	overflow: hidden;
+}
+
+#go-btn{
+	color: white !important;
+	background: #0057A5 !important;
+	margin: 4px;
+}
+
+#date-pickers i{
+	cursor: pointer;
+}
+
+.hidden{
+	display: none;
+}

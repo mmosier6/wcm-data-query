@@ -1,0 +1,1145 @@
+			
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta name="DC.title" content="NOAA/NWS Storm Prediction Center" />
+    <meta name="DC.language" scheme="DCTERMS.RFC1766" content="EN-US" />
+    <meta name="language" content="EN-US" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Forecast
+Products RSS" href="/products/spcrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Tornado/Severe
+Thunderstorm Watches RSS" href="/products/spcwwrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Mesoscale
+Discussions RSS" href="/products/spcmdrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Convective
+Outlooks RSS" href="/products/spcacrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Thunderstorm
+Outlooks RSS" href="/products/spctstmrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Fire Weather
+Outlooks RSS" href="/products/spcfwrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC PDS Watches
+RSS" href="/products/spcpdswwrss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SPC Multimedia
+Briefings RSS" href="/products/spcmbrss.xml" />
+
+    <title>Experimental WCM Page - NOAA/NWS Storm Prediction Center</title>
+    
+    <!-- Sitewide css -->
+    <link rel="stylesheet" href="/new/css/SPCmain.css" />
+    
+    <style>
+    	#midBlock.affix{
+		position: fixed;
+		top: 0;
+		left: 50%;
+		width: 1000px;
+		margin-left: -500px;
+		z-index: 2000;
+	}
+	/*
+	#nav-wrapper.affix{
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 2000;
+	}
+
+	#midBlock.affix{	
+		margin-left: auto !important;
+		margin-right: auto !important;
+
+		width: 1000px;
+	}
+	*/
+			
+	#nav-wrapper{
+		position: relative;
+		width: 100% !important;
+		left: -5px;	
+	}	
+	
+	#SPCMain, .SPCMain2, .footer_container, #PageTop{
+		width: 1000px !important;
+	}
+
+	#banner{
+		margin-left: auto !important;
+		margin-right: auto !important;
+		float: right !important;
+
+	}
+	.footer_container{
+		margin: 0px !important;
+		border-left: none !important;
+		border-right: none !important;
+		border-top: solid 1px #cccccc !important;
+		border-bottom: solid 1px #cccccc !important;
+	}
+
+
+
+    </style>
+
+    <!--Conflict between prototype.js and jquery, so using jQuery.noConflict()-->
+    <script src="/cwi/cwi-all-min.js"></script>
+    
+    <!--[if lt IE 9]>
+	<script src = "/exper/reports/html5shiv/dist/html5shiv.js"></script>
+    <![endif]-->
+    <script src="/cwi/affix.min.js"></script>
+    <script> 
+   
+   	jQuery(document).ready(function(){
+		//Affix header
+		jQuery("#midBlock").wrap("<div id ='nav-wrapper'></div>");	
+		jQuery("#nav-wrapper").addClass("full_width");	
+		jQuery("#nav-wrapper").height(jQuery("#midBlock").height());
+		
+		//jQuery("#nav-wrapper").clone().attr("id", "nav-wrapper2").insertBefore("#mainReportsNav");
+		
+		jQuery("#midBlock").affix({
+			offset: { top: jQuery("#midBlock").offset().top}
+		}).on("affix.bs.affix", function(){
+			
+		});
+	});
+    
+    </script>
+
+</head>
+
+<body>
+
+<div id="SPCWrapper">
+   <div id="SPCMain">
+      <div class="SPCMain2">
+         <!-- ##### SPC TOP MENU ##### -->
+         <?php
+include($_SERVER['DOCUMENT_ROOT']."/new/MainMenu/topMenu.html"); ?>
+
+<!-- Main Banner -->
+<div class="full_width" id="PageTop">
+ <div class="UTCclock">Current time (in <a href="/faq/index.html#3.1">UTC/GMT/Zulu</a>):&nbsp; </div>
+ <div class="UTCclock" id="USNOtime">JavaScript Must Be Enabled.</div>
+
+ <div id="TopNav">
+  <ul>
+   <li style="margin-top: -4px;">
+    <form method="post" action="//forecast.weather.gov/zipcity.php" target="_blank">
+     <input type="text" id="query-field" name="inputstring" size="12" title="Enter ZIP/City, State for local forecast" value="Local Forecast by ZIP/City, State" onfocus="this.value='';" onblur="this.value='Local Forecast by ZIP/City, State';" />
+<!--
+     <input style="margin-top: -2px;" type="image" name="Go2" alt="Enter ZIP/City, State then click Enter Key to access local forecast" title="Enter ZIP/City, State then click Enter Key to access local forecast" id="searchsubmit" src="/new/images/search_submitA.png"/>
+-->
+    </form>
+   </li>
+   <li><a href="/misc/feedback.html">Feedback</a></li>
+   <li><a href="/m/">Mobile</a></li>
+   <li><a href="/misc/aboutus.html">About&nbsp;Us</a></li>
+   <li><a href="//www.weather.gov/organization/" target="_blank">Organization</a></li>
+   <li><a href="/sitemap.html">Site&nbsp;Map</a></li>
+  </ul>
+ </div>
+</div>
+<div class="full_width" id="banner">
+ <img src="/new/images/SPC.png" width="960" height="75" usemap="#bannermap" alt="SPC Logo">
+ <map name="bannermap">
+  <area shape="rect" coords="0,0,72,74" href="//www.noaa.gov/" target="_blank" alt="NOAA - National Oceanic and Atmospheric Administration">
+  <area shape="rect" coords="75,0,150,74" href="//www.weather.gov/" target="_blank" alt="NWS - National Weather Service">
+  <area shape="rect" coords="180,0,770,74" href="/" alt="SPC - Storm Prediction Center">
+  <area shape="rect" coords="917,0,960,37" href="//www.doc.gov/" target="_blank" alt="DOC - Department of Commerce">
+ </map>
+</div>
+
+<div class="full_width" id="midBlock"> 
+<div class="topnav">
+ <ul id="topnav">
+  <li>
+   <div class="topMenuNavList home"><a href="/">HOME</a></div>
+   <div style="opacity: 0;" class="sub">
+    <ul>
+     <li><a href="/" title="Home Page" target="_blank">Home Page</a></li>
+     <li><a href="/classic.html" title="Classic Home Page" target="_blank">Classic Home Page</a></li>
+    </ul>
+   </div>
+  </li>
+  <li>
+   <div class="topMenuNavList home"><a href="/new/SPCNews/news.html">NEWS</a></div>
+   <div style="opacity: 0;" class="sub">
+    <ul>
+     <li><a href="//www.weather.gov/news" title="NWS News" target="_blank">NWS News</a></li>
+     <li><a href="//www.ncep.noaa.gov/newsletter/" target="_blank" title="NCEP Quarterly Newsletter">NCEP News</a></li>
+     <li><a href="/new/SPCNews/news.html" title="SPC News" target="_blank">SPC News</a></li>
+    </ul>
+   </div>
+  </li>
+  <li>
+   <div class="topMenuNavList products"><a href="/products/">SPC PRODUCTS</a></div>
+    <div style="opacity: 0;" class="sub">
+     <ul>
+      <li><a href="/products/" title="All Forecasts">All Forecasts</a></li>
+      <li><a href="/products/watch/" title="Current Watches">Severe Thunderstorm/Tornado Watches</a></li>
+      <li><a href="/products/md/" title="Mesoscale Discussions">Mesoscale Discussions</a></li>
+      <li><a href="/products/outlook/" title="Convective Outlooks">Convective Outlooks</a></li>
+      <li><a href="/products/exper/enhtstm/" title="Thunderstorm Outlook">Thunderstorm Outlook</a></li>
+      <li><a href="/products/fire_wx/overview.html" title="Fire Weather Outlook">Fire Weather Outlooks</a></li>
+      <li><a href="/products/archive/" title="Product Overview">Product Overview</a></li>
+      <li><a href="/products/exper/" title="Exeprimental Products">Experimental Products</a></li>
+      <li><a href="/gis/" title="Products in KML/Shapefile Formats">Products in KML/Shapefile Formats</a></li>
+      <li><a href="/aboutrss.html" title="RSS Feeds">RSS Feeds</a></li>
+      <li><a href="//www.weather.gov/subscribe/" target="_blank" title="Email Alerts">Email Alerts</a></li>
+     </ul>
+    </div>
+   </li>
+   <li>
+    <div class="topMenuNavList weather"><a href="/climo/online/">WEATHER INFO</a></div>
+     <div style="opacity: 0;" class="sub">
+      <ul>
+       <li><a href="/climo/online/" title="Storm Reports">Storm Reports</a></li>
+       <li><a href="/exper/reports/" title="Storm Reports Prototype">Storm Reports Prototype</a></li>
+       <li><a href="/new/ReportPlot/reportPlot.php" title="Storm Report Trends">Storm Report Trends</a></li>
+       <li><a href="/new/SVRclimo/climo.php?parm=anySvr" title="Severe Weather Climatology">Severe Weather Climatology</a></li>
+       <li><a href="/archive/" title="SPC Product Archive">Product Archive</a></li>
+       <li><a href="//www.weather.gov/" target="_blank" title="Watch/Warning Map">Watch/Warning Map</a></li>
+       <li><a href="//www.weather.gov/Radar/" target="_blank" title="National RADAR">National RADAR</a></li>
+       <li><a href="http://www.nws.noaa.gov/nwr/" target="_blank" title="NOAA Weather Radio All Hazards">NOAA Weather Radio</a></li>
+      </ul>
+     </div>
+    </li>
+    <li>
+     <div class="topMenuNavList tools"><a href="/exper/">FORECAST TOOLS</a></div>
+      <div style="opacity: 0;" class="sub">
+       <ul>
+        <li><a href="/exper/mesoanalysis/" title="Mesoanalysis">Mesoanalysis</a></li>
+        <li><a href="/exper/soundings/" title="Observed Sounding Analysis">Observed Sounding Analysis</a></li>
+        <li><a href="/exper/soundingclimo/" title="Sounding Climatology">Sounding Climatology</a></li>
+	<li><a href="/obswx/maps/" title="Upper-Air Maps">Upper-Air Maps</a></li>
+        <li><a href="/exper/href/" title="HREF">HREF</a></li>
+        <li><a href="/exper/hrrr/" title="HRRR">HRRR Browser</a></li>
+        <li><a href="/exper/sref/index.php" title="SREF">SREF</a></li>
+        <li><a href="/exper/sref/fplumes/" title="SREF Plumes">SREF Plumes</a></li>
+     <!--   <li><a href="/exper/envbrowser/" title="U.S. Tornado Environment Browser">Tornado Environment Browser</a></li> -->
+	<li><a href="/exper/firecomp/" title="Fire Weather Composite Maps">Fire Weather Composite Maps</a></li>
+        <li><a href="/compmap/" title="Compmap">Compmap</a></li>
+       </ul>
+      </div>
+     </li>
+     <li>
+      <div class="topMenuNavList research"><a href="/publications/">RESEARCH</a></div>
+       <div style="opacity: 0;" class="sub">
+        <ul>
+         <li><a href="/publications/" title="Publications">Publications</a></li>
+         <li><a href="/exper/archive/events/" title="Severe Thunderstorm Event Archive">Severe Thunderstorm Event Archive</a></li>
+	 <li><a href="/exper/envbrowser/" title="Tornado Environment Browser">Tornado Environment Browser</a></li>
+	 <li><a href="/exper/outbreaks/" title="Violent Tornado Outbreaks">Violent Tornado Outbreaks</a></li>
+         <li><a href="//hwt.nssl.noaa.gov/" target="_blank" title="SPC-NSSL Hazardous Weather Testbed">SPC-NSSL Hazardous Weather Testbed</a></li>
+        </ul>
+       </div>
+      </li>
+      <li>
+       <div class="topMenuNavList outreach"><a href="/faq/">OUTREACH</a></div>
+        <div style="opacity: 0;" class="sub">
+         <ul>
+          <li><a href="/misc/aboutus.html" title="About the SPC">About</a></li>
+          <li><a href="/faq/" title="SPC FAQ">FAQ</a></li>
+          <li><a href="/wcm/" title="WCM Page">WCM Page</a></li>
+          <li><a href="/faq/tornado/" title="About Tornadoes">About Tornadoes</a></li>
+          <li><a href="/misc/AbtDerechos/derechofacts.htm" title="About Derechos">About Derechos</a></li>
+          <li><a href="//www.weather.gov/safety/" target="_blank" title="Severe Weather Safety">Severe Weather Safety</a></li>
+          <li><a href="/efscale/" title="EF Scale">Enhanced Fujita Scale</a></li>
+          <li><a href="/exper/spcousom/" title="Video Lecture Series">Video Lecture Series</a></li>
+          <li><a href="/history/early.html" title="History of the SPC">History</a></li>
+          <li><a href="http://www.noaa.gov/NOAA-Communications/" target="_blank" title="NOAA Communications">NOAA Communications</a></li>
+          <li><a href="/staff/" title="Staff Listing">Staff Listing</a></li>
+       <!--   <li><a href="/misc/links.html" title="Links">Links</a></li> -->
+          <li><a href="//nwc.ou.edu/tours/" target="_blank" title="Tours">Public Tours</a></li>
+         </ul>
+        </div>
+       </li>
+       <li>
+       <div class="topMenuNavList ncep"><a href="//www.weather.gov" target="_blank">NWS/NCEP</a></div>
+        <div style="opacity: 0;" class="sub">
+         <ul>
+          <li><a href="//www.weather.gov/" target="_blank" title="NWS">National Weather Service (NWS)</a></li>
+          <li><a href="//www.ncep.noaa.gov/" target="_blank" title="NCEP">National Centers for Environmental Prediction (NCEP)</a></li>
+          <li><a href="//www.aviationweather.gov/" target="_blank" title="AWC">Aviation Weather Center (AWC)</a></li>
+          <li><a href="//www.cpc.ncep.noaa.gov/" target="_blank" title="CPC">Climate Prediction Center (CPC)</a></li>
+          <li><a href="//www.emc.ncep.noaa.gov/" target="_blank" title="EMC">Environmental Modeling Center (EMC)</a></li>
+          <li><a href="//www.nco.ncep.noaa.gov/" target="_blank" title="NCO">NCEP Central Operations (NCO)</a></li>
+          <li><a href="//www.nhc.noaa.gov/" target="_blank" title="NHC">National Hurricane Center (NHC)</a></li>
+          <li><a href="//www.opc.ncep.noaa.gov/" target="_blank" title="OPC">Ocean Prediction Center (OPC)</a></li>
+       <!--   <li><a href="/" title="SPC">Storm Prediction Center (SPC)</a></li> -->
+          <li><a href="//www.swpc.noaa.gov/" target="_blank" title="SWPC">Space Weather Prediction Center (SWPC)</a></li>
+          <li><a href="http://www.wpc.ncep.noaa.gov/" target="_blank" title="WPC">Weather Prediction Center (WPC)</a></li>
+         </ul>
+        </div>
+       </li>
+       </ul>
+      </div>
+
+    <div id="searchBox">
+     <a class="SPC_news_rss_small" href="/aboutrss.html" title="SPC News RSS"></a>
+     <a class="SPC_twitter" href="//www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=//twitter.com/NWSSPC"  target="_blank" title="SPC Twitter"></a>
+     <a class="SPC_facebook" href="//www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=//facebook.com/NWSSPC"  target="_blank" title="SPC Facebook"></a>
+
+     <label style="display: none;" for="query-field">Search Criteria</label>
+
+     <form accept-charset="UTF-8" action="//search.usa.gov/search" method="get" id="search_form" target="_blank"><input name="utf8" type="hidden" value="&#x2713;" />
+      <fieldset id="searchFieldSet">
+       <input id="affiliate" name="affiliate" type="hidden" value="spc" />
+       <input autocomplete="on" class="usagov-search-autocomplete" id="query-field" name="query" type="text" value="Search SPC..." onfocus="this.value='';" onblur="this.value='Search SPC...';"/>
+       <input type="image" alt="Click to Search SPC" title="Click to Search SPC" id="searchsubmit" src="/new/images/search_submitA.png"/>
+      </fieldset>
+     </form>
+
+     <script type="text/javascript">
+       //<![CDATA[
+         var usasearch_config = { siteHandle:"spc" };
+
+         var script = document.createElement("script");
+         script.type = "text/javascript";
+         script.src = "//search.usa.gov/javascripts/remote.loader.js";
+         document.getElementsByTagName("head")[0].appendChild(script);
+
+       //]]>
+     </script>
+
+    </div>
+   </div>
+
+<!-- ############################################################################## -->
+<!-- ######################### BEGIN MAIN PAGE CONTENT ############################ -->
+<br><br>
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://rawgit.com/c3js/c3/master/c3.min.css" type="text/css">
+    <!--jQuery UI CSS -->
+		<link rel = "stylesheet" type = "text/css" href = "/wcm/css/jquery-ui-1.9.2.custom.min.css" />
+		<!--jQuery UI -->
+		<script src = "/wcm/js/jquery-ui-1.9.2.custom.min.js"></script>
+
+    <style type="text/css">
+			.map {
+				position:relative;
+				top:10px;
+				z-index:0;
+						  height: 800px;
+						  width: 100%;
+				border-width:2px;
+				border-style:solid;
+				border-bottom-left-radius:15px;
+				-webkit-border-bottom-left-radius:15px;
+				-moz-border-bottom-left-radius:15px;
+				border-bottom-right-radius:15px;
+				-webkit-border-bottom-right-radius:15px;
+				-moz-border-bottom-right-radius:15px;
+				border-top-left-radius:15px;
+				-webkit-border-top-left-radius:15px;
+				-moz-border-top-left-radius:15px;
+				border-top-right-radius:15px;
+				-webkit-border-top-right-radius:15px;
+				-moz-border-top-right-radius:15px;
+				border-color:#000000;
+						}
+
+			#chart {
+				width: 700px;
+			}
+			#chartText {
+				font: 18px/20px Arial, Helvetica, sans-serif;
+				text-align:center;
+			}
+			#mapTitle {
+				position: absolute;
+				top:5px;
+				left:41%;
+				padding: 6px 8px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 5px;
+				border-style: solid;
+				border-width:3px;
+				border-color:black;
+				text-align:center;
+				z-index: 1;
+			}
+			#info {
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				padding: 6px 8px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 5px;
+				border-style: solid;
+				border-width:3px;
+				border-color:black;
+				text-align:center;
+				z-index: 1;
+			}
+			#mapLegend {
+				position: absolute;
+				padding: 6px 8px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 5px;
+				border-style: solid;
+				border-width:3px;
+				border-color:black;
+				text-align:center;
+				z-index: 1;
+			}
+			#mapSwitcher {
+				position: absolute;
+				left:5px;
+				bottom:5px;
+				width:262px;
+				padding: 6px 0px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 5px;
+				border-style: solid;
+				border-width:3px;
+				border-color:black;
+				z-index: 1;
+			}
+			#showMapSwitcher {
+				position: absolute;
+				left:5px;
+				bottom:5px;
+				width: 22px;
+				padding: 6px 8px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 5px;
+				border-style: solid;
+				border-width:3px;
+				border-color:black;
+				cursor: pointer;
+				z-index: 1;
+			}
+			#hideMapSwitcher {
+				padding: 6px 8px;
+				font: 21px/23px Arial, Helvetica, sans-serif;
+				background: white;
+				background: rgba(255,255,255,0.8);
+				box-shadow: 0 0 15px rgba(0,0,0,0.8);
+				border-radius: 2px;
+				border-style: solid;
+				border-width:1px;
+				border-color:black;
+				cursor: pointer;
+			}
+			#mapLegend i {
+				width:18px;
+				height:18px;
+				float:left;
+				margin-right:8px;
+				border-style:solid;
+				border-width:2px;
+				border-color:black;
+
+			}
+			select {
+				text-align: center;
+				}
+			option {
+				text-align: center;
+				}
+			.ol-popup {
+				position: absolute;
+				background-color: white;
+				-webkit-filter: drop-shadow( 0 1px 4px rgba(0,0,0,0.2));
+				filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+				padding: 15px;
+				border-radius: 10px;
+				border: 1px solid #cccccc;
+				bottom: 12px;
+				left: -50px;
+			}
+			.ol-popup:after, .ol-popup:before {
+				top: 100%
+				border: solid transparent;
+				content: " ";
+				height: 0;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+			}
+			.ol-popup:after {
+				border-top-color: white;
+				border-width: 10px;
+				left: 48px;
+				margin-left: -10px;
+			}
+			.ol-popup:before {
+				border-top-color: #cccccc;
+				border-width: 11px;
+				left: 48px;
+				margin-left: 11px;
+			}
+			.ol-popup-closer {
+				text-decoration: none;
+				position: absolute;
+				top: 2px;
+				right: 8px;
+			}
+			.ol-popup-closer:after {
+				font: 20px/22px Arial, Helvetica, sans-serif;
+				font-weight:bold;
+				content: "X";
+				border: 1px solid #000000;
+			}
+			.slidecontainer {
+				width: 90%;
+				margin: auto;
+			}
+			.slider {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 100%;
+				height: 25px;
+				background: #d3d3d3;
+				outline: none;
+				opacity: 0.7;
+				-webkit-transition: .2s;
+				transition: opacity .2s;
+			}
+			.slider:hover {
+				opacity: 1;
+			}
+			.slider::-webkit-slider-thumb {
+				-webkit-apperance: none;
+				apperance:none;
+				width: 25px;
+				height: 25px;
+				background: #4CAF50;
+				cursor: pointer;
+			}
+			.slider::-moz-range-thumb {
+				width: 25px;
+				height: 25px;
+				background: #4CAF50;
+				cursor: pointer;
+			}
+			#year {
+				font: 18px/20px Arial, Helvetica, sans-serif;
+				position: relative;
+			 	font-weight: bold;
+			}
+			#max_year {
+				font: 18px/20px Arial, Helvetica, sans-serif;
+				position: relative;
+				left: 880px;
+			}
+			#min_year {
+				font: 18px/20px Arial, Helvetica, sans-serif;
+				position: relative;
+				top: -20px;
+			}
+			#slider_text {
+				font: 16px/18px Arial, Helvetica, sans-serif;
+				position: absolute;
+				left: 45%;
+				text-align: center;
+			}
+    </style>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://rawgit.com/c3js/c3/master/c3.js"></script>
+    <script src="https://d3js.org/d3.v5.js"></script>
+  </head>
+  <body>
+	<div class="slidecontainer">
+		<div id="year">&nbsp;</div>
+	    <input type="range" min="2006" max="2019" value="2019" class="slider" id="RangeSlider" onchange="selectYear()">
+	        <div id="slider_text">Adjust Slider to Change Year</div>
+		<div id="max_year">2019</div>
+		<div id="min_year">2006</div>
+	</div>
+	<div id="map" class="map">
+		<div id="mapTitle">2019 SPC Watches</div>
+		<div id="info">Hover For<br>Watch Count</div>
+		<div id="mapLegend"></div>
+		<div id="mapSwitcher">
+			<input type="radio" id="all" value = "all-watches" checked="checked" onchange="selectAll()">Total SPC Watches &nbsp;&nbsp;<a id="hideMapSwitcher" onclick="hideMapSwitcher()"><<</a><br>
+			<input type="radio" id="tornado" value = "tornado-watches" onchange="selectTornado()">Tornado Watches<br>
+			<input type="radio" id="severe" value = "severe-watches" onchange="selectSevere()">Severe Watches<br>
+			<input type="radio" id="torReports" value = "tornado-reports" onchange="selectTorReports()">Tornado Reports<br>
+			<input type="radio" id="allReports" value = "all-reports" onchange="selectAllReports()">All Severe Weather Reports<br>
+		</div>
+	<div id='showMapSwitcher'><a onclick='showMapSwitcher()'>>></a></div>
+	</div>
+
+	<div id="popup" class="ol-popup">
+	    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+	    <div id="popup-content"></div>
+	</div>
+	<script type="text/javascript">
+		var firstTime = 1;
+		var year= 2019;
+		//var type="SPC";
+
+		var data;
+		var map;
+		var vectorSource;
+		var overlay;
+		var container = document.getElementById('popup');
+		var content = document.getElementById('popup-content');
+		var closer = document.getElementById('popup-closer');
+		var popupOpen = 0;
+		var moveEvent;
+
+		//document.getElementById('info').style.left = 500 + "px";
+
+		function drawMapElements(which) {
+			jQuery("#showMapSwitcher").hide();
+
+			if(firstTime < 1){
+				vectorSource.clear();
+				ol.Observable.unByKey(moveEvent);
+			}
+
+			var _dfd = jQuery.Deferred();
+			if(which.indexOf("-watches") > -1){
+				jQuery.ajax({
+					url:"./watch_counts/topojson/" + year + "-county-watch-counts.topojson",
+					dataType: "json"
+				}).done(function(geoJSON){
+					data = geoJSON;
+					_dfd.resolve(data)
+				});
+			}
+
+			if(which.indexOf("-reports") > -1){
+				console.log("here!");
+				jQuery.ajax({
+					url:"./report_counts/topojson/reports_fips_" + year + ".topojson",
+					dataType: "json"
+				}).done(function(geoJSON){
+					data = geoJSON;
+					_dfd.resolve(data)
+				});
+			}
+
+			_dfd.done(function(data){
+				vectorSource = new ol.source.Vector({features: (new ol.format.TopoJSON()).readFeatures(data, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
+				overlay = new ol.Overlay({
+						element: container,
+						autoPan: true
+				});
+				closer.onclick = function() {
+						overlay.setPosition(undefined);
+						popupOpen=0;
+						closer.blur();
+						return false;
+				};
+				content.innerHTML = "<div id='chart'>&nbsp;</div><div id ='chartText'>For more detailed charts click <a href='http://weather.gov'>here.</a> <br> Note: The data in this graph is not real and is only used for proof of concept.</div>";
+
+      	var mapData = new ol.layer.Vector({
+					source: vectorSource,
+					style: function (feature) {
+						return getStyle(feature, which);
+					}
+				});
+
+				if(firstTime === 1){
+					jQuery("#year").html("" + year + "");
+					document.getElementById("year").style.left = ((year - 2006)/13.2)*100 + "%";
+					map = new ol.Map({
+						target: 'map',
+						layers: [
+							new ol.layer.Tile({
+							  source: new ol.source.OSM()
+							}), mapData
+						],
+						overlays: [overlay],
+						view: new ol.View({
+							center: ol.proj.fromLonLat([-95, 35]),
+							zoom: 4.5
+						})
+					}); //end var map
+				}else {
+					map.addLayer(mapData);
+					map.addOverlay(overlay);
+				}
+
+				jQuery("#info").position({
+					my: "left top",
+					at: "left top",
+					of: "#map"
+				});
+
+				console.log(jQuery("#info").position());
+
+				var highlightStyle = new ol.style.Style({
+					stroke: new ol.style.Stroke({width:2,color:'#000000'})
+				})
+
+				var featureOverlay = new ol.layer.Vector({
+					source: new ol.source.Vector(),
+					map: map,
+					style: function() {
+						return highlightStyle;
+					}
+				});
+
+				var highlight;
+				var displayFeatureInfo = function(pixel) {
+
+					var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+						return feature;
+    			});
+
+		 			var info = document.getElementById('info');
+		  		if(feature){
+		  			var p = feature.getProperties();
+		  			if(which.indexOf('-reports') > -1){
+		  				var t = which.split("-")[0];
+		  				if(t === 'tornado'){
+		  					if(p['ST'] === 'LA'){
+		  						info.innerHTML = '' + p['NAME'] + ' Parish<br>' + p['T'];
+		  					}else{
+		  						info.innerHTML = '' + p['NAME'] + ' County<br>' + p['T'];
+		  					}
+		  				}else if(t === 'all'){
+		  					if(p['ST'] === 'LA'){
+		  						info.innerHTML = '' + p['NAME'] + ' Parish<br>' + p['Total'];
+		  					}else{
+		  						info.innerHTML = '' + p['NAME'] + ' County<br>' + p['Total'];
+		  					}
+
+		  				}
+		  			}else if(which.indexOf('-watches') > -1){
+		  				var t = which.split("-")[0];
+		  				var v = 0;
+		  				if(t === 'all'){v = p['ALL'];}
+		  				if(t === 'severe'){v = p['SEVERE'];}
+		  				if(t === 'tornado'){v = p['TORNADO'];}
+
+							if(popupOpen===0 & feature.get('ST') === 'LA') {
+								info.innerHTML = '' + p['NAME'] + ' Parish' + v;
+							}else if (popupOpen===0) {
+								info.innerHTML = '' + p['NAME'] + ' County<br>' + v;
+							}
+						}
+					}else {
+						info.innerHTML = 'Hover For<br> Counts';
+					}
+
+					if (popupOpen === 1) {
+						document.getElementById("RangeSlider").disabled = true;
+						document.getElementById("all").disabled = true;
+						document.getElementById("tornado").disabled = true;
+						document.getElementById("severe").disabled = true;
+					} else if (popupOpen === 0) {
+						document.getElementById("RangeSlider").disabled = false;
+						document.getElementById("all").disabled = false;
+						document.getElementById("tornado").disabled = false;
+						document.getElementById("severe").disabled = false;
+					}
+
+		  		if (feature !== highlight & popupOpen===0) {
+						if (highlight) {
+								featureOverlay.getSource().removeFeature(highlight);
+						}
+						if (feature) {
+			  			featureOverlay.getSource().addFeature(feature);
+						}
+						highlight = feature;
+		  		}
+				};
+
+				moveEvent = map.on('pointermove', function(evt) {
+					var pixel = map.getEventPixel(evt.originalEvent);
+					displayFeatureInfo(pixel);
+				});
+
+				map.on('singleclick', function(evt) {
+					popupOpen=1;
+					var coordinate = evt.coordinate;
+					var coordinate1 = [coordinate[0]+30000, coordinate[1]+40000];
+					overlay.setPosition(coordinate1);
+					var coordinate2 = [coordinate[0]+260000, coordinate[1]+185000];
+					map.getView().setCenter(coordinate2);
+					setTimeout(function() {
+						map.getView().setZoom(8);
+					}, 500);
+
+					var chart = c3.generate({
+						bindto: '#chart',
+						data: {
+							columns: [
+								['# of Watches',0,2,0,4,6,5,6,4,3,0,1,0]
+							],
+							type: 'bar'
+						},
+						bar: {
+							width: {
+								ratio: 0.8
+							}
+						},
+						axis: {
+							x: {
+								type: 'category',
+								tick: {
+									rotate: -45
+								},
+								categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+							},
+							y: {
+								tick: {
+									values: [1, 2, 3, 4, 5, 6, 7]
+								},
+								label: {
+									text: '# of Watches',
+									position: 'outer-middle'
+								}
+							}
+						}
+					});
+				});
+  		}); //end ajax call
+
+			makeLegend(which);
+
+		} //end function drawMapElements()
+
+		var getStyle = function (feature, which) {
+			var p = feature.getProperties();
+			if(which.indexOf("-reports") > -1){
+				var t = which.split("-")[0];
+				if(t === 'tornado'){
+					var v = p['T'];
+					var c = getColor(which,  v);
+					return new ol.style.Style({fill: new ol.style.Fill({color: c}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+				}else if(t === 'all'){
+					var v = p['Total'];
+					var c = getColor(which,  v);
+					return new ol.style.Style({fill: new ol.style.Fill({color: c}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+				}
+			}else if(which.indexOf("-watches") > -1){
+				var t = which.split("-")[0];
+				var v = 0
+				if(t === "tornado"){v = p['TORNADO'];}
+				if(t === "severe"){v = p['SEVERE'];}
+				if(t === "all"){v = p['ALL'];}
+				var c = getColor(which,  v);
+				return new ol.style.Style({fill: new ol.style.Fill({color: c}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+			}
+		};
+
+		function selectSevere() {
+			//type= "Severe";
+			jQuery("#mapSwitcher input").prop("checked", false);
+			jQuery("#severe").prop( "checked", true);
+			firstTime= 0;
+			drawMapElements('severe-watches');
+			jQuery("#mapTitle").html("" + year + " Severe Watches");
+		} //end selectSevere
+
+		function selectAll() {
+			//type= "SPC";
+			jQuery("#mapSwitcher input").prop("checked", false);
+			jQuery("#all").prop( "checked", true);
+			firstTime= 0;
+			drawMapElements('all-watches');
+			jQuery("#mapTitle").html("" + year + " SPC Watches");
+		} //end selectAll
+
+		function selectTornado() {
+			//type= "Tornado";
+			jQuery("#mapSwitcher input").prop("checked", false);
+			jQuery("#tornado").prop( "checked", true);
+			firstTime= 0;
+			drawMapElements('tornado-watches');
+			jQuery("#mapTitle").html("" + year + " Tornado Watches");
+		} //end selectTornado
+
+		function selectTorReports(){
+			//type = "TornadoReport"
+			jQuery("#mapSwitcher input").prop("checked", false);
+			jQuery("#torReports").prop("checked", true)
+			firstTime = 0;
+			drawMapElements('tornado-reports');
+			jQuery("#mapTitle").html("" + year + " Preliminary Tornado Reports");
+		}
+
+		function selectAllReports(){
+			//type = "AllReports"
+			jQuery("#mapSwitcher input").prop("checked", false);
+			jQuery("#allReports").prop("checked", true)
+			firstTime = 0;
+			drawMapElements('all-reports');
+			jQuery("#mapTitle").html("All " + year + " Preliminary Severe Reports");
+		}
+
+	function selectYear() {
+		year = jQuery("#RangeSlider").val();
+		firstTime= 0;
+		var id = false;
+		jQuery("#mapSwitcher input").each(function(n,d){
+			if(jQuery(d).prop("checked")){
+				id = jQuery(d).prop("id");
+			}
+		});
+		if(id === 'allReports'){
+			selectAllReports();
+		}else if(id === 'torReports'){
+			selectTorReports();
+		}else if(id === 'all'){
+			selectAll();
+		}else if(id === 'severe'){
+			selectSevere();
+		}else if(id === 'tornado'){
+			selectTornado();
+		}
+		/*
+		drawMapElements();
+		jQuery("#mapTitle").html("" + year + " " + type + " Watches");
+		*/
+		jQuery("#year").html("" + year + "");
+		document.getElementById("year").style.left = ((year - 2006)/13.2)*100 + 0.4 + "%";
+
+	} //end selectYear
+
+function showMapSwitcher() {
+jQuery("#mapSwitcher").show();
+jQuery("#showMapSwitcher").hide();
+}
+
+function hideMapSwitcher() {
+jQuery("#mapSwitcher").hide();
+jQuery("#showMapSwitcher").show();
+}
+
+		function getColor(which, d) {
+			var alpha = 0.7;
+			if (which === "tornado-watches") {
+				return d > 20 ? "rgba(255, 25, 25, " + alpha + ")" :
+					d > 16 ? "rgba(255, 50, 50, " 	+ alpha + ")" :
+					d > 12 ? "rgba(255, 75, 75, " 	+ alpha + ")" :
+					d >  9 ? "rgba(255, 100, 100, " + alpha + ")" :
+					d >  6 ? "rgba(255, 125, 125, " + alpha + ")" :
+					d >  4 ? "rgba(255, 150, 150, " + alpha + ")" :
+					d >  2 ? "rgba(255, 175, 175, " + alpha + ")" :
+					d >  1 ? "rgba(255, 200, 200, " + alpha + ")" :
+					d >  0 ? "rgba(255, 225, 225, " + alpha + ")" :
+					"rgba(255, 255, 255, " + alpha + ")"
+
+			}else if (which === "severe-watches") {
+				return d > 20 ? "rgba(25, 25, 225, " + alpha + ")" :
+					d > 16 ? "rgba(50, 50, 255, " + alpha + ")" :
+				  d > 12 ? "rgba(75, 75, 255, " + alpha + ")" :
+				  d >  9 ? "rgba(100, 100, 255, " + alpha + ")" :
+				  d >  6 ? "rgba(125, 125, 255, " + alpha + ")" :
+					d >  4 ? "rgba(150, 150, 255, " + alpha + ")" :
+				  d >  2 ? "rgba(175, 175, 255, " + alpha + ")" :
+				  d >  1 ? "rgba(200, 200, 255, " + alpha + ")" :
+				  d >  0 ? "rgba(225, 225, 255, " + alpha + ")" :
+					"rgba(255, 255, 255, " + alpha + ")"
+			}else if (which === "all-watches") {
+				return d > 29 ? "rgba(255, 225, 0, " + alpha + ")" :
+					d > 25 ? "rgba(255, 128, 0, " + alpha + ")" :
+				  d > 22 ? "rgba(255, 0, 0, " + alpha + ")" :
+				  d > 19 ? "rgba(255, 0, 128, " + alpha + ")" :
+				  d > 16 ? "rgba(255, 0, 255, " + alpha + ")" :
+				  d > 13 ? "rgba(191, 0, 255, " + alpha + ")" :
+				  d > 10 ? "rgba(128, 0, 255, " + alpha + ")" :
+				  d >  8 ? "rgba(64, 0, 255, " + alpha + ")" :
+				  d >  6 ? "rgba(0, 0, 255, " + alpha + ")" :
+				  d >  4 ? "rgba(0, 64, 255, " + alpha + ")" :
+				  d >  2 ? "rgba(0, 128, 255, " + alpha + ")" :
+				  d >  1 ? "rgba(0, 191, 255, " + alpha + ")" :
+				  d >  0 ? "rgba(0, 255, 255, " + alpha + ")" :
+					"rgba(255, 255, 255, " + alpha + ")"
+			}else if(which === "all-reports"){
+				return d > 29 ? "#ffff00" :
+					d > 25 ? "#ff8000" :
+				  d > 22 ? "#ff0000" :
+				  d > 19 ? "#ff0080" :
+				  d > 16 ? "#ff00ff" :
+				  d > 13 ? "#bf00ff" :
+				  d > 10 ? "#8000ff" :
+				  d >  8 ? "#4000ff" :
+				  d >  6 ? "#0000ff" :
+				  d >  4 ? "#0040ff" :
+				  d >  2 ? "#0080ff" :
+				  d >  1 ? "#00bfff" :
+				  d >  0 ? "#00ffff" :
+					"#ffffff" ;
+			}else if(which === "tornado-reports"){
+				return d > 9 ? "rgba(255, 0, 0, 0.8)":
+					d > 8 ? "rgba(255, 25, 25, 0.8)":
+					d >  7 ? "rgba(255, 50, 50, 0.8)" :
+					d >  6 ? "rgba(255, 75, 75, 0.8)" :
+					d >  5 ? "rgba(255, 100, 100, 0.8)" :
+					d >  4 ? "rgba(255, 125, 125, 0.8)" :
+					d >  3 ? "rgba(255, 150, 150, 0.8)" :
+					d >  2 ? "rgba(255, 175, 175, 0.8)" :
+					d >  1 ? "rgba(255, 200, 200, 0.8)" :
+					d >  0 ? "rgba(255, 225, 225, 0.8)" :
+					"rgba(255, 255, 255, 0.8)";
+			}
+		}
+
+		function makeLegend(which) {
+
+			if(which === "all-watches") {
+				document.getElementById('mapLegend').style.bottom = 40 + "px";
+				document.getElementById('mapLegend').style.right = 5 + "px";
+				document.getElementById('mapLegend').style.height = 390 + "px";
+				document.getElementById('mapLegend').style.width = 145 + "px";
+
+				var div = document.getElementById('mapLegend'),
+				count = [0,1,2,3,5,7,9,11,14,17,20,23,26,30],
+				labels = [];
+
+				div.innerHTML= '<b>' + year + '<br>Total Watches<br>By County</b><br>'
+
+				for (var i= 0; i < count.length; i++) {
+					div.innerHTML += '<i style="background:' + getColor(which, count[i] + 1) + '"></i> ' + count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+				}
+
+				return div;
+			}else if((which === 'tornado-watches') || (which === 'severe-watches')){
+				var t = which.split("-")[0];
+				document.getElementById('mapLegend').style.bottom = 40 + "px";
+				document.getElementById('mapLegend').style.right = 5 + "px";
+				document.getElementById('mapLegend').style.height = 275 + "px";
+				document.getElementById('mapLegend').style.width = 175 + "px";
+				var div = document.getElementById('mapLegend'),
+				count = [0,1,2,4,6,9,12,16,20],
+				labels = [];
+				if(t === 'tornado'){
+					div.innerHTML= '<b>' + year + '<br> Tornado Watches<br>By County</b><br>';
+				}else if (t === 'severe'){
+					div.innerHTML= '<b>' + year + '<br> Severe Watches<br>By County</b><br>';
+				}
+
+				for (var i= 0; i < count.length; i++) {
+					div.innerHTML += '<i style="background:' + getColor(which, count[i] + 1) + '"></i> ' + count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+				}
+				return div;
+			}else if(which === 'tornado-reports'){
+				document.getElementById('mapLegend').style.bottom = 40 + "px";
+				document.getElementById('mapLegend').style.right = 5 + "px";
+				document.getElementById('mapLegend').style.height = 300 + "px";
+				document.getElementById('mapLegend').style.width = 175 + "px";
+				var div = document.getElementById('mapLegend'),
+				count = [1,2,3,4,5,6,7,8,9],
+				labels = [];
+				div.innerHTML= '<b>' + year + '<br> Preliminary Tornado Reports By County</b><br>'
+
+				for (var i= 0; i < count.length; i++) {
+					div.innerHTML += '<i style="background:' + getColor(which, count[i] + 1) + '"></i> ' + count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+				}
+				return div;
+
+			}else if(which === 'all-reports'){
+				document.getElementById('mapLegend').style.bottom = 40 + "px";
+				document.getElementById('mapLegend').style.right = 5 + "px";
+				document.getElementById('mapLegend').style.height = 390 + "px";
+				document.getElementById('mapLegend').style.width = 145 + "px";
+
+				var div = document.getElementById('mapLegend'),
+				count = [1,2,3,5,7,9,11,14,17,20,23,26,30],
+				labels = [];
+
+				div.innerHTML= '<b>' + year + '<br>Preliminary Report Totals By County</b><br>'
+
+				for (var i= 0; i < count.length; i++) {
+					div.innerHTML += '<i style="background:' + getColor(which, count[i] + 1) + '"></i> ' + count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+				}
+
+				return div;
+
+			}
+		}
+
+		drawMapElements('tornado-watches');
+		jQuery("#mapSwitcher input").prop("checked", false);
+		jQuery("#tornado").prop("checked", true)
+
+		</script>
+	</body>
+</html>
+<br><br>
+<!-- ######################### END MAIN PAGE CONTENT ############################ -->
+<!-- ############################################################################## -->
+
+      </div> <!-- SPCMain2 -->
+
+   <!-- ##### FOOTER ACROSS BOTTOM OF PAGE ##### -->
+   <div class="footer_container">
+      <div id="footer">
+          <table cellspacing="6" cellpadding="0" width="100%" border="0">
+    <tr valign="top">
+      <td class="gray">
+        <a href="//www.usa.gov" target="_blank"><img src="/new/images/usa_gov.png" alt="usa.gov" width="110" height="30" /></a>
+      </td>
+      <td class="gray">
+        <a href="//www.noaa.gov/" target="_blank"><span class="gray">NOAA</span></a>&nbsp;/
+        <a href="//www.weather.gov/" target="_blank"><span class="gray">National Weather Service</span></a><br />
+        <a href="//www.ncep.noaa.gov/" target="_blank"><span class="gray">National Centers for Environmental Prediction</span></a><br />
+        <a href="/"><span class="gray">Storm Prediction Center</span></a><br />
+        120 David L. Boren Blvd.<br />
+        Norman, OK 73072 U.S.A.<br />
+        <a href="mailto:spc.feedback@noaa.gov?subject=[SPC web feedback]"><span class="gray">spc.feedback@noaa.gov</span></a><br />
+
+        Page last modified: July 30 2018 22:51 UTC
+              <td align="left">
+        <a href="//www.weather.gov/disclaimer">
+          <span class="gray">Disclaimer</span></a><br />
+        <a href="//www.cio.noaa.gov/services_programs/info_quality.html">
+          <span class="gray">Information Quality</span></a><br />
+        <a href="//www.weather.gov/help">
+          <span class="gray">Help</span></a><br />
+        <a href="//www.weather.gov/glossary">
+          <span class="gray">Glossary</span></a>
+      </td>
+      <td align="right">
+        <a href="//www.weather.gov/privacy">
+          <span class="gray">Privacy Policy</span></a><br />
+        <a href="//www.rdc.noaa.gov/%7Efoia/">
+          <span class="gray">Freedom of Information Act (FOIA)</span></a><br />
+        <a href="//www.weather.gov/about">
+          <span class="gray">About Us</span></a><br />
+        <a href="//www.weather.gov/careers">
+          <span class="gray">Career Opportunities</span></a>
+      </td>
+    </tr>
+  </table>
+  <script async type="text/javascript" id="_fed_an_js_tag" src="/misc/GA/Federated-Analytics-min.js?agency=DOC&sub­agency=NOAA&pua=UA-52727918-1"></script>
+  <script async type="text/javascript" id="_fed_an_ua_tag" src="//dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&sub­agency=NOAA&pua=UA-52727918-1&dclink=true"></script>
+  <script type="text/javascript">
+    if (typeof jQuery == 'undefined') {
+      document.write(unescape("%3Cscript async src='/misc/js/jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
+    }
+  </script>
+
+  <script async type="text/javascript" src="/misc/js/nwsexit-spc-min.js"></script>
+      </div> <!--footer -->
+   </div> <!--footer_container -->
+   </div> <!-- SPCMain -->
+
+   <div class="clear"> </div> <!-- Sets background to white -->
+</div> <!--SPCWrapper -->
+
+</body>
+</html>

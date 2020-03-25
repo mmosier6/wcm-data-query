@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://rawgit.com/c3js/c3/master/c3.min.css" type="text/css">
+    <style type="text/css">
+.map {
+	position:relative;
+	top:10px;
+	z-index:0;
+        height: 800px;
+        width: 100%;
+	border-width:2px; 
+	border-style:solid;
+	border-bottom-left-radius:15px; 
+	-webkit-border-bottom-left-radius:15px;
+	-moz-border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px; 
+	-webkit-border-bottom-right-radius:15px; 
+	-moz-border-bottom-right-radius:15px; 
+	border-top-left-radius:15px; 
+	-webkit-border-top-left-radius:15px;
+	-moz-border-top-left-radius:15px;
+	border-top-right-radius:15px; 
+	-webkit-border-top-right-radius:15px; 
+	-moz-border-top-right-radius:15px; 
+	border-color:#000000;
+      }
+#chart {
+	width: 1000px;
+}
+#chartText {
+	font: 18px/20px Arial, Helvetica, sans-serif;
+	text-align:center;
+}
+#mapTitle {
+	position: absolute;
+	top:110px;
+	left:40%;
+	padding: 6px 8px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	border-style: solid;
+	border-width:3px;
+	border-color:black;
+	text-align:center;
+}
+#info {
+	position: absolute;
+	top:100px;
+	right:20px;
+	padding: 6px 8px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	border-style: solid;
+	border-width:3px;
+	border-color:black;
+	text-align:center;
+}
+#mapLegend {
+	position: absolute;
+	right:15px;
+	padding: 6px 8px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	border-style: solid;
+	border-width:3px;
+	border-color:black;
+	text-align:center;
+}
+#mapSwitcher {
+	position: absolute;
+	left:15px;
+	top:800px;
+	width:262px;
+	padding: 6px 0px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	border-style: solid;
+	border-width:3px;
+	border-color:black;
+}
+#showMapSwitcher {
+	position: absolute;
+	left:15px;
+	top:845px;
+	padding: 6px 8px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	border-style: solid;
+	border-width:3px;
+	border-color:black;
+	cursor: pointer;
+}
+#hideMapSwitcher {
+	padding: 6px 8px;
+	font: 21px/23px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.8);
+	border-radius: 2px;
+	border-style: solid;
+	border-width:1px;
+	border-color:black;
+	cursor: pointer;
+}
+#mapLegend i {
+	width:18px;
+	height:18px;
+	float:left;
+	margin-right:8px;
+	border-style:solid;
+	border-width:2px;
+	border-color:black;
+
+}
+select {
+	text-align: center;
+	}
+option {
+	text-align: center;
+	}
+.ol-popup {
+	position: absolute;
+	background-color: white;
+	-webkit-filter: drop-shadow( 0 1px 4px rgba(0,0,0,0.2));
+	filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid #cccccc;
+	bottom: 12px;
+	left: -50px;
+}
+.ol-popup:after, .ol-popup:before {
+	top: 100%
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.ol-popup:after {
+	border-top-color: white;
+	border-width: 10px;
+	left: 48px;
+	margin-left: -10px;
+}
+.ol-popup:before {
+	border-top-color: #cccccc;
+	border-width: 11px;
+	left: 48px;
+	margin-left: 11px;
+}
+.ol-popup-closer {
+	text-decoration: none;
+	position: absolute;
+	top: 2px;
+	right: 8px;
+}	
+.ol-popup-closer:after {
+	content: "x";
+}
+.slidecontainer {
+	width: 90%;
+	margin: auto;
+}
+.slider {
+	-webkit-appearance: none; 
+	appearance: none;
+	width: 100%;
+	height: 25px;
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+}
+.slider:hover {
+	opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+	-webkit-apperance: none;
+	apperance:none;
+	width: 25px;
+	height: 25px;
+	background: #4CAF50;
+	cursor: pointer;
+}
+.slider::-moz-range-thumb {
+	width: 25px;
+	height: 25px;
+	background: #4CAF50;
+	cursor: pointer;
+}
+#year {
+	font: 18px/20px Arial, Helvetica, sans-serif;
+	position: relative;
+ 	font-weight: bold;
+}
+#max_year {
+	font: 18px/20px Arial, Helvetica, sans-serif;
+	position: absolute;
+	right: 4%;
+}
+#min_year {
+	font: 18px/20px Arial, Helvetica, sans-serif;
+	position: relative;
+}
+#slider_text {
+	font: 16px/18px Arial, Helvetica, sans-serif;
+	position: absolute;
+	left: 41%;
+	text-align: center;
+}
+    </style>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://rawgit.com/c3js/c3/master/c3.js"></script>
+    <script src="https://d3js.org/d3.v5.js"></script>
+  </head>
+  <body>
+	<div class="slidecontainer">
+		<div id="year">&nbsp;</div>
+	    <input type="range" min="2006" max="2017" value="2017" class="slider" id="RangeSlider" onchange="selectYear()">
+	        <div id="slider_text">Adjust Slider to Change Year</div>
+		<div id="max_year">2017</div>
+		<div id="min_year">2006</div>
+	</div>
+	<div id="map" class="map"></div>
+	<div id="mapTitle">2017 SPC Watches</div>
+	<div id="info">Hover For<br>Watch Count</div>
+	<div id="mapLegend"></div>
+	<div id="mapSwitcher">
+		<input type="radio" id="all" checked="checked" onchange="selectAll()">Total SPC Watches &nbsp;&nbsp;<a id="hideMapSwitcher" onclick="hideMapSwitcher()"><<</a><br>
+		<input type="radio" id="tornado" onchange="selectTornado()">Tornado Watches<br>
+		<input type="radio" id="severe" onchange="selectSevere()">Severe Watches<br>
+	</div>
+	<div id='showMapSwitcher'><a onclick='showMapSwitcher()'>>></a></div>
+	<div id="popup" class="ol-popup">
+	    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+	    <div id="popup-content"></div>
+	</div>
+		<script type="text/javascript">
+	var firstTime = 1;
+	var year= 2017;
+	var type="SPC";
+	
+	var data;
+	var map;
+	var vectorSource;
+	var overlay;
+	var container = document.getElementById('popup');
+	var content = document.getElementById('popup-content');
+	var closer = document.getElementById('popup-closer');
+
+function drawMapElements() {
+$("#showMapSwitcher").hide();
+if (firstTime < 1) {
+	vectorSource.clear();
+}
+	$.ajax({
+		url:"./watch_counts/year/" + year + "-county-watch-counts.json", 
+		dataType: "json"
+	}).done(function(geoJSON){
+		data = geoJSON;
+
+	vectorSource = new ol.source.Vector({features: (new ol.format.TopoJSON()).readFeatures(data, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
+	overlay = new ol.Overlay({
+	    element: container,
+	    autoPan: true
+	});
+	closer.onclick = function() {
+	    overlay.setPosition(undefined);
+	    closer.blur();
+	    return false;
+	};
+
+      var mapData = new ol.layer.Vector({
+			source: vectorSource,
+			style: function (feature) {
+				return getStyle(feature);
+			}
+		});
+	if (firstTime === 1) {
+$("#year").html("" + year + "");
+document.getElementById("year").style.left = ((year - 2006)/11.2)*100 + "%";	
+      map = new ol.Map({
+        target: 'map',
+/*	controls: ol.control.defaults().extend([
+	    new ol.control.OverviewMap()
+	]),
+*/
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }), mapData
+        ],
+	overlays: [overlay],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([-97, 39]),
+          zoom: 5
+        })
+      }); //end var map
+	  }
+	else {
+		map.addLayer(mapData);
+		}
+
+var highlightStyle = new ol.style.Style({
+	stroke: new ol.style.Stroke({width:2,color:'#000000'})
+})
+var featureOverlay = new ol.layer.Vector({
+	source: new ol.source.Vector(),
+	map: map,
+	style: function() {
+	return highlightStyle;
+	}
+});
+ 
+var highlight;
+var displayFeatureInfo = function(pixel) {
+
+    var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+	return feature;
+    });
+
+    var info = document.getElementById('info');
+    if (feature) {
+	if (type==='SPC') {
+	info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('ALL');
+	} else if (type==='Tornado') {
+	info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('TORNADO');
+	} else if (type==='Severe') {
+	info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('SEVERE');
+	}
+    } else {
+	info.innerHTML = 'Hover For<br>Watch Count';
+    }
+    if (feature !== highlight) {
+	if (highlight) {
+	    featureOverlay.getSource().removeFeature(highlight);
+	}
+	if (feature) {
+	    featureOverlay.getSource().addFeature(feature);
+	}
+	highlight = feature;
+    }
+};
+
+map.on('pointermove', function(evt) {
+	var pixel = map.getEventPixel(evt.originalEvent);
+	displayFeatureInfo(pixel);
+});
+
+map.on('singleclick', function(evt) {
+	var coordinate = evt.coordinate;
+	overlay.setPosition(coordinate);
+	var coordinate1 = [coordinate[0]+350000, coordinate[1]+185000];
+	map.getView().setCenter(coordinate1);
+	setTimeout(function() {
+	map.getView().setZoom(8);
+}, 500);
+	content.innerHTML = "<div id='chart'>&nbsp;</div><div id ='chartText'>For more detailed charts click <a href='http://weather.gov'>here.</a> <br> Note: The data in this graph is not real and is only used for proof of concept.</div>";
+var chart = c3.generate({
+	bindto: '#chart',
+	data: {
+		columns: [
+			['# of Watches',0,2,0,4,6,5,6,4,3,0,1,0]
+		],
+		type: 'bar'
+	},
+	bar: {
+		width: {	
+			ratio: 0.8
+		}
+	},
+	axis: {
+		x: {	
+			type: 'category',
+			tick: {
+				rotate: -45
+			},
+			categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		},
+		y: {
+			tick: {
+				values: [1, 2, 3, 4, 5, 6, 7]
+			},
+			label: {
+				text: '# of Watches',
+				position: 'outer-middle'
+			}
+		}
+	}
+}); 
+	});
+  }); //end ajax call  
+makeLegend();
+} //end function drawMapElements()
+
+var getStyle = function (feature) {
+if (type=== "Tornado") {
+	x = feature.get('TORNADO')
+	switch(true) {
+	case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 225, 225, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<3):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 200, 200, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<5):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 175, 175, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<7):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 150, 150, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<10):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 125, 125, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<13):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 100, 100, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<17):return new ol.style.Style({fill: new ol.style.Fill({color: [255,  75,  75, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<21):return new ol.style.Style({fill: new ol.style.Fill({color: [255,  50,  50, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x>20):return new ol.style.Style({fill: new ol.style.Fill({color: [255,  25,  25, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	default:return new ol.style.Style({fill: new ol.style.Fill({color: [255, 0, 0, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+		}
+	}
+else if (type=== "SPC") {
+	x = feature.get('ALL')
+	switch(true) {
+	case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<3):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 191, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<5):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 128, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<7):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 64, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<9):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<11):return new ol.style.Style({fill: new ol.style.Fill({color: [64, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<14):return new ol.style.Style({fill: new ol.style.Fill({color: [128, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<17):return new ol.style.Style({fill: new ol.style.Fill({color: [191, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<20):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<22):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 0, 128, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<26):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 0, 0, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x<30):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 128, 0, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	case (x>29):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 0, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+	default:return new ol.style.Style({fill: new ol.style.Fill({color: [255, 100, 100, 0.5]}), stroke: new ol.style.Stroke({width:1, color:'#808080'})});
+		}
+	}
+else if (type=== "Severe") {
+	x = feature.get('SEVERE')
+	switch(true) {
+	case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [225, 225, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<3):return new ol.style.Style({fill: new ol.style.Fill({color: [200, 200, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<5):return new ol.style.Style({fill: new ol.style.Fill({color: [175, 175, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<7):return new ol.style.Style({fill: new ol.style.Fill({color: [150, 150, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<10):return new ol.style.Style({fill: new ol.style.Fill({color: [125, 125, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<13):return new ol.style.Style({fill: new ol.style.Fill({color: [100, 100, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<17):return new ol.style.Style({fill: new ol.style.Fill({color: [75, 75, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x<21):return new ol.style.Style({fill: new ol.style.Fill({color: [50,  50, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	case (x>20):return new ol.style.Style({fill: new ol.style.Fill({color: [25,  25, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+	default:return new ol.style.Style({fill: new ol.style.Fill({color: [0, 0, 255, 0.5]}), stroke: new ol.style.Stroke({width:1,color:'#808080'})});
+		}
+	}
+};
+			
+function selectSevere() {
+type= "Severe";
+$("#all").prop( "checked", false);
+$("#tornado").prop( "checked", false);
+firstTime= 0;
+drawMapElements();
+$("#mapTitle").html("" + year + " Severe Watches");
+} //end selectSevereYear
+function selectAll() {
+type= "SPC";
+$("#severe").prop( "checked", false);
+$("#tornado").prop( "checked", false);
+firstTime= 0;
+drawMapElements();
+$("#mapTitle").html("" + year + " SPC Watches");
+} //end selectAll
+function selectTornado() {
+type= "Tornado";
+$("#all").prop( "checked", false);
+$("#severe").prop( "checked", false);
+firstTime= 0;
+drawMapElements();
+$("#mapTitle").html("" + year + " Tornado Watches");
+} //end selectTornado
+
+function selectYear() {
+year = $("#RangeSlider").val();
+firstTime= 0;
+drawMapElements();
+$("#mapTitle").html("" + year + " " + type + " Watches");
+$("#year").html("" + year + "");
+document.getElementById("year").style.left = ((year - 2006)/11.2)*100 + 0.4 + "%";
+} //end selectTornado
+
+function showMapSwitcher() {
+$("#mapSwitcher").show();
+$("#showMapSwitcher").hide();
+}
+
+function hideMapSwitcher() {
+$("#mapSwitcher").hide();
+$("#showMapSwitcher").show();
+}
+
+function getColor(d) {
+if (type==="Tornado") {
+return d > 20 ? "#ff1919" :
+       d > 16 ? "#ff3232" :
+       d > 12 ? "#ff4B4B" :
+       d >  9 ? "#ff6464" :
+       d >  6 ? "#ff7D7D" :
+       d >  4 ? "#ff9696" :
+       d >  2 ? "#ffafaf" :
+       d >  1 ? "#ffc8c8" :
+       d >  0 ? "#ffe1e1" :
+		"#ffffff" ;
+}
+else if (type==="Severe") {
+return d > 20 ? "#1919ff" :
+       d > 16 ? "#3232ff" :
+       d > 12 ? "#4b4bff" :
+       d >  9 ? "#6464ff" :
+       d >  6 ? "#7d7dff" :
+       d >  4 ? "#9696ff" :
+       d >  2 ? "#afafff" :
+       d >  1 ? "#c8c8ff" :
+       d >  0 ? "#e1e1ff" :
+		"#ffffff" ;
+}
+else if (type==="SPC") {
+return d > 29 ? "#ffff00" :
+       d > 25 ? "#ff8000" :
+       d > 22 ? "#ff0000" :
+       d > 19 ? "#ff0080" :
+       d > 16 ? "#ff00ff" :
+       d > 13 ? "#bf00ff" :
+       d > 10 ? "#8000ff" :
+       d >  8 ? "#4000ff" :
+       d >  6 ? "#0000ff" :
+       d >  4 ? "#0040ff" :
+       d >  2 ? "#0080ff" :
+       d >  1 ? "#00bfff" :
+       d >  0 ? "#00ffff" :
+		"#ffffff" ;
+}
+}
+
+function makeLegend() {
+if (type==="SPC") {
+document.getElementById('mapLegend').style.top = 425 + "px";
+document.getElementById('mapLegend').style.height = 390 + "px";
+document.getElementById('mapLegend').style.width = 145 + "px";
+
+var div = document.getElementById('mapLegend'),
+count = [0,1,2,3,5,7,9,11,14,17,20,23,26,30],
+labels = [];
+
+div.innerHTML= '<b>' + year + '<br>Total Watches<br>By County</b><br>'
+
+for (var i= 0; i < count.length; i++) {
+div.innerHTML +=
+'<i style="background:' + getColor(count[i] + 1) + '"></i> ' +
+	count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+}
+
+return div;
+}
+else {
+document.getElementById('mapLegend').style.top = 540 + "px";
+document.getElementById('mapLegend').style.height = 275 + "px";
+document.getElementById('mapLegend').style.width = 175 + "px";
+var div = document.getElementById('mapLegend'),
+count = [0,1,2,4,6,9,12,16,20],
+labels = [];
+
+div.innerHTML= '<b>' + year + '<br>' + type + ' Watches<br>By County</b><br>'
+
+for (var i= 0; i < count.length; i++) {
+div.innerHTML +=
+'<i style="background:' + getColor(count[i] + 1) + '"></i> ' +
+	count[i] + (count[i + 1] ? ' to ' + count[i + 1] + '<br>' : '+');
+}
+
+return div;
+}
+};
+
+drawMapElements();
+    </script>
+  </body>
+</html>
