@@ -9,12 +9,12 @@ function buildPage(page){
 				v = jQuery(this).attr("value");
 			}
 		});
-		page.dataType = v;	
+		page.dataType = v;
 		if(v === 'watch'){
 			jQuery("#all-watch-filters").removeClass("hidden");
 			jQuery("#all-report-filters").addClass("hidden");
 			jQuery("#report-type").addClass("hidden");
-			
+
 			if(jQuery("#date-pickers").hasClass("hidden")){
 				jQuery("#date-pickers").removeClass("hidden");
 			}
@@ -32,11 +32,11 @@ function buildPage(page){
 			jQuery("#data-type-5").button('refresh');
 			if(jQuery("#date-pickers").hasClass("hidden")){
 				jQuery("#date-pickers").removeClass("hidden");
-			}		
+			}
 			if(jQuery("#filter-opt-list").hasClass("hidden")){
 				jQuery("#filter-opt-list").removeClass("hidden");
 			}
-		}	
+		}
 
 	});
 
@@ -50,7 +50,7 @@ function buildPage(page){
 		});
 		page.reportType = w;
 	});
-	
+
 	//Create dialog box
 	jQuery("#error-dialog").dialog({
 		autoOpen: false,
@@ -67,34 +67,49 @@ function buildPage(page){
 			}
 		}
 	});
-	
+
 	createCalendars(page);
-	
+
 	filterStates(page);
 	filterCWAs(page);
-	filterFIPSandZIP(page);
-	
+	//filterFIPSandZIP(page);
+
 	jQuery("#go-btn").button().on('click', function(){
 		jQuery("#data-type-buttonset input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				v = jQuery(this).attr("value");
 				page.dataType = v;
 			}
-		});	
-		if (page.dataType ==="watch") {
-		var urlStr ="/wcm/data/raw/watches_all_2019.json"
-		} else if (page.dataType ==="report") {
-		var urlStr ="/wcm/data/raw/"+page.reportType+".json"
+		});
+		var urlStr = '';
+		if (page.dataType ==="watch"){
+				if(typeof(page.data) === 'undefined'){
+					urlStr ="/wcm/data/raw/watches_all_2019.json";
+				}else if(typeof(page.data['watch'])){
+					urlStr ="/wcm/data/raw/watches_all_2019.json";
+				}else{
+					urlStr = "";
+				}
+		}else if(page.dataType ==="report"){
+				urlStr ="/wcm/data/raw/reports_all_2019.json";
 		}
+		console.log(urlStr);
+		if(urlStr !== ''){
 			//Get watch data
-	jQuery.ajax({
-		dataType: "json",
-		url: urlStr
-	}).done(function(data){
-		page.data = new Object();
-		page.data['all'] = data;
-		createFilteredData(page);
-		getFilteredData(page);
-	});	
+			jQuery.ajax({
+				dataType: "json",
+				url: urlStr
+			}).done(function(data){
+				page.data = new Object();
+				if(page.dataType === 'watch'){
+					page.data['watch'] = data;
+				}else if(page.dataType === 'report'){
+					page.data['report'] = data;
+				}
+				console.log(data);
+				createFilteredData(page);
+				getFilteredData(page);
+			});
+		}
 	});
 }

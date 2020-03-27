@@ -1,8 +1,8 @@
-function filterStates(page){	
+function filterStates(page){
 	//var astr = '';
 	//astr = astr + "<div>";
 	//astr = astr + "<select data-placeholder = 'Select State(s)...' class = '"+type+"-states-select' multiple style = 'width:350px;'>";
-	
+
 	var bstr = '';
 	bstr = bstr + "<option value = 'AL'>Alabama (AL)</option>";
 	//bstr = bstr + "<option value = 'AK'>Alaska (AK)</option>";
@@ -54,9 +54,9 @@ function filterStates(page){
 	bstr = bstr + "<option value = 'WV'>West Virginia (WV)</option>";
 	bstr = bstr + "<option value = 'WI'>Wisconsin (WI)</option>";
 	bstr = bstr + "<option value = 'WY'>Wyoming (WY)</option>";
-	
+
 	var typeKeys = new Array("watch", "report", "outlook");
-	
+
 	typeKeys.forEach(function(type, n){
 		var astr = '';
 		astr = astr + "<div>";
@@ -64,16 +64,16 @@ function filterStates(page){
 		var str = astr + bstr
 		str = str + "</select>"
 		str = str + "</div>";
-				
+
 		jQuery("#" + type + "-state-filter").append(str);
 		jQuery("." + type +"-states-select").chosen({
 			width: "350px",
 			search_contains: true
 		}).change(function(){
-			getFilters(page);	
+			getFilters(page);
 		});
-	});	
-}	
+	});
+}
 
 function filterCWAs(page){
 	var bstr = '';
@@ -201,24 +201,24 @@ function filterCWAs(page){
 	bstr = bstr +"<option value = 'ILM'>Wilmington, NC (ILM)</option>";
 	bstr = bstr +"<option value = 'ILN'>Wilmington, OH (ILN)</option>";
 
-	var typeKeys = new Array("watch", "report", "outlook");	
+	var typeKeys = new Array("watch", "report", "outlook");
 	typeKeys.forEach(function(type, n){
 		var astr = '';
 		astr = astr + "<div>";
 		astr = astr + "<select name = '"+type+"-cwa-select' data-placeholder = 'Select CWA(s)...' class = '"+type+"-cwa-select' multiple style = 'width:350px;'>";
-		
+
 		var str = astr + bstr;
 		str = str + "</select>"
 		str = str + "</div>";
-		
+
 		jQuery("#" + type + "-cwa-filter").append(str);
 		jQuery("." + type +"-cwa-select").chosen({
 			width: "350px",
 			search_contains: true
 		}).change(function(e, params){
 			getFilters(page);
-		});		
-	});	
+		});
+	});
 }
 
 function filterFIPSandZIP(page){
@@ -239,28 +239,28 @@ function filterFIPSandZIP(page){
 		//bstr = bstr + "<select name = 'all-fips-select' data-placeholder = 'Select FIPS Code(s)...' class = 'all-fips-select' multiple style = 'width:150px; float: left;'>";
 		page.FIPS.forEach(function(v,i){
 			bstr = bstr + "<option value = '" + v + "'> " + v + "</option>";
-		});	
+		});
 		bstr = bstr + "</select>"
 		//bstr = bstr + "</div>";
-		
-		var typeKeys = new Array("watch", "report", "outlook");	
-		typeKeys.forEach(function(type, n){	
+
+		var typeKeys = new Array("watch", "report", "outlook");
+		typeKeys.forEach(function(type, n){
 			var astr = '';
 			astr = astr + "<div>";
 			astr = astr + "<select name = '" + type + "-fips-select' data-placeholder = 'Select FIPS Code(s)...' class = '" + type + "-fips-select' multiple style = 'width:150px; float: left;'>";
 			var str = astr + bstr;
 			str = str + "</select>";
 			str = str + "</div>";
-			
+
 			jQuery("#" + type + "-fips-filter").append(str);
-	
+
 			jQuery("." + type + "-fips-select").chosen({
 				width: "270px",
 				search_contains: true
 			}).change(function(e, params){
 				getFilters(page);
 			});
-		});	
+		});
 	});
 }
 
@@ -285,7 +285,7 @@ function listFilters(page){
 			txt = "FIPS Filter(s): ";
 		}
 		if((filters[d]) && (d != 'date')){
-			str = filters[d].join(",");	
+			str = filters[d].join(",");
 		}else if((filters[d]) && (d === 'date')){
 			var sm = moment(filters['date'][0], "YYYYMMDD");
 			var em = moment(filters['date'][1], "YYYYMMDD");
@@ -296,7 +296,7 @@ function listFilters(page){
 		if(filters[d]){
 			var str = filters[d].join(",");
 			if(d === "Date"){
-			
+
 			}else if(d === 'State'){
 				jQuery("#state-filter-list").text("State Filter(s): " + str);
 			}else if(d === 'CWA'){
@@ -306,7 +306,7 @@ function listFilters(page){
 			}
 		}else{
 			if(d === "Date"){
-			
+
 			}else if(d === 'State'){
 				jQuery("#state-filter-list").text("State Filter(s): none");
 			}else if(d === 'CWA'){
@@ -315,9 +315,9 @@ function listFilters(page){
 				jQuery("#fips-filter-list").text("FIPS Filter(s): none");
 			}
 		}
-		*/		
+		*/
 	});
-}	
+}
 
 function getFilters(page){
 	console.log("getFilters");
@@ -331,7 +331,7 @@ function getFilters(page){
 		errorDialog('date');
 		tmpArray.push(false);
 	}
-	
+
 	if(checkDate(endDate)){
 		tmpArray.push(endDate);
 	}else{
@@ -339,7 +339,7 @@ function getFilters(page){
 		tmpArray.push(false);
 	}
 	filters['date'] = tmpArray;
-	
+
 	if((filters['date'][0] !== false) && (filters['date'][1] !== false)){
 		var type = page.dataType;
 		filters['state'] 	= (jQuery("." + type + "-states-select").chosen().val());
@@ -349,7 +349,7 @@ function getFilters(page){
 		return filters;
 	}else{
 		return false;
-	}	
+	}
 }
 
 function createFilteredData(page){
@@ -360,20 +360,13 @@ function createFilteredData(page){
 	if(typeof page.crossfilters === "undefined"){
 		page.crossfilters = {};
 	}
-	
-	if (page.dataType === "watch") {
-	page.crossfilters['all'] 		= crossfilter(page.data['all']);
+
+	page.crossfilters['all'] 		= crossfilter(page.data[page.dataType]);
 	page.crossfilters['cwa'] 		= page.crossfilters['all'].dimension(function(d){ return d.CWA});
 	page.crossfilters['state'] 	= page.crossfilters['all'].dimension(function(d){ return d.ST});
 	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});
 	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['issue_dt'], "YYYYMMDDHHmmss")});
-	} else if (page.dataType === "report") {
-	page.crossfilters['all'] 		= crossfilter(page.data['all']);
-	page.crossfilters['cwa'] 		= page.crossfilters['all'].dimension(function(d){ return d.st});
-	page.crossfilters['state'] 	= page.crossfilters['all'].dimension(function(d){ return d.st});
-	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.stf});
-	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['date'], "YYYYMMDD")});
-	}
+
 	/*
 	page.crossfilters[type+'-hour'] 	= page.crossfilters[type+'-all'].dimension(
 		function(d){
@@ -392,7 +385,7 @@ function createFilteredData(page){
 	page.crossfilters[type+'-lat'] 			= page.crossfilters[type+'-all'].dimension(function(d){ return d.Lat});
 	page.crossfilters[type+'-lon'] 			= page.crossfilters[type+'-all'].dimension(function(d){ return d.Lon});
 	page.crossfilters[type+'-fips'] 		= page.crossfilters[type+'-all'].dimension(function(d){ return d.FIPS});
-	*/		
+	*/
 }
 
 
@@ -418,7 +411,7 @@ function getFilteredData(page){
 				if(d.includes(dd)){return d;}
 			});
 		});
-	}	
+	}
 	//State
 	if(page.filters['state']){
 		page.filters['state'].forEach(function(dd,nn){
@@ -426,20 +419,20 @@ function getFilteredData(page){
 				if(d.includes(dd)){return d;}
 			});
 		});
-	}	
+	}
 	//FIPS
-	if(page.filters['fips']){	
+	if(page.filters['fips']){
 		page.filters['fips'].forEach(function(dd,nn){
 			page.crossfilters['fips'].filter(function(d){
 				if(d.includes(dd)){return d;}
 			});
 		});
-	}	
+	}
 
 	var d = page.crossfilters['fips'].top(Infinity);
 	console.log(d)
 	page.data['filtered'] = d;
-	displayFilteredData(page);	
+	displayFilteredData(page);
 }
 
 function clearFilteredData(page){
@@ -448,4 +441,3 @@ function clearFilteredData(page){
 	page.crossfilters['state'].filter(null);
 	page.crossfilters['fips'].filter(null);
 }
-
