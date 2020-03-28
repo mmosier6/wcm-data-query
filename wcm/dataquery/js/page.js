@@ -4,6 +4,9 @@ function buildPage(page){
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 		var el = jQuery(this);
 		var v = '';
+			jQuery("#data-table").empty();
+			jQuery("#total-table").empty();
+			jQuery(".download").hide();
 		el.find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				v = jQuery(this).attr("value");
@@ -11,31 +14,23 @@ function buildPage(page){
 		});
 		page.dataType = v;
 		if(v === 'watch'){
-			jQuery("#all-watch-filters").removeClass("hidden");
-			jQuery("#all-report-filters").addClass("hidden");
-			jQuery("#report-type").addClass("hidden");
-
-			if(jQuery("#date-pickers").hasClass("hidden")){
-				jQuery("#date-pickers").removeClass("hidden");
-			}
-
-			if(jQuery("#filter-opt-list").hasClass("hidden")){
-				jQuery("#filter-opt-list").removeClass("hidden");
-			}
+			jQuery("#all-watch-filters").show();
+			jQuery("#all-report-filters").hide();
+			jQuery("#report-type").hide();
+			jQuery("#view-type").show();
+			jQuery("#date-pickers").show();
+			jQuery("#filter-opt-list").show();
 		}
 		if(v === 'report'){
-			jQuery("#all-watch-filters").addClass("hidden");
-			jQuery("#all-report-filters").removeClass("hidden");
-			jQuery("#report-type").removeClass("hidden");
+			jQuery("#all-watch-filters").hide();
+			jQuery("#all-report-filters").show();
+			jQuery("#report-type").show();
 			jQuery("#data-type-5").prop('checked', true);
 			jQuery("#data-type-5").addClass("ui-state-active")
 			jQuery("#data-type-5").button('refresh');
-			if(jQuery("#date-pickers").hasClass("hidden")){
-				jQuery("#date-pickers").removeClass("hidden");
-			}
-			if(jQuery("#filter-opt-list").hasClass("hidden")){
-				jQuery("#filter-opt-list").removeClass("hidden");
-			}
+			jQuery("#view-type").hide();
+			jQuery("#date-pickers").show();
+			jQuery("#filter-opt-list").show();
 		}
 
 	});
@@ -50,6 +45,29 @@ function buildPage(page){
 		});
 		page.reportType = w;
 	});
+
+	jQuery("#data-type-buttonset2").buttonset().change(function(){
+		var elem = jQuery(this);
+		var x = '';
+		elem.find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				x = jQuery(this).attr("value");
+			}
+		});
+		page.viewType = x;
+	if (page.viewType === "table") {
+		jQuery(".download").show();
+		jQuery("#data-table").show();
+		jQuery("#total-table").show();
+		jQuery("#chart").hide();
+	} else if (page.viewType ==="chart") {
+		jQuery("#data-table").hide();
+		jQuery("#total-table").hide();
+		jQuery(".download").hide();
+		jQuery("#chart").show();
+	}
+	});
+
 
 	//Create dialog box
 	jQuery("#error-dialog").dialog({
@@ -92,9 +110,9 @@ function buildPage(page){
 			}
 		}else if(page.dataType ==="report"){
 			if(typeof(page.data) === 'undefined'){
-				urlStr ="/wcm/data/raw/reports_all_2019.json";
+				urlStr ="/wcm/data/raw/tornado_reports.json";
 			}else if(typeof(page.data['watch'])){
-				urlStr ="/wcm/data/raw/reports_all_2019.json";
+				urlStr ="/wcm/data/raw/tornado_reports.json";
 			}else{
 				urlStr = "";
 			}
@@ -117,6 +135,10 @@ function buildPage(page){
 				createFilteredData(page);
 				getFilteredData(page);
 			});
+		}
+		console.log(page.viewType)
+		if (page.viewType === "table") {
+			jQuery(".download").show();
 		}
 	});
 }

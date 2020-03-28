@@ -1,10 +1,11 @@
 var finalJSON="";
+var month_count=Array();
 function displayFilteredData(page){
 if (page.dataType === "watch") {
 	
 	function compare(a,b){
-		const watchA = a.wnum;
-		const watchB = b.wnum;
+		const watchA = a.watch_num;
+		const watchB = b.watch_num;
 		
 		var comparison = 0;
 		if(watchA > watchB){
@@ -22,8 +23,10 @@ if (page.dataType === "watch") {
 	var totalTornado=0;
 	var totalPDSTornado=0;
 	var totalPDSSevere=0;
-	var dataKeys = new Array("wnum", "issue_dt", "type");
+	month_count=[];
+	var dataKeys = new Array("wnum", "sel_issue_dt", "type");
 	var st = "";
+	st = st + ""
 	st = st + "<table id='results_table' width = '100%'>";
 	st = st + "<tr>";
 	st = st + "<th id='results_cell'> Issue Date/Time </th>";
@@ -33,11 +36,11 @@ if (page.dataType === "watch") {
 	st = st + "<th id='results_cell'> CWAs in Watch </th>";
 	st = st + "</tr>";
 	page.data['filtered-sorted'].forEach(function(d,n){
-		var fulldt = d['issue_dt'];
+		var fulldt = d['sel_issue_dt'];
 		st = st + "<tr>";
 		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "Z</td>";
 		st = st + "<td id='results_cell'> " + d['type'] + "</td>";
-		st = st + "<td id='results_cell'> " + d['wnum'] +  "</td>";
+		st = st + "<td id='results_cell'> " + d['watch_num'] +  "</td>";
 		st = st + "<td id='results_cell'> " + d['ST'] + "</td>";
 		st = st + "<td id='results_cell'> " + d['CWA'] + "</td>";
 		st = st + "</tr>";
@@ -51,9 +54,20 @@ if (page.dataType === "watch") {
 		}	else if (d['type']==="PDS SVR") {
 			totalPDSSevere=totalPDSSevere+1;
 		}
-		finalJSON = finalJSON + ',{"wnum":"'+d["wnum"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":"'+d["type"]+'"}';
-	});	
+		var month = Number(fulldt.slice(4,6));
+		for (i=1; i<13; i++) {
+			if (typeof month_count[i] === 'undefined') {
+				month_count[i] = 0;
+			}
+			if (i=== month) {
+				month_count[i] = month_count[i] + 1;
+			}
+		}
+		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"sel_issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":"'+d["type"]+'"}';
+	});
 
+		finalJSON = finalJSON + ',{"Totals":{"Jan":'+month_count[1]+',"Feb":'+month_count[2]+',"Mar":'+month_count[3]+',"Apr":'+month_count[4]+',"May":'+month_count[5]+',"Jun":'+month_count[6]+
+		',"Jul":'+month_count[7]+',"Aug":'+month_count[8]+',"Sep":'+month_count[9]+',"Oct":'+month_count[10]+',"Nov":'+month_count[11]+',"Dec":'+month_count[12]+'}}'
 	st = st + "</table>";
 
 	tot = "";
@@ -250,7 +264,6 @@ else if (page.dataType === "report") {
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
 }
-	
 	jQuery("#data-table").empty();
 	
 	jQuery("#data-table").html(st);
@@ -258,8 +271,6 @@ else if (page.dataType === "report") {
 	jQuery("#total-table").empty();
 
 	jQuery("#total-table").html(tot);
-
-	jQuery(".download").show();
 	
 }
 

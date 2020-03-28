@@ -365,7 +365,7 @@ function createFilteredData(page){
 	page.crossfilters['cwa'] 		= page.crossfilters['all'].dimension(function(d){ return d.CWA});
 	page.crossfilters['state'] 	= page.crossfilters['all'].dimension(function(d){ return d.ST});
 	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});
-	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['issue_dt'], "YYYYMMDDHHmmss")});
+	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['sel_issue_dt'], "YYYYMMDDHHmmss")});
 
 	/*
 	page.crossfilters[type+'-hour'] 	= page.crossfilters[type+'-all'].dimension(
@@ -433,6 +433,7 @@ function getFilteredData(page){
 	console.log(d)
 	page.data['filtered'] = d;
 	displayFilteredData(page);
+	makeChart(page);
 }
 
 function clearFilteredData(page){
