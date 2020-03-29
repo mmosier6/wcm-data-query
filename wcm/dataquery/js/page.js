@@ -90,7 +90,7 @@ function buildPage(page){
 
 	filterStates(page);
 	filterCWAs(page);
-	//filterFIPSandZIP(page);
+	filterFIPSandZIP(page);
 
 	jQuery("#go-btn").button().on('click', function(){
 		jQuery("#data-type-buttonset input:radio").each(function(){
