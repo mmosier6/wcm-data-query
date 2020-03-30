@@ -101,22 +101,14 @@ if (page.dataType === "watch") {
 else if (page.dataType === "report") {
 
 	function compare(a,b){
-		const ReportA = a.date;
-		const ReportB = b.date;
-		const TimeA = a.time;
-		const TimeB = b.time;
+		const ReportA = a.DT;
+		const ReportB = b.DT;
 		
 		var comparison = 0;
 		if(ReportA > ReportB){
 			comparison = 1;
 		}else if(ReportA < ReportB){
 			comparison = -1;
-		}else if (ReportA === ReportB){
-			if (TimeA > TimeB) {
-				comparison = 1;
-			} else {
-				comparison = -1;
-			}
 		}
 		
 		return comparison;
@@ -140,7 +132,7 @@ else if (page.dataType === "report") {
 	var TotalTitle4 = "";
 	var TotalTitle5 = "";
 
-	if (page.reportType === "tornado_reports") {
+	if (page.reportType === "T") {
 	DataTableTitle2 = "Tornado Rating";
 	TotalTitle0 = "EF0";
 	TotalTitle1 = "EF1";
@@ -148,7 +140,7 @@ else if (page.dataType === "report") {
 	TotalTitle3 = "EF3";
 	TotalTitle4 = "EF4";
 	TotalTitle5 = "EF5";		
-	} else if (page.reportType === "hail_reports") {
+	} else if (page.reportType === "A") {
 	DataTableTitle2 = "Hail Size";
 	TotalTitle0 = "<1";
 	TotalTitle1 = '1"-1.99"';
@@ -156,16 +148,16 @@ else if (page.dataType === "report") {
 	TotalTitle3 = '3"-3.99"';
 	TotalTitle4 = '4"-4.99"';
 	TotalTitle5 = '5+"';
-	} else if (page.reportType === "wind_reports") {
+	} else if (page.reportType === "G") {
 	DataTableTitle2 = "Wind Speed";
-	TotalTitle0 = "50-59 kts";
-	TotalTitle1 = "60-69 kts";
-	TotalTitle2 = "70-79 kts";
-	TotalTitle3 = "80-89 kts";
-	TotalTitle4 = "90-99 kts";
-	TotalTitle5 = "100+ kts";
+	TotalTitle0 = "58-65 mph";
+	TotalTitle1 = "66-74 mph";
+	TotalTitle2 = "75-85 mph";
+	TotalTitle3 = "85-95 mph";
+	TotalTitle4 = "95-105 mph";
+	TotalTitle5 = "105+ mph";
 	}
-	var dataKeys = new Array("om", "date", "mag", "time");
+	var dataKeys = new Array("MAGNITUDE", "DT");
 	var st = "";
 	st = st + "<table id='results_table' width = '100%'>";
 	st = st + "<tr>";
@@ -173,57 +165,65 @@ else if (page.dataType === "report") {
 	st = st + "<th id='results_cell'>"+DataTableTitle2+"</th>";
 	st = st + "</tr>";
 	page.data['filtered-sorted'].forEach(function(d,n){
-		var fulldt = d["date"];
-		var fulltime = d["time"];
+		var fulldt = d["DT"];
 		st = st + "<tr>";
-		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulltime.slice(0,5) +  " CST</td>";
-		st = st + "<td id='results_cell'> " + d['mag'] + "</td>";
+		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  " CST</td>";
+		st = st + "<td id='results_cell'> " + d['MAGNITUDE'] + "</td>";
 		st = st + "</tr>";
 		total=total+1;
-	if (page.reportType === "tornado_reports") {
-		if (d['mag']===0) {
+	if (page.reportType === "T") {
+		if (d['MAGNITUDE']===0) {
 			total0=total0+1;
-		}	else if (d['mag']===1) {
+		}	else if (d['MAGNITUDE']===1) {
 			total1=total1+1;
-		}	else if (d['mag']===2) {
+		}	else if (d['MAGNITUDE']===2) {
 			total2=total2+1;
-		}	else if (d['mag']===3) {
+		}	else if (d['MAGNITUDE']===3) {
 			total3=total3+1;
-		}	else if (d['mag']===4) {
+		}	else if (d['MAGNITUDE']===4) {
 			total4=total4+1;
-		}	else if (d['mag']===5) {
+		}	else if (d['MAGNITUDE']===5) {
 			total5=total5+1;
 		}
-	} else if (page.reportType === "wind_reports") {
-		if (d['mag']>49 & d['mag']<60) {
+	} else if (page.reportType === "G") {
+		if (d['MAGNITUDE']>57 & d['MAGNITUDE']<65) {
 			total0=total0+1;
-		}	else if (d['mag']>59 & d['mag']<70) {
+		}	else if (d['MAGNITUDE']>64 & d['MAGNITUDE']<75) {
 			total1=total1+1;
-		}	else if (d['mag']>69 & d['mag']<80) {
+		}	else if (d['MAGNITUDE']>74 & d['MAGNITUDE']<85) {
 			total2=total2+1;
-		}	else if (d['mag']>79 & d['mag']<90) {
+		}	else if (d['MAGNITUDE']>84 & d['MAGNITUDE']<95) {
 			total3=total3+1;
-		}	else if (d['mag']>89 & d['mag']<100) {
+		}	else if (d['MAGNITUDE']>94 & d['MAGNITUDE']<105) {
 			total4=total4+1;
-		}	else if (d['mag']>99 & d['mag']<200) {
+		}	else if (d['MAGNITUDE']>104 & d['MAGNITUDE']<200) {
 			total5=total5+1;
 		}
-	} else if (page.reportType === "hail_reports") {
-		if (d['mag']>0 & d['mag']<1) {
+	} else if (page.reportType === "A") {
+		if (d['MAGNITUDE']>0 & d['MAGNITUDE']<100) {
 			total0=total0+1;
-		}	else if (d['mag']>.99 & d['mag']<2) {
+		}	else if (d['MAGNITUDE']>99 & d['MAGNITUDE']<200) {
 			total1=total1+1;
-		}	else if (d['mag']>1.99 & d['mag']<3) {
+		}	else if (d['MAGNITUDE']>199 & d['MAGNITUDE']<300) {
 			total2=total2+1;
-		}	else if (d['mag']>2.99 & d['mag']<4) {
+		}	else if (d['MAGNITUDE']>299 & d['MAGNITUDE']<400) {
 			total3=total3+1;
-		}	else if (d['mag']>3.99 & d['mag']<5) {
+		}	else if (d['MAGNITUDE']>399 & d['MAGNITUDE']<500) {
 			total4=total4+1;
-		}	else if (d['mag']>4.99 & d['mag']<10) {
+		}	else if (d['MAGNITUDE']>499 & d['MAGNITUDE']<1000) {
 			total5=total5+1;
 		}
-	}		
-		finalJSON = finalJSON + ',{"wnum":"'+d["wnum"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":"'+d["type"]+'"}';
+	}	
+		var month = Number(fulldt.slice(4,6));
+		for (i=1; i<13; i++) {
+			if (typeof month_count[i] === 'undefined') {
+				month_count[i] = 0;
+			}
+			if (i=== month) {
+				month_count[i] = month_count[i] + 1;
+			}
+		}	
+		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DATE"]+'","CWA":["'+d["CWA"]+'"]"}';
 	});	
 
 	st = st + "</table>";

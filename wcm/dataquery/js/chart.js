@@ -1,7 +1,8 @@
 function makeChart(page) {
 	var months;
 	var years;
-	var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+	var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+	var year = [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
 	var start_month = Number(page.filters['date'][0].slice(4,6));
 	var end_month = Number(page.filters['date'][1].slice(4,6));
 	var start_year = Number(page.filters['date'][0].slice(0,4));
@@ -9,7 +10,13 @@ function makeChart(page) {
 	var categories = Array();
 
 	var column_data_month = Array();
-	column_data_month[0] = "# of Watches";
+	if (page.dataType === "watch") {
+	column_data_month[0] = "# of Watches";		
+	} else if (page.dataType === "report") {
+	column_data_month[0] = "# of Reports";
+	}
+
+
 	if (page.filters['date'][1].slice(0,4) === page.filters['date'][0].slice(0,4)) {
 		months = end_month - start_month + 1
 		years = 1;
@@ -23,10 +30,10 @@ function makeChart(page) {
 		}
 	}
 	} else {
-		years = end_year - start_year + 1
+		years = end_year - start_year + 1;
 		months = 12;
 		categories = month_abbrev;
-		column_data_month = ["# of Watches",month_count[1],month_count[2],month_count[3],month_count[4],month_count[5],month_count[6],month_count[7],month_count[8],month_count[9],month_count[10],month_count[11],month_count[12]];
+		column_data_month = [column_data_month[0],month_count[1],month_count[2],month_count[3],month_count[4],month_count[5],month_count[6],month_count[7],month_count[8],month_count[9],month_count[10],month_count[11],month_count[12]];
 		}
 
 	console.log(categories)
@@ -63,7 +70,7 @@ function makeChart(page) {
 			},
 			y: {
 				label: {
-					text: '# of Watches',
+					text: column_data_month[0],
 					position: 'outer-middle'
 				}
 			}

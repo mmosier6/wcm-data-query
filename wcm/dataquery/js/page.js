@@ -1,5 +1,6 @@
 function buildPage(page){
 	page.reportType="tornado_reports";
+	page.viewType ="chart";
 	//Data type buttonset
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 		var el = jQuery(this);
@@ -17,6 +18,10 @@ function buildPage(page){
 			jQuery("#all-watch-filters").show();
 			jQuery("#all-report-filters").hide();
 			jQuery("#report-type").hide();
+			jQuery("#watch-type").show();
+			jQuery("#data-type-8").prop('checked', true);
+			jQuery("#data-type-8").addClass("ui-state-active")
+			jQuery("#data-type-8").button('refresh');
 			jQuery("#view-type").show();
 			jQuery("#date-pickers").show();
 			jQuery("#filter-opt-list").show();
@@ -25,10 +30,11 @@ function buildPage(page){
 			jQuery("#all-watch-filters").hide();
 			jQuery("#all-report-filters").show();
 			jQuery("#report-type").show();
-			jQuery("#data-type-5").prop('checked', true);
-			jQuery("#data-type-5").addClass("ui-state-active")
-			jQuery("#data-type-5").button('refresh');
-			jQuery("#view-type").hide();
+			jQuery("#watch-type").hide();
+			jQuery("#data-type-4").prop('checked', true);
+			jQuery("#data-type-4").addClass("ui-state-active")
+			jQuery("#data-type-4").button('refresh');
+			jQuery("#view-type").show();
 			jQuery("#date-pickers").show();
 			jQuery("#filter-opt-list").show();
 		}
@@ -47,6 +53,17 @@ function buildPage(page){
 	});
 
 	jQuery("#data-type-buttonset2").buttonset().change(function(){
+		var ele = jQuery(this);
+		var y = '';
+		ele.find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				y = jQuery(this).attr("value");
+			}
+		});
+		page.watchType = y;
+	});
+
+	jQuery("#data-type-buttonset3").buttonset().change(function(){
 		var elem = jQuery(this);
 		var x = '';
 		elem.find("input:radio").each(function(){
@@ -110,9 +127,9 @@ function buildPage(page){
 			}
 		}else if(page.dataType ==="report"){
 			if(typeof(page.data) === 'undefined'){
-				urlStr ="/wcm/data/raw/tornado_reports.json";
+				urlStr ="/wcm/data/collections/report_collection_2018.json";
 			}else if(typeof(page.data['watch'])){
-				urlStr ="/wcm/data/raw/tornado_reports.json";
+				urlStr ="/wcm/data/collections/report_collection_2018.json";
 			}else{
 				urlStr = "";
 			}
@@ -136,7 +153,6 @@ function buildPage(page){
 				getFilteredData(page);
 			});
 		}
-		console.log(page.viewType)
 		if (page.viewType === "table") {
 			jQuery(".download").show();
 		}

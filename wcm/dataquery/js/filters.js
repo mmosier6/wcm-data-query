@@ -269,7 +269,7 @@ function listFilters(page){
 	console.log("listFilters");
 	console.log(page.filters);
 	filters = page.filters;
-	var filterKeys = new Array("date", "state", "cwa", "fips");
+	var filterKeys = new Array("date", "state", "cwa", "fips", "type");
 	filterKeys.forEach(function(d,n){
 		console.log(d);
 		var k =  d.toLowerCase();
@@ -283,13 +283,26 @@ function listFilters(page){
 			txt ="CWA Filter(s): ";
 		}else if(d === 'fips'){
 			txt = "FIPS Filter(s): ";
+		}else if(d === 'type'){
+			txt = "Report/Watch Type Filter(s): ";
 		}
-		if((filters[d]) && (d != 'date')){
+		if((filters[d]) && (d != 'date') && (d != 'type')){
 			str = filters[d].join(",");
 		}else if((filters[d]) && (d === 'date')){
 			var sm = moment(filters['date'][0], "YYYYMMDD");
 			var em = moment(filters['date'][1], "YYYYMMDD");
 			str = sm.format("MM/DD/YYYY") + " to " + em.format("MM/DD/YYYY");
+		}else if ((filters[d]) && (d === 'type')){
+			console.log(filters[d])
+			if (filters[d].includes("A") == true) {
+				str = "HAIL";
+			}else if (filters[d].includes("G") == true) {
+				str = "WIND";
+			}else if (filters[d].includes("T") == true) {
+				str = "TORNADO";
+			}else {
+				str = filters[d].join(",");
+			}
 		}
 		jQuery("#" + k + "-filter-list").text(txt + str);
 		/*
@@ -345,6 +358,28 @@ function getFilters(page){
 		filters['state'] 	= (jQuery("." + type + "-states-select").chosen().val());
 		filters['cwa'] 		= (jQuery("." + type + "-cwa-select").val());
 		filters['fips'] 	= (jQuery("." + type + "-fips-select").val());
+	if (page.dataType === "report") {
+		if (jQuery("#data-type-4").prop("checked") === true) {
+		filters.type     = [""];
+		}else if (jQuery("#data-type-5").prop("checked") === true) {
+		filters.type     = [jQuery("#data-type-5").val()];
+		} else if (jQuery("#data-type-6").prop("checked") === true) {
+		filters.type     = [jQuery("#data-type-6").val()];
+		} else if (jQuery("#data-type-7").prop("checked") === true) {
+		filters.type     = [jQuery("#data-type-7").val()];
+		}
+	}else if (page.dataType === "watch") {
+		if (jQuery("#data-type-8").prop("checked") === true) {
+		filters.type     = [""];
+		} else if (jQuery("#data-type-9").prop("checked") === true) {
+		filters.type     = [jQuery("#data-type-9").val()];
+		} else if (jQuery("#data-type-10").prop("checked") === true) {
+		filters.type     = [jQuery("#data-type-10").val()];
+		} else if (jQuery("#data-type-11").prop("checked") === true) {
+		filters.type     = [""];
+		filters['pds']  = ["1"];
+		}
+	}
 		page.filters = filters;
 		return filters;
 	}else{
@@ -364,8 +399,15 @@ function createFilteredData(page){
 	page.crossfilters['all'] 		= crossfilter(page.data[page.dataType]);
 	page.crossfilters['cwa'] 		= page.crossfilters['all'].dimension(function(d){ return d.CWA});
 	page.crossfilters['state'] 	= page.crossfilters['all'].dimension(function(d){ return d.ST});
-	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});
+	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});	
+	if (page.dataType ==="watch") {
 	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['sel_issue_dt'], "YYYYMMDDHHmmss")});
+	page.crossfilters['type']   = page.crossfilters['all'].dimension(function(d) { return d.type});
+	page.crossfilters['pds'] 	= page.crossfilters['all'].dimension(function(d){ return d.pds});	
+	}else if (page.dataType ==="report") {
+	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['DT'], "YYYYMMDDHHmmss")});
+	page.crossfilters['type'] 	= page.crossfilters['all'].dimension(function(d){ return d["TYPE"]});
+}
 
 	/*
 	page.crossfilters[type+'-hour'] 	= page.crossfilters[type+'-all'].dimension(
@@ -396,6 +438,7 @@ function getFilteredData(page){
 	clearFilteredData(page);
 	page.filters = getFilters(page);
 	listFilters(page);
+	console.log(page.filters)
 	//Date
 	if(page.filters['date']){
 		var sdm = moment.utc(page.filters['date'][0]+'0000', "YYYYMMDDHHmmss");
@@ -428,6 +471,22 @@ function getFilteredData(page){
 			});
 		});
 	}
+	//PDS
+	if(page.filters['pds']){
+		page.filters['pds'].forEach(function(dd,nn){
+			page.crossfilters['pds'].filter(function(d){
+				if(d.includes(dd)){return d;}
+				});
+			});
+		}	
+	//Type
+	if(page.filters['type']){
+		page.filters['type'].forEach(function(dd,nn){
+			page.crossfilters['type'].filter(function(d){
+				if(d.includes(dd)){return d;}
+				});
+			});
+		}
 
 	var d = page.crossfilters['fips'].top(Infinity);
 	console.log(d)
@@ -441,4 +500,6 @@ function clearFilteredData(page){
 	page.crossfilters['cwa'].filter(null);
 	page.crossfilters['state'].filter(null);
 	page.crossfilters['fips'].filter(null);
+	page.crossfilters['type'].filter(null);
+	page.crossfilters['pds'].filter(null);
 }
