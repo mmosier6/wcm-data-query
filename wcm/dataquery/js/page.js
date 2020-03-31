@@ -1,6 +1,6 @@
 function buildPage(page){
 	page.reportType="tornado_reports";
-	page.viewType ="chart";
+	page.viewType ="table";
 	//Data type buttonset
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 		var el = jQuery(this);
