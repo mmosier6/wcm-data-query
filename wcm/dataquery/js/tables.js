@@ -5,8 +5,8 @@ finalJSON = "";
 if (page.dataType === "watch") {
 	
 	function compare(a,b){
-		const watchA = a.watch_num;
-		const watchB = b.watch_num;
+		const watchA = a["sel_issue_dt"];
+		const watchB = b["sel_issue_dt"];
 		
 		var comparison = 0;
 		if(watchA > watchB){
@@ -28,22 +28,29 @@ if (page.dataType === "watch") {
 	var dataKeys = new Array("wnum", "sel_issue_dt", "type");
 	var st = "";
 	st = st + ""
-	st = st + "<table id='results_table' width = '100%'>";
-	st = st + "<tr>";
-	st = st + "<th id='results_cell'> Issue Date/Time </th>";
-	st = st + "<th id='results_cell'> Watch Type </th>";
-	st = st + "<th id='results_cell'> Watch Number </th>";
-	st = st + "<th id='results_cell'> States in Watch </th>";
-	st = st + "<th id='results_cell'> CWAs in Watch </th>";
-	st = st + "</tr>";
+	st = st + "<table  width = '100%' cellpadding='0' cellspacing='0' border='0' class='display' id='results_table'>";
+	st = st + "<thead><tr>";
+	st = st + "<th></th>";
+	st = st + "<th> Issue Date/Time </th>";
+	st = st + "<th> Watch Type </th>";
+	st = st + "<th> Watch Number </th>";
+	st = st + "<th> States in Watch </th>";
+	st = st + "<th> CWAs in Watch </th>";
+	st = st + "<th style='display:none;'></th>";
+	st = st + "<th style='display:none;'></th>";
+	st = st + "<th style='display:none;'></th>";
+	st = st + "</tr></thead><tbody>";
 	page.data['filtered-sorted'].forEach(function(d,n){
 		var fulldt = d['sel_issue_dt'];
 		st = st + "<tr>";
-		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "Z</td>";
-		st = st + "<td id='results_cell'> " + d['type'] + "</td>";
-		st = st + "<td id='results_cell'> " + d['watch_num'] +  "</td>";
-		st = st + "<td id='results_cell'> " + d['ST'] + "</td>";
-		st = st + "<td id='results_cell'> " + d['CWA'] + "</td>";
+		st = st + '<td><i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see watch areas/summary/threats"></i></td>';
+		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "Z</td>";
+		st = st + "<td> " + d['type'] + "</td>";
+		st = st + "<td> " + d['watch_num'] +  "</td>";
+		st = st + "<td> " + d['ST'] + "</td>";
+		st = st + "<td> " + d['CWA'] + "</td>";
+		st = st + "<td style='display:none;' class='child'>" + d['threats'] + "</td><td style='display:none;' class='child'>" + d['areas'] + "</td><td style='display:none;' class='child'>" + d['summary'] + "</td>";
+
 		st = st + "</tr>";
 		totalWatches=totalWatches+1;
 		if (d['type']==="SVR") {
@@ -70,6 +77,14 @@ if (page.dataType === "watch") {
 
 		finalJSON = finalJSON + ',{"Totals":{"Jan":'+month_count[1]+',"Feb":'+month_count[2]+',"Mar":'+month_count[3]+',"Apr":'+month_count[4]+',"May":'+month_count[5]+',"Jun":'+month_count[6]+
 		',"Jul":'+month_count[7]+',"Aug":'+month_count[8]+',"Sep":'+month_count[9]+',"Oct":'+month_count[10]+',"Nov":'+month_count[11]+',"Dec":'+month_count[12]+'}}'
+	st = st + "</tbody><tfoot><tr>";
+	st = st + "<th></th>";
+	st = st + "<th> Issue Date/Time </th>";
+	st = st + "<th> Watch Type </th>";
+	st = st + "<th> Watch Number </th>";
+	st = st + "<th> States in Watch </th>";
+	st = st + "<th> CWAs in Watch </th>";
+	st = st + "</tr></tfoot>";
 	st = st + "</table>";
 
 	tot = "";
@@ -99,8 +114,7 @@ if (page.dataType === "watch") {
 	tot = tot + "<td id='results_cell'>"+totalPDSTornado+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
-} 
-else if (page.dataType === "report") {
+} else if (page.dataType === "report") {
 
 	function compare(a,b){
 		const ReportA = a.DT;
@@ -161,17 +175,17 @@ else if (page.dataType === "report") {
 	}
 	var dataKeys = new Array("MAGNITUDE", "DT");
 	var st = "";
-	st = st + "<table id='results_table' width = '100%'>";
-	st = st + "<tr>";
+	st = st + "<table id='results_table' width = '100%' class='display'>";
+	st = st + "<thead><tr>";
 	st = st + "<th id='results_cell'>"+DataTableTitle1+"</th>";
 	st = st + "<th id='results_cell'>"+DataTableTitle2+"</th>";
-	st = st + "</tr>";
+	st = st + "</tr></thead>";
 	page.data['filtered-sorted'].forEach(function(d,n){
 		var fulldt = d["DT"];
-		st = st + "<tr>";
+		st = st + "<tbody><tr>";
 		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  " CST</td>";
 		st = st + "<td id='results_cell'> " + d['MAGNITUDE'] + "</td>";
-		st = st + "</tr>";
+		st = st + "</tr></tbody>";
 		total=total+1;
 	if (page.reportType === "T") {
 		if (d['MAGNITUDE']===0) {
@@ -270,6 +284,7 @@ else if (page.dataType === "report") {
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
 }
+
 	jQuery("#data-table").empty();
 	
 	jQuery("#data-table").html(st);
@@ -277,7 +292,50 @@ else if (page.dataType === "report") {
 	jQuery("#total-table").empty();
 
 	jQuery("#total-table").html(tot);
-	
+
+/* Formatting function for row details - modify as you need */
+function format ( c ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Threats:</td>'+
+            '<td>'+c[6]+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Areas:</td>'+
+            '<td>'+c[7]+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Summary:</td>'+
+            '<td>'+c[8]+'</td>'+
+        '</tr>'+
+    '</table>';
+}
+
+	var table = jQuery('#results_table').DataTable({
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+	});
+
+    // Add event listener for opening and closing details
+    jQuery('i.details-control').on('click', function () {
+        var tr = jQuery(this).closest('tr');
+        var row = table.row(tr);
+ 
+        if ( row.child.isShown() ) {
+            jQuery(this).addClass("fa-plus-square");
+			jQuery(this).removeClass("fa-minus-square");
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            jQuery(this).removeClass("fa-plus-square");
+			jQuery(this).addClass("fa-minus-square");
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
 }
 
 function makeJSON() {

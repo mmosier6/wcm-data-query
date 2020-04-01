@@ -85,7 +85,6 @@ function buildPage(page){
 	}
 	});
 
-
 	//Create dialog box
 	jQuery("#error-dialog").dialog({
 		autoOpen: false,
