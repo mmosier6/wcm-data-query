@@ -119,9 +119,9 @@ function buildPage(page){
 		var urlStr = '';
 		if (page.dataType ==="watch"){
 			if(typeof(page.data) === 'undefined'){
-				urlStr ="/wcm/data/raw/watches_all_2019.json";
+				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
 			}else if(typeof(page.data['watch'])){
-				urlStr ="/wcm/data/raw/watches_all_2019.json";
+				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
 			}else{
 				urlStr = "";
 			}

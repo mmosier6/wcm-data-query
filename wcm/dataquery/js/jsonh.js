@@ -113,7 +113,6 @@ var JSONH, jsonh = JSONH = function (Array, JSON) {"use strict"; // if you want
 
     // JSONH unpack
     function unpack(hlist, schema) {
-        console.log("unpack")
         return schema ? unpackSchema(hlist, schema) : hunpack(hlist);
     }
 
