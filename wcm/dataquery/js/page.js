@@ -107,7 +107,7 @@ function buildPage(page){
 
 	filterStates(page);
 	filterCWAs(page);
-	filterFIPSandZIP(page);
+	//filterFIPSandZIP(page);
 
 	jQuery("#go-btn").button().on('click', function(){
 		jQuery("#data-type-buttonset input:radio").each(function(){
@@ -127,9 +127,9 @@ function buildPage(page){
 			}
 		}else if(page.dataType ==="report"){
 			if(typeof(page.data) === 'undefined'){
-				urlStr ="/wcm/data/collections/report_collection_2018.json";
-			}else if(typeof(page.data['watch'])){
-				urlStr ="/wcm/data/collections/report_collection_2018.json";
+				urlStr ="/wcm/data/collections/report_collection_2019-packed.json";
+			}else if(typeof(page.data['report'])){
+				urlStr ="/wcm/data/collections/report_collection_2019-packed.json";
 			}else{
 				urlStr = "";
 			}
@@ -146,9 +146,8 @@ function buildPage(page){
 				if(page.dataType === 'watch'){
 					page.data['watch'] = data;
 				}else if(page.dataType === 'report'){
-					page.data['report'] = data;
+					page.data['report'] = jsonh.unpack(data[0]);
 				}
-				console.log(data);
 				createFilteredData(page);
 				getFilteredData(page);
 			});

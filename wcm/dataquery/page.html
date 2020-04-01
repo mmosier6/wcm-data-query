@@ -5,14 +5,14 @@
 		<!--jQuery UI CSS -->
 		<!--<link rel = "stylesheet" type = "text/css" href = "/exper/reports/css/jquery-ui-1.9.2.custom.min.css" />-->
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-		
+
 		<!--Font Awesome CSS-->
 		<!--<link rel="stylesheet" type = "text/css" href = "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css"/>-->
 		<link rel="stylesheet" type = 'text/css' href = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-		
+
 		<!-- Chosen CSS -->
 		<link rel = "stylesheet" text = "text/css" href ="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.css"/>
-		
+
 		<!-- DataTables CSS -->
 		<link rel="stylesheet" type = "text/css" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
 
@@ -62,7 +62,7 @@
 					</tr>
 					<tr>
 						<td>
-							<center>	
+							<center>
 								<input type = 'hidden' id = 'start-dp'></input>
 								<form class = 'form-wrapper cf'>
 									<i id ='startCal' class = 'fa fa-calendar fa-lg fa-align-center'></i>
@@ -71,18 +71,18 @@
 							</center>
 						</td>
 						<td>
-							<center>	
+							<center>
 								<input type = 'hidden' id = 'end-dp'></input>
 								<form class = 'form-wrapper cf' style = 'margin-left: 10px;'>
 									<i id ='endCal' class = 'fa fa-calendar fa-lg fa-align-center'></i>
 									<input id = 'endCalInput' type = 'text' placeholder = 'End Date (YYYYMMDD)'>
 								</form>
-							</center>	
+							</center>
 						</td>
 						<td>
 							&nbsp;
-						</td>	
-					</tr>	
+						</td>
+					</tr>
 				</table>
 			</div>
 
@@ -94,7 +94,7 @@
 					<tr>
 						<th> State Filter</th>
 						<th> CWA Filter</th>
-						<th> FIPS Filter</th> 
+						<th> FIPS Filter</th>
 					</tr>
 					<tr>
 						<td id = "watch-state-filter"></td>
@@ -103,7 +103,7 @@
 					</tr>
 				</table>
 			</div>
-			
+
 			<div id = "all-report-filters" class = "hidden">
 				<table width = "100%">
 					<col width = "350">
@@ -112,7 +112,7 @@
 					<tr>
 						<th> State Filter</th>
 						<th> CWA Filter</th>
-						<th> FIPS Filter</th> 
+						<th> FIPS Filter</th>
 					</tr>
 					<tr>
 						<td id = "report-state-filter"></td>
@@ -120,14 +120,14 @@
 						<td id = "report-fips-filter"></td>
 					</tr>
 				</table>
-			</div>	
-			
+			</div>
+
 			<div id = "filter-opt-list" class = "hidden">
 				<div id = "go-btn">Generate</div>
-				<div id = "date-filter-list">Date Range:</div> 
-				<div id = "state-filter-list">State Filter(s):</div> 
-				<div id = "cwa-filter-list">CWA Filter(s):</div> 
-				<div id = "fips-filter-list">FIPS Filter(s):</div> 
+				<div id = "date-filter-list">Date Range:</div>
+				<div id = "state-filter-list">State Filter(s):</div>
+				<div id = "cwa-filter-list">CWA Filter(s):</div>
+				<div id = "fips-filter-list">FIPS Filter(s):</div>
 				<div id = "type-filter-list">Report Type Filter(s):</div>
 				<br>
 			</div>
@@ -138,30 +138,30 @@
 					<input type = 'radio' id = 'view-type-2' name ='data-type-radio2' value = 'chart'><label for = 'view-type-2'>Chart</label>
 					<input type = 'radio' id = 'view-type-3' name ='data-type-radio2' value = 'map' disabled><label for = 'view-type-3'>Map</label>
 				</div>
-			</div>			
-			<div id = 'total-table'>		
-			
 			</div>
-			<div id = 'data-table' style = "min-height: 300px;">		
-			
+			<div id = 'total-table'>
+
+			</div>
+			<div id = 'data-table' style = "min-height: 300px;">
+
 			</div>
 			<button type = "button" class="download hidden btn btn-primary" onclick="makeJSON()">
 				Download JSON
 			</button>
 
-			<div id = 'chart' style = "min-height: 300px;" class="hidden">		
-			
+			<div id = 'chart' style = "min-height: 300px;" class="hidden">
+
 			</div>
 			<div id = "error-dialog" title = "Error Dialog">
 				<p>
 					<center><i class = "fa fa-exclamation-triangle fa-5x"></i></center>
 					<div id = 'error-dialog-text'>
-						This page uses a feature <b>NOT</b> supported by your current web broswer.			
+						This page uses a feature <b>NOT</b> supported by your current web broswer.
 						The legacy reports page is still available for use.
-					</div>	
-				</p>						
+					</div>
+				</p>
 			</div>
-	
+
 		</div>
 		<!--jQuery UI -->
 		<!--<script src = "/exper/reports/js/jquery-ui-1.9.2.custom.min.js"></script>-->
@@ -177,23 +177,21 @@
 		<!-- C3.js Source-->
 		<script src="https://rawgit.com/c3js/c3/master/c3.js"></script>
 		<!-- D3.js Source (Needed for C3)-->
-   		<script src="https://d3js.org/d3.v5.js"></script>
+   	<script src="https://d3js.org/d3.v5.js"></script>
 
-
-		
-		<script src="/wcm/dataquery/js/page.js"></script>	
+		<script src="/wcm/dataquery/js/page.js"></script>
 		<script src="/wcm/dataquery/js/filters.js"></script>
 		<script src="/wcm/dataquery/js/calendars.js"></script>
 		<script src="/wcm/dataquery/js/errors.js"></script>
-		<script src="/wcm/dataquery/js/tables.js"></script>			
-		<script src="/wcm/dataquery/js/chart.js"></script>													
+		<script src="/wcm/dataquery/js/tables.js"></script>
+		<script src="/wcm/dataquery/js/chart.js"></script>
+    <script src="/wcm/dataquery/js/jsonh.js"></script>													
 		<script type="text/javascript">
 			//On document ready
 			jQuery(document).ready(function(){
 				var page = new Object();
-				buildPage(page);			
+				buildPage(page);
 			});
 		</script>
 	</body>
-</html>		
-	    	
+</html>
