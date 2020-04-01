@@ -501,5 +501,5 @@ function clearFilteredData(page){
 	page.crossfilters['state'].filter(null);
 	page.crossfilters['fips'].filter(null);
 	page.crossfilters['type'].filter(null);
-	page.crossfilters['pds'].filter(null);
+	//page.crossfilters['pds'].filter(null);
 }
