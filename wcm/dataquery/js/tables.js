@@ -114,6 +114,26 @@ if (page.dataType === "watch") {
 	tot = tot + "<td id='results_cell'>"+totalPDSTornado+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
+
+	/* Formatting function for row details - modify as you need */
+function format ( c ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Threats:</td>'+
+            '<td>'+c[6]+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Areas:</td>'+
+            '<td>'+c[7]+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Summary:</td>'+
+            '<td>'+c[8]+'</td>'+
+        '</tr>'+
+    '</table>';
+}
+
 } else if (page.dataType === "report") {
 
 	function compare(a,b){
@@ -139,7 +159,7 @@ if (page.dataType === "watch") {
 	var total3=0;
 	var total4=0;
 	var total5=0;
-	var DataTableTitle1 = "Date/Time";
+	var DataTableTitle1 = "Date/Time (CST)";
 	var DataTableTitle2 = "";
 	var TotalTitle0 = "";
 	var TotalTitle1 = "";
@@ -177,15 +197,29 @@ if (page.dataType === "watch") {
 	var st = "";
 	st = st + "<table id='results_table' width = '100%' class='display'>";
 	st = st + "<thead><tr>";
-	st = st + "<th id='results_cell'>"+DataTableTitle1+"</th>";
-	st = st + "<th id='results_cell'>"+DataTableTitle2+"</th>";
-	st = st + "</tr></thead>";
+	st = st + "<th></th>";
+	st = st + "<th>"+DataTableTitle1+"</th>";
+	st = st + "<th>"+DataTableTitle2+"</th>";
+	st = st + "<th>Location</th>";
+	st = st + "<th>County</th>";
+	st = st + "<th>State</th>";
+	st = st + "<th>CWA</th>";
+	st = st + "<th>Injuries</th>";
+	st = st + "<th>Fatalities</th>";
+	st = st + "</tr></thead><tbody>";
 	page.data['filtered-sorted'].forEach(function(d,n){
 		var fulldt = d["DT"];
-		st = st + "<tbody><tr>";
-		st = st + "<td id='results_cell'> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  " CST</td>";
-		st = st + "<td id='results_cell'> " + d['MAGNITUDE'] + "</td>";
-		st = st + "</tr></tbody>";
+		st = st + "<tr>";
+		st = st + '<td><i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional report text"></i></td>';
+		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "</td>";
+		st = st + "<td> " + d['MAGNITUDE'] + "</td>";
+		st = st + "<td> " + d['LOCATION'] + "</td>";
+		st = st + "<td> " + d['COUNTY'] + "</td>";
+		st = st + "<td> " + d['ST'] + "</td>";
+		st = st + "<td> " + d['CWA'] + "</td>";
+		st = st + "<td> " + d['INJURY'] + "</td>";
+		st = st + "<td> " + d['FATALITIES'] + "</td>";
+		st = st + "</tr>";
 		total=total+1;
 	if (page.reportType === "T") {
 		if (d['MAGNITUDE']===0) {
@@ -245,7 +279,17 @@ if (page.dataType === "watch") {
 
 		finalJSON = finalJSON + ',{"Totals":{"Jan":'+month_count[1]+',"Feb":'+month_count[2]+',"Mar":'+month_count[3]+',"Apr":'+month_count[4]+',"May":'+month_count[5]+',"Jun":'+month_count[6]+
 		',"Jul":'+month_count[7]+',"Aug":'+month_count[8]+',"Sep":'+month_count[9]+',"Oct":'+month_count[10]+',"Nov":'+month_count[11]+',"Dec":'+month_count[12]+'}}'
-	st = st + "</table>";
+	st = st + "</tbody><tfoot><tr>";
+	st = st + "<th></th>";
+	st = st + "<th>"+DataTableTitle1+"</th>";
+	st = st + "<th>"+DataTableTitle2+"</th>";
+	st = st + "<th>Location</th>";
+	st = st + "<th>County</th>";
+	st = st + "<th>State</th>";
+	st = st + "<th>CWA</th>";
+	st = st + "<th>Injuries</th>";
+	st = st + "<th>Fatalities</th>";
+	st = st + "</tr></tfoot>";
 	st = st + "</table>";
 
 	tot = "";
@@ -283,6 +327,17 @@ if (page.dataType === "watch") {
 	tot = tot + "<td id='results_cell'>"+total+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
+
+	/* Formatting function for row details - modify as you need */
+function format ( c ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>No Additional Data Available at this time</td>'+
+        '</tr>'+
+    '</table>';
+}
+
 }
 
 	jQuery("#data-table").empty();
@@ -293,27 +348,9 @@ if (page.dataType === "watch") {
 
 	jQuery("#total-table").html(tot);
 
-/* Formatting function for row details - modify as you need */
-function format ( c ) {
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Threats:</td>'+
-            '<td>'+c[6]+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Areas:</td>'+
-            '<td>'+c[7]+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Summary:</td>'+
-            '<td>'+c[8]+'</td>'+
-        '</tr>'+
-    '</table>';
-}
-
 	var table = jQuery('#results_table').DataTable({
-		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+		"pageLength": -1
 	});
 
     // Add event listener for opening and closing details
