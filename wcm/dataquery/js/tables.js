@@ -31,7 +31,7 @@ if (page.dataType === "watch") {
 	st = st + "<table  width = '100%' cellpadding='0' cellspacing='0' border='0' class='display' id='results_table'>";
 	st = st + "<thead><tr>";
 	st = st + "<th></th>";
-	st = st + "<th> Issue Date/Time </th>";
+	st = st + "<th> Issue Date/Time (UTC)</th>";
 	st = st + "<th> Watch Type </th>";
 	st = st + "<th> Watch Number </th>";
 	st = st + "<th> States in Watch </th>";
@@ -44,7 +44,7 @@ if (page.dataType === "watch") {
 		var fulldt = d['sel_issue_dt'];
 		st = st + "<tr>";
 		st = st + '<td><i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see watch areas/summary/threats"></i></td>';
-		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "Z</td>";
+		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "</td>";
 		st = st + "<td> " + d['type'] + "</td>";
 		st = st + "<td> " + d['watch_num'] +  "</td>";
 		st = st + "<td> " + d['ST'] + "</td>";
@@ -169,7 +169,7 @@ function format ( c ) {
 	var TotalTitle5 = "";
 
 	if (page.reportType === "T") {
-	DataTableTitle2 = "Tornado Rating";
+	DataTableTitle2 = "Rating";
 	TotalTitle0 = "EF0";
 	TotalTitle1 = "EF1";
 	TotalTitle2 = "EF2";
@@ -204,8 +204,8 @@ function format ( c ) {
 	st = st + "<th>County</th>";
 	st = st + "<th>State</th>";
 	st = st + "<th>CWA</th>";
-	st = st + "<th>Injuries</th>";
-	st = st + "<th>Fatalities</th>";
+	st = st + "<th>Inj</th>";
+	st = st + "<th>Fat</th>";
 	st = st + "</tr></thead><tbody>";
 	page.data['filtered-sorted'].forEach(function(d,n){
 		var fulldt = d["DT"];
@@ -350,7 +350,10 @@ function format ( c ) {
 
 	var table = jQuery('#results_table').DataTable({
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-		"pageLength": -1
+		"pageLength": -1,
+		"columnDefs": [		
+			{"width" : "120px", "targets":1},		//Time
+		]		
 	});
 
     // Add event listener for opening and closing details

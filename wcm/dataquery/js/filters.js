@@ -359,23 +359,23 @@ function getFilters(page){
 		filters['cwa'] 		= (jQuery("." + type + "-cwa-select").val());
 		filters['fips'] 	= (jQuery("." + type + "-fips-select").val());
 	if (page.dataType === "report") {
-		if (jQuery("#data-type-4").prop("checked") === true) {
+		if (jQuery("#report-type-1").prop("checked") === true) {
 		filters.type     = [""];
-		}else if (jQuery("#data-type-5").prop("checked") === true) {
-		filters.type     = [jQuery("#data-type-5").val()];
-		} else if (jQuery("#data-type-6").prop("checked") === true) {
-		filters.type     = [jQuery("#data-type-6").val()];
-		} else if (jQuery("#data-type-7").prop("checked") === true) {
-		filters.type     = [jQuery("#data-type-7").val()];
+		}else if (jQuery("#report-type-2").prop("checked") === true) {
+		filters.type     = [jQuery("#report-type-2").val()];
+		} else if (jQuery("#report-type-3").prop("checked") === true) {
+		filters.type     = [jQuery("#report-type-3").val()];
+		} else if (jQuery("#report-type-4").prop("checked") === true) {
+		filters.type     = [jQuery("#report-type-4").val()];
 		}
 	}else if (page.dataType === "watch") {
-		if (jQuery("#data-type-8").prop("checked") === true) {
+		if (jQuery("#watch-type-1").prop("checked") === true) {
 		filters.type     = [""];
-		} else if (jQuery("#data-type-9").prop("checked") === true) {
-		filters.type     = [jQuery("#data-type-9").val()];
-		} else if (jQuery("#data-type-10").prop("checked") === true) {
-		filters.type     = [jQuery("#data-type-10").val()];
-		} else if (jQuery("#data-type-11").prop("checked") === true) {
+		} else if (jQuery("#watch-type-2").prop("checked") === true) {
+		filters.type     = [jQuery("#watch-type-2").val()];
+		} else if (jQuery("#watch-type-3").prop("checked") === true) {
+		filters.type     = [jQuery("#watch-type-3").val()];
+		} else if (jQuery("#watch-type-4").prop("checked") === true) {
 		filters.type     = [""];
 		filters['pds']  = ["1"];
 		}
