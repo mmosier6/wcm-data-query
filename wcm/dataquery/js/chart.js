@@ -9,49 +9,38 @@ function makeChart(page) {
 	var end_year = Number(page.filters['date'][1].slice(0,4));
 	var categories = Array();
 
-	var column_data_month = Array();
+	var column_data = Array();
 	if (page.dataType === "watch") {
-	column_data_month[0] = "# of Watches";		
+	column_data[0] = "# of Watches";		
 	} else if (page.dataType === "report") {
-	column_data_month[0] = "# of Reports";
+	column_data[0] = "# of Reports";
 	}
 
-
-	if (page.filters['date'][1].slice(0,4) === page.filters['date'][0].slice(0,4)) {
+if (page.chartType === "month") {
+	if (page.filters['date'][1].slice(0,4) === page.filters['date'][0].slice(0,4) ) {
 		months = end_month - start_month + 1
-		years = 1;
 		for (i=start_month; i<(end_month +1); i++) {
-			if (i === end_month) {
 			categories[i-start_month] = month_abbrev[i-1];
-			column_data_month[i-start_month+1] = month_count[i];
-		} else{
-			categories[i-start_month] = month_abbrev[i-1];		
-			column_data_month[i-start_month+1] = month_count[i];	
-		}
+			column_data[i-start_month+1] = month_count[i];
 	}
 	} else {
-		years = end_year - start_year + 1;
 		months = 12;
 		categories = month_abbrev;
-		column_data_month = [column_data_month[0],month_count[1],month_count[2],month_count[3],month_count[4],month_count[5],month_count[6],month_count[7],month_count[8],month_count[9],month_count[10],month_count[11],month_count[12]];
+		column_data = [column_data[0],month_count[1],month_count[2],month_count[3],month_count[4],month_count[5],month_count[6],month_count[7],month_count[8],month_count[9],month_count[10],month_count[11],month_count[12]];
 		}
-
-	console.log(categories)
-	console.log(column_data_month)
-
-
-
-//	var year_watch = Array();
-//	for (i=2000 i++ i<(d.getFullYear() + 1) {
-//	year_watch[i] = 3;
-//	year_x[i] = i;
-//}
+} else if (page.chartType === "year") {
+		years = end_year - start_year + 1;
+		for (i=start_year; i<(end_year +1); i++) {
+			categories[i-start_year] = year[i-2000];
+			column_data[i-start_year+1] = year_count[i];
+	}
+	}
 
 	var chart = c3.generate({
 		bindto: '#chart',
 		data: {
 			columns: [
-				column_data_month
+				column_data
 			],
 			type: 'bar'
 		},
@@ -70,7 +59,7 @@ function makeChart(page) {
 			},
 			y: {
 				label: {
-					text: column_data_month[0],
+					text: column_data[0],
 					position: 'outer-middle'
 				}
 			}

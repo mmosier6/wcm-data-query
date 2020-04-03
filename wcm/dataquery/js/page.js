@@ -1,4 +1,5 @@
 function buildPage(page){
+		page.chartType = "month";
 	//Data type buttonset
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 		var el = jQuery(this);
@@ -18,9 +19,7 @@ function buildPage(page){
 			jQuery("#report-type").hide();
 			jQuery("#all-watch-filters").show();
 			jQuery("#watch-type").show();
-			jQuery("#view-type").show();
 			jQuery("#date-pickers").show();
-			jQuery("#filter-opt-list").show();
 		}
 		if(v === 'report'){
 			jQuery("#all-watch-filters").hide();
@@ -28,9 +27,7 @@ function buildPage(page){
 			jQuery("#all-report-filters").show();
 			jQuery("#report-source").show();
 			jQuery("#report-type").show();
-			jQuery("#view-type").show();
 			jQuery("#date-pickers").show();
-			jQuery("#filter-opt-list").show();
 		}
 
 	});
@@ -69,27 +66,16 @@ function buildPage(page){
 		page.reportSource = y;
 	});
 
-	jQuery("#view-type-buttonset").buttonset().change(function(){
-		var elem = jQuery(this);
-		var x = '';
-		elem.find("input:radio").each(function(){
+	jQuery("#chart-type-buttonset").buttonset().change(function(){
+		var ele = jQuery(this);
+		var y = '';
+		ele.find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				x = jQuery(this).attr("value");
+				y = jQuery(this).attr("value");
 			}
 		});
-		page.viewType = x;
-
-	if (page.viewType === "table") {
-		jQuery(".download").show();
-		jQuery("#data-table").show();
-		jQuery("#total-table").show();
-		jQuery("#chart").hide();
-	} else if (page.viewType ==="chart") {
-		jQuery("#data-table").hide();
-		jQuery("#total-table").hide();
-		jQuery(".download").hide();
-		jQuery("#chart").show();
-	}
+		page.chartType = y;
+		makeChart(page);
 	});
 
 	//Create dialog box
@@ -116,8 +102,9 @@ function buildPage(page){
 	//filterFIPSandZIP(page);
 
 	jQuery("#go-btn").button().on('click', function(){
-	jQuery('#progressbar').show();
-		jQuery("#data-type-buttonset input:radio").each(function(){
+	jQuery("#view-type").show();
+	jQuery("#filter-opt-list").show();
+	jQuery("#data-type-buttonset input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				y = jQuery(this).attr("value");
 				page.dataType = y;
@@ -136,6 +123,31 @@ function buildPage(page){
 			a = jQuery(this).attr("value");
 			page.reportType = a;
 		}
+	});
+
+	jQuery("#view-type-buttonset").buttonset().change(function(){
+		var elem = jQuery(this);
+		var x = '';
+		elem.find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				x = jQuery(this).attr("value");
+			}
+		});
+		page.viewType = x;
+
+	if (page.viewType === "table") {
+		jQuery(".download").show();
+		jQuery("#data-table").show();
+		jQuery("#total-table").show();
+		jQuery("#chart-type").hide();
+		jQuery("#chart").hide();
+	} else if (page.viewType ==="chart") {
+		jQuery("#data-table").hide();
+		jQuery("#total-table").hide();
+		jQuery(".download").hide();
+		jQuery("#chart-type").show();
+		jQuery("#chart").show();
+	}
 	});
 
 		var urlStr = 'test';

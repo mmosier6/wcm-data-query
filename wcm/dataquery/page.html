@@ -129,8 +129,9 @@
 				</table>
 			</div>
 
+			<div id = "go-btn">Generate</div>
+
 			<div id = "filter-opt-list" class = "hidden">
-				<div id = "go-btn">Generate</div>
 				<div id = "date-filter-list">Date Range:</div>
 				<div id = "state-filter-list">State Filter(s):</div>
 				<div id = "cwa-filter-list">CWA Filter(s):</div>
@@ -139,14 +140,20 @@
 				<br>
 			</div>
 			<div id="view-type" class="hidden">
-		<h3> Select Data Viewer </h3>
+			<h3> Select Data Viewer </h3>
 				<div id = 'view-type-buttonset' style = "font-size: 9pt;">
 					<input type = 'radio' id = 'view-type-1' name ='view-type-radio' value = 'table' aria-pressed="true"><label for = 'view-type-1' class="ui-state-active" aria-pressed="true">Table</label>
 					<input type = 'radio' id = 'view-type-2' name ='view-type-radio' value = 'chart'><label for = 'view-type-2'>Chart</label>
 					<input type = 'radio' id = 'view-type-3' name ='view-type-radio' value = 'map' disabled><label for = 'view-type-3'>Map</label>
 				</div>
 			</div>
-				
+			<div id="chart-type" class="hidden">
+			<h3> Select Chart Type </h3>
+				<div id = 'chart-type-buttonset' style = "font-size: 9pt;">
+					<input type = 'radio' id = 'chart-type-1' name ='chart-type-radio' value = 'month' aria-pressed="true"><label for = 'chart-type-1' class="ui-state-active" aria-pressed="true">By Month</label>
+					<input type = 'radio' id = 'chart-type-2' name ='chart-type-radio' value = 'year'><label for = 'chart-type-2'>By Year</label>
+					<input type = 'radio' id = 'chart-type-3' name ='chart-type-radio' value = 'type' disabled><label for = 'chart-type-3'>By Type</label>
+				</div>
 			</div>
 			<div id="dialog" title="Loading...">
   			<div class="progress-label">Depending on query size, loading can take up to 20 seconds</div>
@@ -155,6 +162,7 @@
 
 			</div>
 			<div id = 'data-table' style = "min-height: 300px;">
+
 			</div>
 			<button type = "button" class="download hidden btn btn-primary" onclick="makeJSON()">
 				Download JSON
@@ -172,6 +180,7 @@
 					</div>
 				</p>
 			</div>
+
 		</div>
 		<!--jQuery UI -->
 		<!--<script src = "/exper/reports/js/jquery-ui-1.9.2.custom.min.js"></script>-->

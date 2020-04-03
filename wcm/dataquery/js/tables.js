@@ -1,5 +1,6 @@
 var finalJSON="";
 var month_count=Array();
+var year_count=Array();
 function displayFilteredData(page){
 finalJSON = "";
 if (page.dataType === "watch") {
@@ -24,7 +25,6 @@ if (page.dataType === "watch") {
 	var totalTornado=0;
 	var totalPDSTornado=0;
 	var totalPDSSevere=0;
-	month_count=[];
 	var dataKeys = new Array("wnum", "sel_issue_dt", "type");
 	var st = "";
 	st = st + ""
@@ -62,13 +62,22 @@ if (page.dataType === "watch") {
 		}	else if (d['type']==="PDS SVR") {
 			totalPDSSevere=totalPDSSevere+1;
 		}
-		var month = Number(fulldt.slice(4,6));
+		month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
 			if (typeof month_count[i] === 'undefined') {
 				month_count[i] = 0;
 			}
 			if (i=== month) {
 				month_count[i] = month_count[i] + 1;
+			}
+		}
+		year = Number(fulldt.slice(0,4));
+		for (i=2000; i<2021; i++) {
+			if (typeof year_count[i] === 'undefined') {
+				year_count[i] = 0;
+			}
+			if (i=== year) {
+				year_count[i] = year_count[i] + 1;
 			}
 		}
 
@@ -273,6 +282,15 @@ function format ( c ) {
 				month_count[i] = month_count[i] + 1;
 			}
 		}	
+		var year = Number(fulldt.slice(0,4));
+		for (i=2000; i<2020; i++) {
+			if (typeof year_count[i] === 'undefined') {
+				year_count[i] = 0;
+			}
+			if (i=== year) {
+				year_count[i] = year_count[i] + 1;
+			}
+		}
 
 		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
 	});	
