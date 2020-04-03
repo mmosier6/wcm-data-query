@@ -388,6 +388,9 @@ function getFilters(page){
 }
 
 function createFilteredData(page){
+	jQuery('data-table').empty();
+	jQuery('data-table').html('<iframe id="loading_gif" src="https://giphy.com/embed/3o7TKtnuHOHHUjR38Y" width="200" height="200" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>');
+
 	console.log("\t\tRunning createFilteredData");
 	//***************************************
 	//			Crossfilter stuff								*
@@ -493,6 +496,7 @@ function getFilteredData(page){
 	page.data['filtered'] = d;
 	displayFilteredData(page);
 	makeChart(page);
+	jQuery( "#dialog" ).dialog( "close" );
 }
 
 function clearFilteredData(page){

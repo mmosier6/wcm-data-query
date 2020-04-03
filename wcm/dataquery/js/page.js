@@ -116,6 +116,7 @@ function buildPage(page){
 	//filterFIPSandZIP(page);
 
 	jQuery("#go-btn").button().on('click', function(){
+	jQuery('#progressbar').show();
 		jQuery("#data-type-buttonset input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				y = jQuery(this).attr("value");
@@ -168,7 +169,6 @@ function buildPage(page){
 		}
 
 		console.log(page.reportSource)
-
 		console.log("Data Source: "+ urlStr + "");
 		if(urlStr !== ''){
 			//Get watch data
@@ -191,4 +191,18 @@ function buildPage(page){
 			jQuery(".download").show();
 		}
 	});
+
+  jQuery( function() {
+      dialog = jQuery( "#dialog" ).dialog({
+        autoOpen: false,
+        closeOnEscape: false,
+        resizable: false,
+      }),
+      downloadButton = jQuery( "#go-btn" )
+        .button()
+        .on( "click", function() {
+          dialog.dialog( "open" );
+        });
+  } );
+
 }
