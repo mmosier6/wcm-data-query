@@ -1,18 +1,25 @@
 function buildPage(page){
-		page.chartType = "month";
-	//Data type buttonset
+	//Load default chart Type
+	page.chartType = "month";
+
+	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
-		var el = jQuery(this);
-		var v = '';
+			//Clear out previous rearch data
 			jQuery("#data-table").empty();
 			jQuery("#total-table").empty();
+			//Hide download button
 			jQuery(".download").hide();
-		el.find("input:radio").each(function(){
+			//set value of checked radio button to v
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				v = jQuery(this).attr("value");
 			}
 		});
+
+		//set page.dataType equal to the value of the checked radio button
 		page.dataType = v;
+
+		//hide or show several divs based on the value of the checked radio button
 		if(v === 'watch'){
 			jQuery("#all-report-filters").hide();
 			jQuery("#report-source").hide();
@@ -30,51 +37,49 @@ function buildPage(page){
 			jQuery("#date-pickers").show();
 		}
 
-	});
+	}); //End of data-type-buttonset on change function
 
+	//Function when report-type-buttonset is changed
 	jQuery("#report-type-buttonset").buttonset().change(function(){
-		var ele = jQuery(this);
-		var w = '';
-		ele.find("input:radio").each(function(){
+		//set value of checked radio button to v
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				w = jQuery(this).attr("value");
+				v = jQuery(this).attr("value");
 			}
 		});
-		page.reportType = w;
-	});
 
+		//set page.reportType equal to the value of the checked radio button
+		page.reportType = v;
+
+	});//end of report-type-buttonset on change function
+
+	//Function when watch-type-buttonset is changed
 	jQuery("#watch-type-buttonset").buttonset().change(function(){
-		var ele = jQuery(this);
-		var y = '';
-		ele.find("input:radio").each(function(){
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				y = jQuery(this).attr("value");
+				v = jQuery(this).attr("value");
 			}
 		});
-		page.watchType = y;
+		page.watchType = v;
 	});
 
 	jQuery("#report-source-buttonset").buttonset().change(function(){
 		jQuery("#report-type").show();
-		var ele = jQuery(this);
-		var y = '';
-		ele.find("input:radio").each(function(){
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				y = jQuery(this).attr("value");
+				v = jQuery(this).attr("value");
 			}
 		});
-		page.reportSource = y;
+		page.reportSource = v;
 	});
 
 	jQuery("#chart-type-buttonset").buttonset().change(function(){
-		var ele = jQuery(this);
-		var y = '';
-		ele.find("input:radio").each(function(){
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				y = jQuery(this).attr("value");
+				v = jQuery(this).attr("value");
 			}
 		});
-		page.chartType = y;
+		page.chartType = v;
 		makeChart(page);
 	});
 
@@ -106,34 +111,32 @@ function buildPage(page){
 	jQuery("#filter-opt-list").show();
 	jQuery("#data-type-buttonset input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				y = jQuery(this).attr("value");
-				page.dataType = y;
+				v = jQuery(this).attr("value");
+				page.dataType = v;
 			}
 		});
 
 	jQuery("#report-source-buttonset input:radio").each(function(){
 		if(jQuery(this).prop("checked")){
-			z = jQuery(this).attr("value");
-			page.reportSource = z;
+			v = jQuery(this).attr("value");
+			page.reportSource = v;
 		}
 	});
 
 	jQuery("#report-type-buttonset input:radio").each(function(){
 		if(jQuery(this).prop("checked")){
-			a = jQuery(this).attr("value");
-			page.reportType = a;
+			v = jQuery(this).attr("value");
+			page.reportType = v;
 		}
 	});
 
 	jQuery("#view-type-buttonset").buttonset().change(function(){
-		var elem = jQuery(this);
-		var x = '';
-		elem.find("input:radio").each(function(){
+		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
-				x = jQuery(this).attr("value");
+				v = jQuery(this).attr("value");
 			}
 		});
-		page.viewType = x;
+		page.viewType = v;
 
 	if (page.viewType === "table") {
 		jQuery(".download").show();
