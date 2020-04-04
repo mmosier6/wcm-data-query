@@ -1,6 +1,9 @@
 function buildPage(page){
-	//Load default chart Type
+	//Load default values for button select
 	page.chartType = "month";
+	page.reportSource = "LSR";
+	page.reportType = "T";
+	page.watchType = "TOR";
 
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
@@ -53,83 +56,7 @@ function buildPage(page){
 
 	});//end of report-type-buttonset on change function
 
-	//Function when watch-type-buttonset is changed
-	jQuery("#watch-type-buttonset").buttonset().change(function(){
-		jQuery(this).find("input:radio").each(function(){
-			if(jQuery(this).prop("checked")){
-				v = jQuery(this).attr("value");
-			}
-		});
-		page.watchType = v;
-	});
-
-	jQuery("#report-source-buttonset").buttonset().change(function(){
-		jQuery("#report-type").show();
-		jQuery(this).find("input:radio").each(function(){
-			if(jQuery(this).prop("checked")){
-				v = jQuery(this).attr("value");
-			}
-		});
-		page.reportSource = v;
-	});
-
-	jQuery("#chart-type-buttonset").buttonset().change(function(){
-		jQuery(this).find("input:radio").each(function(){
-			if(jQuery(this).prop("checked")){
-				v = jQuery(this).attr("value");
-			}
-		});
-		page.chartType = v;
-		makeChart(page);
-	});
-
-	//Create dialog box
-	jQuery("#error-dialog").dialog({
-		autoOpen: false,
-		resizable: false,
-		height:300,
-		width: 400,
-		modal: true,
-		buttons:{
-			//"Go to classic reports page": function(){
-			//	window.location.href("/climo/online");
-			//}
-			"Close": function(){
-				jQuery(this).dialog("close");
-			}
-		}
-	});
-
-	createCalendars(page);
-
-	filterStates(page);
-	filterCWAs(page);
-	//filterFIPSandZIP(page);
-
-	jQuery("#go-btn").button().on('click', function(){
-	jQuery("#view-type").show();
-	jQuery("#filter-opt-list").show();
-	jQuery("#data-type-buttonset input:radio").each(function(){
-			if(jQuery(this).prop("checked")){
-				v = jQuery(this).attr("value");
-				page.dataType = v;
-			}
-		});
-
-	jQuery("#report-source-buttonset input:radio").each(function(){
-		if(jQuery(this).prop("checked")){
-			v = jQuery(this).attr("value");
-			page.reportSource = v;
-		}
-	});
-
-	jQuery("#report-type-buttonset input:radio").each(function(){
-		if(jQuery(this).prop("checked")){
-			v = jQuery(this).attr("value");
-			page.reportType = v;
-		}
-	});
-
+	//set page.viewType equal to whatever is checked on view-type-buttonset. Also hide and show different divs based on what is selected
 	jQuery("#view-type-buttonset").buttonset().change(function(){
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
@@ -139,21 +66,78 @@ function buildPage(page){
 		page.viewType = v;
 
 	if (page.viewType === "table") {
-		jQuery(".download").show();
-		jQuery("#data-table").show();
-		jQuery("#total-table").show();
-		jQuery("#chart-type").hide();
-		jQuery("#chart").hide();
+		jQuery(".download").show(); //show download button
+		jQuery("#data-table").show(); //show data table
+		jQuery("#total-table").show();//show total table
+		jQuery("#chart-type").hide();//hide chart type selector
+		jQuery("#chart").hide();//hide chart 
 	} else if (page.viewType ==="chart") {
-		jQuery("#data-table").hide();
-		jQuery("#total-table").hide();
-		jQuery(".download").hide();
-		jQuery("#chart-type").show();
-		jQuery("#chart").show();
+		jQuery("#data-table").hide(); //hide data table
+		jQuery("#total-table").hide();//hide total table
+		jQuery(".download").hide();//hide download button
+		jQuery("#chart-type").show();//show chart type selector
+		jQuery("#chart").show(); //show chart
 	}
+	});//end of on change function for view-type-buttonset
+
+	//Function when watch-type-buttonset is changed
+	jQuery("#watch-type-buttonset").buttonset().change(function(){
+		jQuery(this).find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				v = jQuery(this).attr("value");
+			}
+		});
+		page.watchType = v;
+	});//end of watch-type-buttonset on change function
+
+	//Function when report-source-buttonset is changed
+	jQuery("#report-source-buttonset").buttonset().change(function(){
+		jQuery("#report-type").show(); //show report type buttons 
+		jQuery(this).find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				v = jQuery(this).attr("value");
+			}
+		});
+		page.reportSource = v;
+	});//end of report-source-buttonset on change function
+
+	//Function when chart-type-buttonset is changed
+	jQuery("#chart-type-buttonset").buttonset().change(function(){
+		jQuery(this).find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				v = jQuery(this).attr("value");
+			}
+		});
+		page.chartType = v;
+		makeChart(page);//redraw chart anytime this button is changed.
+	});//end of chart-type-buttonset on change function
+
+	//Create dialog box when browser is unsupported
+	jQuery("#error-dialog").dialog({
+		autoOpen: false,
+		resizable: false,
+		height:300,
+		width: 400,
+		modal: true,
+		buttons:{
+			"Close": function(){
+				jQuery(this).dialog("close");
+			}
+		}
 	});
 
-		var urlStr = 'test';
+	//Create Filters for Dates/States/CWAs/FIPS
+	createCalendars(page);
+	filterStates(page);
+	filterCWAs(page);
+	filterFIPSandZIP(page);
+
+	//Start long function that is activated when Generate Button is pressed
+	jQuery("#go-btn").button().on('click', function(){
+	jQuery("#view-type").show(); //show view type selector
+	jQuery("#filter-opt-list").show(); //show results of filters
+
+		var urlStr = '';
 		if (page.dataType ==="watch"){
 			if(typeof(page.data) === 'undefined'){
 				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
@@ -181,32 +165,39 @@ function buildPage(page){
 					urlStr = "";
 				}
 			}
-		}
+		}//end of else if for page.dataType ==="report"
 
 		console.log(page.reportSource)
 		console.log("Data Source: "+ urlStr + "");
+
+		//Run AJAX call to pull the data as long as urlStr is valid
 		if(urlStr !== ''){
 			//Get watch data
 			jQuery.ajax({
 				dataType: "json",
 				url: urlStr
 			}).done(function(data){
+				//store data in page.data
 				page.data = new Object();
 				if(page.dataType === 'watch'){
 					page.data['watch'] = data;
 				}else if(page.dataType === 'report'){
 					page.data['report'] = jsonh.unpack(data[0]);
 				}
-				console.log(page.data['watch'])
+				//Once data is assembled run createFilteredData and getFilteredData functions
 				createFilteredData(page);
 				getFilteredData(page);
-			});
-		}
+			});//end of AJAX call
+		}//end of if function containing AJAX call
+
+		//Allow download button to be visible if the view type is table
 		if (page.viewType === "table") {
 			jQuery(".download").show();
 		}
-	});
 
+	}); //end of on click function for go-btn
+
+	//Show dialog box when go-button is clicked
   jQuery( function() {
       dialog = jQuery( "#dialog" ).dialog({
         autoOpen: false,
@@ -220,4 +211,4 @@ function buildPage(page){
         });
   } );
 
-}
+} //end of buildPage function
