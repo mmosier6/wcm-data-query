@@ -34,3 +34,8 @@
 .hidden{
 	display: none;
 }
+
+.download{
+	position:relative;
+	left:850px;
+}

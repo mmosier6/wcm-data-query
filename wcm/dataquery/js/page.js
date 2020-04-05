@@ -4,6 +4,7 @@ function buildPage(page){
 	page.reportSource = "LSR";
 	page.reportType = "T";
 	page.watchType = "TOR";
+	page.viewType = "table";
 
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
