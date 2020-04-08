@@ -39,34 +39,24 @@ if (page.dataType === "watch") {
 	//set total object equal to zero to start
 	total = {"watches":0,"SVR":0,"TOR":0,"PDS TOR":0,"PDS SVR":0};
 
-	//build the entire javascript of the table in the variable st
-	var st = "";
-	st = st + "<table  width = '100%' cellpadding='0' cellspacing='0' border='0' class='display' id='results_table'>";
-	//make header which contains table titles
-	st = st + "<thead><tr>";
-	st = st + "<th></th>";
-	st = st + "<th> Issue Date/Time (UTC)</th>";
-	st = st + "<th>" +totalTitle[0]+ " </th>";
-	st = st + "<th> Watch Number </th>";
-	st = st + "<th> States in Watch </th>";
-	st = st + "<th> CWAs in Watch </th>";
-	st = st + "<th style='display:none;'></th>";
-	st = st + "<th style='display:none;'></th>";
-	st = st + "<th style='display:none;'></th>";
-	st = st + "</tr></thead><tbody>";
-	//start table body here
+	//create variables used to store data 
+	var results;
+	var results_final = {};
+	results_final['data'] = [];
+	//build the entire javascript for input into the table here
 	page.data['filtered-sorted'].forEach(function(d,n){
-		var fulldt = d['sel_issue_dt'];
-		st = st + "<tr>";
-		st = st + '<td><i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see watch areas/summary/threats"></i></td>';
-		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "</td>";
-		st = st + "<td> " + d['type'] + "</td>";
-		st = st + "<td> " + d['watch_num'] +  "</td>";
-		st = st + "<td> " + d['ST'] + "</td>";
-		st = st + "<td> " + d['CWA'] + "</td>";
-		//this next column is the one that is hidden and only displayed as a child when clicking the initial button
-		st = st + "<td style='display:none;' class='child'>" + d['threats'] + "</td><td style='display:none;' class='child'>" + d['areas'] + "</td><td style='display:none;' class='child'>" + d['summary'] + "</td>";
-		st = st + "</tr>";
+		var fulldt = d["sel_issue_dt"];
+		results = {};
+		results['dt'] = d['sel_issue_dt'];
+		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
+		results['type'] = d['type'];
+		results['num'] = d['watch_num'];
+		results['st'] = d['ST'].toString();
+		results['cwa'] = d['CWA'].toString();
+		results['threats'] = d['threats'].toString();
+		results['areas'] = d['areas'].toString();
+		results['summary'] = d['summary'].toString();
+		results_final["data"].push(results);
 
 		//this is how totals are calculated. Add one each time you iterate through.
 		total['watches']=total['watches']+1;
@@ -98,6 +88,7 @@ if (page.dataType === "watch") {
 	
 	}); //closing brackets for page.data['filtered-sorted'].forEach function
 
+console.log(results_final)
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
@@ -112,17 +103,6 @@ if (page.dataType === "watch") {
 		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+year_count[i]+',';		
 		}
 	}
-
-	//Footer section where titles are repeated
-	st = st + "</tbody><tfoot><tr>";
-	st = st + "<th></th>";
-	st = st + "<th> Issue Date/Time </th>";
-	st = st + "<th>" +totalTitle[0]+ "</th>";
-	st = st + "<th> Watch Number </th>";
-	st = st + "<th> States in Watch </th>";
-	st = st + "<th> CWAs in Watch </th>";
-	st = st + "</tr></tfoot>";
-	st = st + "</table>";
 
 	//make total table here
 	tot = "";
@@ -158,15 +138,15 @@ function format ( c ) {
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
         '<tr>'+
             '<td>Threats:</td>'+
-            '<td>'+c[6]+'</td>'+
+            '<td>'+c['threats']+'</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Areas:</td>'+
-            '<td>'+c[7]+'</td>'+
+            '<td>'+c['areas']+'</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Summary:</td>'+
-            '<td>'+c[8]+'</td>'+
+            '<td>'+c['summary']+'</td>'+
         '</tr>'+
     '</table>';
 }
@@ -208,35 +188,22 @@ function format ( c ) {
 	totalTitle = windRange;
 	}
 
-	//build the entire javascript of the table in the variable st
-	var st = "";
-	st = st + "<table id='results_table' width = '100%' class='display'>";
-	//make header which contains table titles
-	st = st + "<thead><tr>";
-	st = st + "<th></th>";
-	st = st + "<th>Date/Time (CST)</th>";
-	st = st + "<th>"+totalTitle[0]+"</th>";
-	st = st + "<th>Location</th>";
-	st = st + "<th>County</th>";
-	st = st + "<th>State</th>";
-	st = st + "<th>CWA</th>";
-	st = st + "<th>Inj</th>";
-	st = st + "<th>Fat</th>";
-	st = st + "</tr></thead><tbody>";
-	//start table body here
+	var results = {};
+	var results_final = {};
+	results_final['data'] = [];
 	page.data['filtered-sorted'].forEach(function(d,n){
+
 		var fulldt = d["DT"];
-		st = st + "<tr>";
-		st = st + '<td><i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional report text"></i></td>';
-		st = st + "<td> " + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) +  "</td>";
-		st = st + "<td> " + d['MAGNITUDE'] + "</td>";
-		st = st + "<td> " + d['LOCATION'] + "</td>";
-		st = st + "<td> " + d['COUNTY'] + "</td>";
-		st = st + "<td> " + d['ST'] + "</td>";
-		st = st + "<td> " + d['CWA'] + "</td>";
-		st = st + "<td> " + d['INJURY'] + "</td>";
-		st = st + "<td> " + d['FATALITIES'] + "</td>";
-		st = st + "</tr>";
+		results['DT'] = d['DT'];
+		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
+		results['MAGNITUDE'] = d['MAGNITUDE'];
+		results['LOCATION'] = d['LOCATION'];
+		results['COUNTY'] = d['COUNTY'].toString();
+		results['ST'] = d['ST'].toString();
+		results['CWA'] = d['CWA'].toString();
+		results['INJURY'] = d['INJURY'].toString();
+		results['FATALITIES'] = d['FATALITIES'].toString();
+		results_final["data"].push(results);
 
 		//this is how totals are calculated. Add one each time you iterate through.
 		total[0]=total[0]+1;
@@ -330,20 +297,6 @@ function format ( c ) {
 		}
 	}
 
-	//Footer section where titles are repeated
-	st = st + "</tbody><tfoot><tr>";
-	st = st + "<th></th>";
-	st = st + "<th>Date/Time (CST)</th>";
-	st = st + "<th>"+totalTitle[0]+"</th>";
-	st = st + "<th>Location</th>";
-	st = st + "<th>County</th>";
-	st = st + "<th>State</th>";
-	st = st + "<th>CWA</th>";
-	st = st + "<th>Injuries</th>";
-	st = st + "<th>Fatalities</th>";
-	st = st + "</tr></tfoot>";
-	st = st + "</table>";
-
 	//make total table here
 	tot = "";
 	tot = tot + "<table id='total_table'>";
@@ -395,20 +348,94 @@ function format ( c ) {
 	//clear out data-table
 	jQuery("#data-table").empty();
 	//put variable st data into data-table
-	jQuery("#data-table").html(st);
+	jQuery("#data-table").html('<table id="results_table" class="display" width="100%"></table>');
 	//clear out total-table
 	jQuery("#total-table").empty();
 	//put variable tot into tot-table
 	jQuery("#total-table").html(tot);
 
+if (page.dataType === "watch") {
 	//turn results table into DataTable
-	var table = jQuery('#results_table').DataTable({
+var table = jQuery('#results_table').DataTable({
+		data: results_final['data'],
+		columns: [
+			{	data: ""
+			},
+			{	data: {
+					_: "dt_dis",
+					sort: "dt"
+				},
+				title: "Date/Time"
+			},
+			{	data: "type",
+				title: totalTitle[0]
+			},
+			{	data: "num",
+				title: "Watch Number"
+			},
+			{	data: "st",
+				title: "States in Watch"
+			},
+			{	data: "cwa",
+				title: "CWAs in Watch"
+			}
+		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": -1, //default page length
 		"columnDefs": [		
-			{"width" : "120px", "targets":1},		//Width of time column
+			{	"width" : "140px", "targets":1},	
+			{	"targets": 0,
+				"data": null,
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      		}
 		]		
-	});
+	}); //end of variable table
+} else if (page.dataType === "report") {
+	//turn results table into DataTable
+var table = jQuery('#results_table').DataTable({
+		data: results_final['data'],
+		columns: [
+			{	data: ""
+			},
+			{	data: {
+					_: "DT_dis",
+					sort: "DT"
+				},
+				title: "Date/Time"
+			},
+			{	data: "MAGNITUDE",
+				title: totalTitle[0]
+			},
+			{	data: "LOCATION",
+				title: "Location"
+			},
+			{	data: "COUNTY",
+				title: "County"
+			},
+			{	data: "ST",
+				title: "State"
+			},
+			{	data: "CWA",
+				title: "CWA"
+			},
+			{	data: "INJURY",
+				title: "Injuries"
+			},
+			{	data: "FATALITIES",
+				title: "Fatalities"
+			}
+		],
+		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
+		"pageLength": -1, //default page length
+		"columnDefs": [		
+			{	"width" : "140px", "targets":1},	
+			{	"targets": 0,
+				"data": null,
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      		}
+		]		
+	}); //end of variable table
+}
 
     // Add event listener for opening and closing details
     jQuery('i.details-control').on('click', function () {
@@ -421,8 +448,7 @@ function format ( c ) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
-        }
-        else {
+        } else {
             jQuery(this).removeClass("fa-plus-square");
 			jQuery(this).addClass("fa-minus-square");
             // Open this row
@@ -430,8 +456,8 @@ function format ( c ) {
             tr.addClass('shown');
         }
     } );
+    
 }
-
 //this function makes the JSON file which can be downloaded by the user
 function makeJSON() {
 			finalJSON = finalJSON.slice(1);
