@@ -126,19 +126,19 @@ console.log(results_final)
 	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Severe</td>";
+	tot = tot + "<td id='results_cell'>Tornado</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][1]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Tornado</td>";
+	tot = tot + "<td id='results_cell'>Severe</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][2]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>PDS Severe</td>";
+	tot = tot + "<td id='results_cell'>PDS Tornado</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>PDS Tornado</td>";
+	tot = tot + "<td id='results_cell'>PDS Severe</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
@@ -326,9 +326,10 @@ function format ( c ) {
 
 	//make total table here
 	tot = "";
+	if (page.reportType === "ALL") {
 	tot = tot + "<table id='total_table'>";
 	tot = tot + "<tr>";
-	tot = tot + "<th id='results_cell'></th>";
+	tot = tot + "<th id='results_cell'>Type</th>";
 	tot = tot + "<th id='results_cell'> Total </th>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
@@ -344,23 +345,46 @@ function format ( c ) {
 	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>Total</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "</table>";
+} else {
+	tot = tot + "<table id='total_table'>";
+	tot = tot + "<tr>";
+	tot = tot + "<th id='results_cell'>"+totalTitle[0]+"</th>";
+	tot = tot + "<th id='results_cell'> Total </th>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[1]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][1]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[2]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][2]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[3]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][3]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[4]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][4]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[5]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][5]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][5]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[6]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][6]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][6]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Total</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
-
+}
 //return the html of the details section when you expand a row
 function format ( c ) {
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
@@ -410,10 +434,14 @@ var table = jQuery('#results_table').DataTable({
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": -1, //default page length
 		"columnDefs": [		
-			{	"width" : "140px", "targets":1},	
+			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
+				"orderable": false,
 				"data": null,
       			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      		},
+			{	"targets": [4, 5],
+				"orderable": false
       		}
 		]		
 	}); //end of variable table
@@ -457,8 +485,12 @@ var table = jQuery('#results_table').DataTable({
 		"columnDefs": [		
 			{	"width" : "140px", "targets":1},	
 			{	"targets": 0,
+				"orderable": false,
 				"data": null,
       			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      		},			
+      		{	"targets": [3, 4, 5, 6],
+				"orderable": false
       		}
 		]		
 	}); //end of variable table
@@ -486,12 +518,16 @@ var table = jQuery('#results_table').DataTable({
 
 }
 //this function makes the JSON file which can be downloaded by the user
-function makeJSON() {
+function makeJSON(page) {
 			finalJSON = finalJSON.slice(1);
 			finalJSON = "["+finalJSON+"]";
 			var JSONfile = document.createElement('a');
 			JSONfile.href = 'data:attachment/JSON,' + encodeURI(finalJSON);
 			JSONfile.target = '_blank';
-			JSONfile.download = 'JSONfile.json';
+			if (page.dataType === "watch") {
+			JSONfile.download = ''+page.watchType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';
+			} else if (page.dataType === "report") {
+			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';				
+			}
 			JSONfile.click();
 		}

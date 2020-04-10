@@ -113,6 +113,10 @@ function buildPage(page){
 		makeChart(page);//redraw chart anytime this button is changed.
 	});//end of chart-type-buttonset on change function
 
+	jQuery(".download").click(function() {
+		makeJSON(page);
+	});
+
 	//Create dialog box when browser is unsupported
 	jQuery("#error-dialog").dialog({
 		autoOpen: false,
