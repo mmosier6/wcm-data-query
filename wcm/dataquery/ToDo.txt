@@ -1,13 +1,14 @@
 To Do List:
-1. combine watch/report filters into one?
 2. Figure out PDS filter.
 3. Add multi bar chart to year/month charts
-4. Add pie chart/other chart types
 4. Add maps
 5. Add first/last options
 6. Fix sorting issue with date instead of year first
 7. Add dynamic name to downloadable JSON file
 8. Totals table fixed for all reports type
+9. Add wind damage as a report type
+10. Change chart-type-3 to magnitude/type based on what is being displayed
+11. Set chart-type-3 and chart-type-4 to disabled when LSR/Tornado is selected
 
 Data I am still waiting for:
 1. Watch file with all years combined

@@ -6,7 +6,7 @@ var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct",
 var year_list = [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
 var today = new Date();
 var current_year = today.getFullYear();
-var total;
+var total = [];
 var totalTitle = Array();
 
 function displayFilteredData(page){
@@ -36,8 +36,10 @@ if (page.dataType === "watch") {
 	//after filter is run, use compare funtion to sort the data
 	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);	
 
-	//set total object equal to zero to start
-	total = {"watches":0,"SVR":0,"TOR":0,"PDS TOR":0,"PDS SVR":0};
+	//set total array equal to zero to start
+	total['type'] = [0,0,0,0,0];
+	total['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 	//create variables used to store data 
 	var results;
@@ -59,27 +61,35 @@ if (page.dataType === "watch") {
 		results_final["data"].push(results);
 
 		//this is how totals are calculated. Add one each time you iterate through.
-		total['watches']=total['watches']+1;
-		total[d['type']]=total[d['type']]+1;
+		total['type'][0]=total['type'][0]+1;
+		if (d['type'] === "TOR") {
+			total['type'][1]=total['type'][1]+1;
+		} else if (d['type'] === "SVR") {
+			total['type'][2]=total['type'][2]+1;
+		} else if (d['type'] === "PDS TOR") {
+			total['type'][3]=total['type'][3]+1;
+		} else if (d['type'] === "PDS SVR") {
+			total['type'][4]=total['type'][4]+1;
+		}
 
 		//this function counts the total number for each month
 		month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof month_count[i] === 'undefined') {
-				month_count[i] = 0;
+			if (typeof total['month'][i] === 'undefined') {
+				total['month'][i] = 0;
 			}
 			if (i=== month) {
-				month_count[i] = month_count[i] + 1;
+				total['month'][i] = total['month'][i] + 1;
 			}
 		}
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof year_count[i] === 'undefined') {
-				year_count[i] = 0;
+			if (typeof total['year'][i] === 'undefined') {
+				total['year'][i] = 0;
 			}
 			if (i=== year) {
-				year_count[i] = year_count[i] + 1;
+				total['year'][i] = total['year'][i] + 1;
 			}
 	}
 
@@ -93,14 +103,14 @@ console.log(results_final)
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+month_count[i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['month'][i]+',';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+year_count[i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+year_count[i]+',';		
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+',';		
 		}
 	}
 
@@ -113,23 +123,23 @@ console.log(results_final)
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Watches</td>";
-	tot = tot + "<td id='results_cell'>"+total['watches']+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Severe</td>";
-	tot = tot + "<td id='results_cell'>"+total['SVR']+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][1]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Tornado</td>";
-	tot = tot + "<td id='results_cell'>"+total['TOR']+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][2]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>PDS Severe</td>";
-	tot = tot + "<td id='results_cell'>"+total['PDS SVR']+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>PDS Tornado</td>";
-	tot = tot + "<td id='results_cell'>"+total['PDS TOR']+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
 
@@ -172,12 +182,16 @@ function format ( c ) {
 	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);		
 
 	//set total array equal to zero to start
-	total = [0,0,0,0,0,0,0];
+	total['type'] = [0,0,0,0];
+	total['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['mag'] = [0,0,0,0,0,0,0];
 
 	//ranges that will be displayed in totals table
 	var torRange = ["Rating","EF0","EF1","EF2","EF3","EF4","EF5"];
 	var hailRange = ['Hail Size','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"'];
 	var windRange = ["Wind Speed","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
+	var allRange = ["Type","Tornado","Wind Gust","Hail"];
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
@@ -186,7 +200,11 @@ function format ( c ) {
 	totalTitle = hailRange;
 	} else if (page.reportType === "G") {
 	totalTitle = windRange;
+	} else if (page.reportType === "ALL") {
+	totalTitle = allRange;
 	}
+	console.log(page.reportType)
+	console.log(totalTitle)
 
 	var results = {};
 	var results_final = {};
@@ -206,77 +224,86 @@ function format ( c ) {
 		results_final["data"].push(results);
 
 		//this is how totals are calculated. Add one each time you iterate through.
-		total[0]=total[0]+1;
+			total['type'][0] = total['type'][0] +1;
 
 		//add up the total number at each threshold by iterating through.
 		//start with tornado
 	if (page.reportType === "T") {
 		if (d['MAGNITUDE']==="EF0" || d['MAGNITUDE']==="F0") {
-			total[1]=total[1]+1;
+			total['mag'][1]=total['mag'][1]+1;
 		}	else if (d['MAGNITUDE']==="EF1" || d['MAGNITUDE']==="F1") {
-			total[2]=total[2]+1;
+			total['mag'][2]=total['mag'][2]+1;
 		}	else if (d['MAGNITUDE']==="EF2" || d['MAGNITUDE']==="F2") {
-			total[3]=total[3]+1;
+			total['mag'][3]=total['mag'][3]+1;
 		}	else if (d['MAGNITUDE']==="EF3" || d['MAGNITUDE']==="F3") {
-			total[4]=total[4]+1;
+			total['mag'][4]=total['mag'][4]+1;
 		}	else if (d['MAGNITUDE']==="EF4" || d['MAGNITUDE']==="F4") {
-			total[5]=total[5]+1;
+			total['mag'][5]=total['mag'][5]+1;
 		}	else if (d['MAGNITUDE']==="EF5" || d['MAGNITUDE']==="F5") {
-			total[6]=total[6]+1;
+			total['mag'][6]=total['mag'][6]+1;
 		}
 		//now add up wind gusts at each threshold
 	} else if (page.reportType === "G") {
 		if (d['MAGNITUDE']>57 & d['MAGNITUDE']<65) {
-			total[1]=total[1]+1;
+			total['mag'][1]=total['mag'][1]+1;
 		}	else if (d['MAGNITUDE']>64 & d['MAGNITUDE']<75) {
-			total[2]=total[2]+1;
+			total['mag'][2]=total['mag'][2]+1;
 		}	else if (d['MAGNITUDE']>74 & d['MAGNITUDE']<85) {
-			total[3]=total[3]+1;
+			total['mag'][3]=total['mag'][3]+1;
 		}	else if (d['MAGNITUDE']>84 & d['MAGNITUDE']<95) {
-			total[4]=total[4]+1;
+			total['mag'][4]=total['mag'][4]+1;
 		}	else if (d['MAGNITUDE']>94 & d['MAGNITUDE']<105) {
-			total[5]=total[5]+1;
+			total['mag'][5]=total['mag'][5]+1;
 		}	else if (d['MAGNITUDE']>104 & d['MAGNITUDE']<200) {
-			total[6]=total[6]+1;
+			total['mag'][6]=total['mag'][6]+1;
 		}
 		//now add up hail reports at each threshold
 	} else if (page.reportType === "A") {
 		if (d['MAGNITUDE']>0 & d['MAGNITUDE']<100) {
-			total[1]=total[1]+1;
+			total['mag'][1]=total['mag'][1]+1;
 		}	else if (d['MAGNITUDE']>99 & d['MAGNITUDE']<200) {
-			total[2]=total[2]+1;
+			total['mag'][2]=total['mag'][2]+1;
 		}	else if (d['MAGNITUDE']>199 & d['MAGNITUDE']<300) {
-			total[3]=total[3]+1;
+			total['mag'][3]=total['mag'][3]+1;
 		}	else if (d['MAGNITUDE']>299 & d['MAGNITUDE']<400) {
-			total[4]=total[4]+1;
+			total['mag'][4]=total['mag'][4]+1;
 		}	else if (d['MAGNITUDE']>399 & d['MAGNITUDE']<500) {
-			total[5]=total[5]+1;
+			total['mag'][5]=total['mag'][5]+1;
 		}	else if (d['MAGNITUDE']>499 & d['MAGNITUDE']<1000) {
-			total[6]=total[6]+1;
+			total['mag'][6]=total['mag'][6]+1;
 		}
 	}
+
+	if (d['TYPE'] === "T") {	
+			total['type'][1]=total['type'][1]+1;		
+	} 	else if (d['TYPE'] === "A") {
+			total['type'][2]=total['type'][2]+1
+	} 	else if (d['TYPE'] === "G") {
+			total['type'][3]=total['type'][3]+1
+	} 
 
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof month_count[i] === 'undefined') {
-				month_count[i] = 0;
+			if (typeof total['month'][i] === 'undefined') {
+				total['month'][i] = 0;
 			}
 			if (i=== month) {
-				month_count[i] = month_count[i] + 1;
+				total['month'][i] = total['month'][i] + 1;
 			}
 		}	
 
 		//this function counts the total number for each year
-		var year = Number(fulldt.slice(0,4));
+		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof year_count[i] === 'undefined') {
-				year_count[i] = 0;
+			if (typeof total['year'][i] === 'undefined') {
+				total['year'][i] = 0;
 			}
 			if (i=== year) {
-				year_count[i] = year_count[i] + 1;
+				total['year'][i] = total['year'][i] + 1;
 			}
 		}
+
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
 	
@@ -286,14 +313,14 @@ function format ( c ) {
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+month_count[i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['month'][i]+',';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+year_count[i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+year_count[i]+',';		
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+',';		
 		}
 	}
 
@@ -306,31 +333,31 @@ function format ( c ) {
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[1]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[1]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][1]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[2]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[2]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][2]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[3]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[3]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[4]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[4]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[5]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[5]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][5]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[6]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total[6]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][6]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Total</td>";
-	tot = tot + "<td id='results_cell'>"+total[0]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "</table>";
 
@@ -456,7 +483,7 @@ var table = jQuery('#results_table').DataTable({
             tr.addClass('shown');
         }
     } );
-    
+
 }
 //this function makes the JSON file which can be downloaded by the user
 function makeJSON() {
