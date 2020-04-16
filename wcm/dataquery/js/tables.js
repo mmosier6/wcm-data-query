@@ -191,19 +191,24 @@ function format ( c ) {
 	var torRange = ["Rating","EF0","EF1","EF2","EF3","EF4","EF5"];
 	var hailRange = ['Hail Size','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"'];
 	var windRange = ["Wind Speed","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
-	var allRange = ["Type","Tornado","Wind Gust","Hail"];
+	var windAllRange = ["Wind Speed","Damage","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
+	var allRange = ["Type","Tornado","Hail","All Wind","Wind Gust","Wind Damage"];
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
 	totalTitle = torRange;		
 	} else if (page.reportType === "A") {
 	totalTitle = hailRange;
-	} else if (page.reportType === "G") {
+	} else if (page.reportType === "G" || page.reportType === "W") {
 	totalTitle = windRange;
 	} else if (page.reportType === "ALL") {
 	totalTitle = allRange;
 	document.getElementById("chartType").innerHTML = '<span class="ui-button-text">By Type</span>';
+	} else if (page.reportType === "ALLW") {
+	totalTitle = windAllRange;
+	document.getElementById("chartType").innerHTML = '<span class="ui-button-text">By Type</span>';
 	}
+
 	console.log(page.reportType)
 	console.log(totalTitle)
 
@@ -274,14 +279,33 @@ function format ( c ) {
 		}	else if (d['MAGNITUDE']>499 & d['MAGNITUDE']<1000) {
 			total['mag'][6]=total['mag'][6]+1;
 		}
+	} else if (page.reportType === "ALLW") {
+		if (d['MAGNITUDE']>57 & d['MAGNITUDE']<65) {
+			total['mag'][2]=total['mag'][2]+1;
+		}	else if (d['MAGNITUDE']>64 & d['MAGNITUDE']<75) {
+			total['mag'][3]=total['mag'][3]+1;
+		}	else if (d['MAGNITUDE']>74 & d['MAGNITUDE']<85) {
+			total['mag'][4]=total['mag'][4]+1;
+		}	else if (d['MAGNITUDE']>84 & d['MAGNITUDE']<95) {
+			total['mag'][5]=total['mag'][5]+1;
+		}	else if (d['MAGNITUDE']>94 & d['MAGNITUDE']<105) {
+			total['mag'][6]=total['mag'][6]+1;
+		}	else if (d['MAGNITUDE']>104 & d['MAGNITUDE']<200) {
+			total['mag'][7]=total['mag'][7]+1;
+		} else {
+			total['mag'][1]=total['mag'][1]+1;
+		}
 	}
-
 	if (d['TYPE'] === "T") {	
 			total['type'][1]=total['type'][1]+1;		
 	} 	else if (d['TYPE'] === "A") {
 			total['type'][2]=total['type'][2]+1
 	} 	else if (d['TYPE'] === "G") {
 			total['type'][3]=total['type'][3]+1
+			total['type'][4]=total['type'][4]+1
+	}  	else if (d['TYPE'] === "W") {
+			total['type'][3]=total['type'][3]+1
+			total['type'][5]=total['type'][5]+1
 	} 
 
 		//this function counts the total number for each month
@@ -345,6 +369,14 @@ function format ( c ) {
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[3]+"</td>";
 	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[4]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[5]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['type'][5]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Total</td>";
@@ -434,7 +466,7 @@ var table = jQuery('#results_table').DataTable({
 			}
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
-		"pageLength": -1, //default page length
+		"pageLength": 50, //default page length
 		"columnDefs": [		
 			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
@@ -483,7 +515,7 @@ var table = jQuery('#results_table').DataTable({
 			}
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
-		"pageLength": -1, //default page length
+		"pageLength": 50, //default page length
 		"columnDefs": [		
 			{	"width" : "140px", "targets":1},	
 			{	"targets": 0,

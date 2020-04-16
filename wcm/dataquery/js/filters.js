@@ -297,7 +297,11 @@ function listFilters(page){
 			if (filters[d].includes("A") == true) {
 				str = "HAIL";
 			}else if (filters[d].includes("G") == true) {
-				str = "WIND";
+				str = "WIND GUST";
+			}else if (filters[d].includes("W") == true) {
+				str = "WIND DAMAGE";
+			}else if (filters[d].includes("ALLW") == true) {
+				str = "ALL WIND";
 			}else if (filters[d].includes("T") == true) {
 				str = "TORNADO";
 			}else {
@@ -366,7 +370,11 @@ function getFilters(page){
 		} else if (jQuery("#report-type-3").prop("checked") === true) {
 		filters.type     = [jQuery("#report-type-3").val()];
 		} else if (jQuery("#report-type-4").prop("checked") === true) {
-		filters.type     = [jQuery("#report-type-4").val()];
+		filters.type     = ["G","W"];
+		} else if (jQuery("#report-type-5").prop("checked") === true) {
+		filters.type     = [jQuery("#report-type-5").val()];
+		} else if (jQuery("#report-type-6").prop("checked") === true) {
+		filters.type     = [jQuery("#report-type-6").val()];
 		}
 	}else if (page.dataType === "watch") {
 		if (jQuery("#watch-type-1").prop("checked") === true) {

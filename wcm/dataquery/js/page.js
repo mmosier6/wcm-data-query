@@ -160,20 +160,12 @@ function buildPage(page){
 	jQuery("#filter-opt-list").show(); //show results of filters
 
 	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR") {
-		jQuery("#chart-type-3").prop("disabled", true);
-		jQuery("#chart-type-4").prop("disabled", true);
-		jQuery("#chartType3").addClass("ui-button-disabled");
-		jQuery("#chartType3").addClass("ui-state-disabled");
-		jQuery("#chartType4").addClass("ui-button-disabled");
-		jQuery("#chartType4").addClass("ui-state-disabled");	
+		jQuery("#chart-type-3").button("disable");
+		jQuery("#chart-type-4").button("disable");	
 	}
 	else {
-		jQuery("#chart-type-3").prop("disabled", false);
-		jQuery("#chart-type-4").prop("disabled", false);
-		jQuery("#chartType3").removeClass("ui-button-disabled");
-		jQuery("#chartType3").removeClass("ui-state-disabled");
-		jQuery("#chartType4").removeClass("ui-button-disabled");
-		jQuery("#chartType4").removeClass("ui-state-disabled");			
+		jQuery("#chart-type-3").button("enable");
+		jQuery("#chart-type-4").button("enable");		
 		}
 
 		var urlStr = '';
