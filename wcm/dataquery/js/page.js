@@ -81,7 +81,7 @@ function buildPage(page){
 		jQuery("#data-table").show(); //show data table
 		jQuery("#total-table").show();//show total table
 		jQuery("#chart-type").hide();//hide chart type selector
-		jQuery("#chart").hide();//hide chart 
+		jQuery("#chart").hide();//hide chart
 	} else if (page.viewType ==="chart") {
 		jQuery("#data-table").hide(); //hide data table
 		jQuery("#total-table").hide();//hide total table
@@ -110,7 +110,7 @@ function buildPage(page){
 		jQuery(".download").hide();
 		jQuery("#chart").empty();
 
-		jQuery("#report-type").show(); //show report type buttons 
+		jQuery("#report-type").show(); //show report type buttons
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				v = jQuery(this).attr("value");
@@ -152,7 +152,7 @@ function buildPage(page){
 	createCalendars(page);
 	filterStates(page);
 	filterCWAs(page);
-	filterFIPSandZIP(page);
+	//filterFIPSandZIP(page);
 
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){
@@ -161,19 +161,21 @@ function buildPage(page){
 
 	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR") {
 		jQuery("#chart-type-3").button("disable");
-		jQuery("#chart-type-4").button("disable");	
+		jQuery("#chart-type-4").button("disable");
 	}
 	else {
 		jQuery("#chart-type-3").button("enable");
-		jQuery("#chart-type-4").button("enable");		
+		jQuery("#chart-type-4").button("enable");
 		}
 
 		var urlStr = '';
 		if (page.dataType ==="watch"){
 			if(typeof(page.data) === 'undefined'){
 				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
+				//urlStr ="/wcm/data/collections/watch_collection_2020.json";
 			}else if(typeof(page.data['watch'])){
 				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
+				//urlStr ="/wcm/data/collections/watch_collection_2020.json";
 			}else{
 				urlStr = "";
 			}

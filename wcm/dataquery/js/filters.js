@@ -378,7 +378,7 @@ function getFilters(page){
 		}
 	}else if (page.dataType === "watch") {
 		if (jQuery("#watch-type-1").prop("checked") === true) {
-		filters.type     = [""];
+		filters.type   	 = [""];
 		} else if (jQuery("#watch-type-2").prop("checked") === true) {
 		filters.type     = [jQuery("#watch-type-2").val()];
 		} else if (jQuery("#watch-type-3").prop("checked") === true) {
@@ -410,11 +410,11 @@ function createFilteredData(page){
 	page.crossfilters['all'] 		= crossfilter(page.data[page.dataType]);
 	page.crossfilters['cwa'] 		= page.crossfilters['all'].dimension(function(d){ return d.CWA});
 	page.crossfilters['state'] 	= page.crossfilters['all'].dimension(function(d){ return d.ST});
-	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});	
+	page.crossfilters['fips'] 	= page.crossfilters['all'].dimension(function(d){ return d.FIPS});
 	if (page.dataType ==="watch") {
 	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['sel_issue_dt'], "YYYYMMDDHHmmss")});
 	page.crossfilters['type']   = page.crossfilters['all'].dimension(function(d) { return d.type});
-	page.crossfilters['pds'] 	= page.crossfilters['all'].dimension(function(d){ return d.pds});	
+	page.crossfilters['pds'] 	= page.crossfilters['all'].dimension(function(d){ return d.pds});
 	}else if (page.dataType ==="report") {
 	page.crossfilters['date'] 	= page.crossfilters['all'].dimension(function(d){ return moment.utc(d['DT'], "YYYYMMDDHHmmss")});
 	page.crossfilters['type'] 	= page.crossfilters['all'].dimension(function(d){ return d["TYPE"]});
@@ -444,7 +444,6 @@ function createFilteredData(page){
 
 function getFilteredData(page){
 
-
 	console.log("getFilteredData");
 	clearFilteredData(page);
 	page.filters = getFilters(page);
@@ -460,27 +459,54 @@ function getFilteredData(page){
 	}
 	//CWA
 	if(page.filters['cwa']){
-		page.filters['cwa'].forEach(function(dd,nn){
-			page.crossfilters['cwa'].filter(function(d){
-				if(d.includes(dd)){return d;}
+		//OR filtering
+		page.crossfilters['cwa'].filter(function(d){
+			match = 0;
+			page.filters['cwa'].forEach(function(dd,nn){
+				if(d.includes(dd)){match = 1;}
 			});
+			if(match === 1){return d;}
 		});
+		//AND filtering
+		//page.filters['cwa'].forEach(function(dd,nn){
+		//	page.crossfilters['cwa'].filter(function(d){
+		//		if(d.includes(dd)){return d;}
+		//	});
+		//});
+
 	}
 	//State
 	if(page.filters['state']){
-		page.filters['state'].forEach(function(dd,nn){
-			page.crossfilters['state'].filter(function(d){
-				if(d.includes(dd)){return d;}
+		//OR filtering
+		page.crossfilters['state'].filter(function(d){
+			match = 0;
+			page.filters['state'].forEach(function(dd,nn){
+				if(d.includes(dd)){match = 1;}
 			});
+			if(match === 1){return d;}
 		});
+		//AND filtering
+		//page.filters['state'].forEach(function(dd,nn){
+		//	page.crossfilters['state'].filter(function(d){
+		//		if(d.includes(dd)){return d;}
+		//	});
+		//});
 	}
 	//FIPS
 	if(page.filters['fips']){
-		page.filters['fips'].forEach(function(dd,nn){
-			page.crossfilters['fips'].filter(function(d){
-				if(d.includes(dd)){return d;}
+		page.crossfilters['fips'].filter(function(d){
+			match = 0;
+			page.filters['fips'].forEach(function(dd,nn){
+				if(d.includes(dd)){match = 1;}
 			});
+			if(match === 1){return d;}
 		});
+		//AND filtering
+		//page.filters['fips'].forEach(function(dd,nn){
+		//	page.crossfilters['fips'].filter(function(d){
+		//		if(d.includes(dd)){return d;}
+		//	});
+		//});
 	}
 	//PDS
 	if(page.filters['pds']){
@@ -489,14 +515,23 @@ function getFilteredData(page){
 				if(d.includes(dd)){return d;}
 				});
 			});
-		}	
+		}
 	//Type
 	if(page.filters['type']){
-		page.filters['type'].forEach(function(dd,nn){
-			page.crossfilters['type'].filter(function(d){
-				if(d.includes(dd)){return d;}
-				});
+		//OR filtering
+		page.crossfilters['type'].filter(function(d){
+			match = 0;
+			page.filters['type'].forEach(function(dd,nn){
+				if(d.includes(dd)){match = 1;}
 			});
+			if(match === 1){return d;}
+		});
+		//AND Filtering
+		//page.filters['type'].forEach(function(dd,nn){
+		//	page.crossfilters['type'].filter(function(d){
+		//		if(d.includes(dd)){return d;}
+		//		});
+		//	});
 		}
 
 	var d = page.crossfilters['fips'].top(Infinity);
