@@ -76,6 +76,12 @@ function createCalendars(page){
 					jQuery(buttonPane).click(function(){
 						jQuery("#end-dp").datepicker("setDate", new Date());	
 					})
+
+					//code for today button to close when it is clicked
+					jQuery.datepicker._gotoToday = function(id) { 
+    				jQuery(id).datepicker('setDate', new Date()).datepicker('hide').blur(); 
+					};
+					
 				}, 1);				
 			},
 			onChangeMonthYear: function(input){

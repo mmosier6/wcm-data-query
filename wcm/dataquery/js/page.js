@@ -11,6 +11,7 @@ function buildPage(page){
 			//Clear out previous rearch data
 			jQuery("#data-table").empty();
 			jQuery("#total-table").empty();
+			jQuery("#chart").empty();
 			//Hide download button
 			jQuery(".download").hide();
 			//set value of checked radio button to v
@@ -31,6 +32,7 @@ function buildPage(page){
 			jQuery("#all-watch-filters").show();
 			jQuery("#watch-type").show();
 			jQuery("#date-pickers").show();
+			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 		}
 		if(v === 'report'){
 			jQuery("#all-watch-filters").hide();
@@ -39,12 +41,20 @@ function buildPage(page){
 			jQuery("#report-source").show();
 			jQuery("#report-type").show();
 			jQuery("#date-pickers").show();
+			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 		}
 
 	}); //End of data-type-buttonset on change function
 
 	//Function when report-type-buttonset is changed
 	jQuery("#report-type-buttonset").buttonset().change(function(){
+			//Clear out previous rearch data
+			jQuery("#data-table").empty();
+			jQuery("#total-table").empty();
+			//Hide download button
+			jQuery(".download").hide();
+			jQuery("#chart").empty();
+
 		//set value of checked radio button to v
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
@@ -93,6 +103,13 @@ function buildPage(page){
 
 	//Function when report-source-buttonset is changed
 	jQuery("#report-source-buttonset").buttonset().change(function(){
+		//Clear out previous rearch data
+		jQuery("#data-table").empty();
+		jQuery("#total-table").empty();
+		//Hide download button
+		jQuery(".download").hide();
+		jQuery("#chart").empty();
+
 		jQuery("#report-type").show(); //show report type buttons 
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
@@ -141,6 +158,23 @@ function buildPage(page){
 	jQuery("#go-btn").button().on('click', function(){
 	jQuery("#view-type").show(); //show view type selector
 	jQuery("#filter-opt-list").show(); //show results of filters
+
+	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR") {
+		jQuery("#chart-type-3").prop("disabled", true);
+		jQuery("#chart-type-4").prop("disabled", true);
+		jQuery("#chartType3").addClass("ui-button-disabled");
+		jQuery("#chartType3").addClass("ui-state-disabled");
+		jQuery("#chartType4").addClass("ui-button-disabled");
+		jQuery("#chartType4").addClass("ui-state-disabled");	
+	}
+	else {
+		jQuery("#chart-type-3").prop("disabled", false);
+		jQuery("#chart-type-4").prop("disabled", false);
+		jQuery("#chartType3").removeClass("ui-button-disabled");
+		jQuery("#chartType3").removeClass("ui-state-disabled");
+		jQuery("#chartType4").removeClass("ui-button-disabled");
+		jQuery("#chartType4").removeClass("ui-state-disabled");			
+		}
 
 		var urlStr = '';
 		if (page.dataType ==="watch"){

@@ -202,6 +202,7 @@ function format ( c ) {
 	totalTitle = windRange;
 	} else if (page.reportType === "ALL") {
 	totalTitle = allRange;
+	document.getElementById("chartType").innerHTML = '<span class="ui-button-text">By Type</span>';
 	}
 	console.log(page.reportType)
 	console.log(totalTitle)
@@ -211,6 +212,7 @@ function format ( c ) {
 	results_final['data'] = [];
 	page.data['filtered-sorted'].forEach(function(d,n){
 
+		results = {};
 		var fulldt = d["DT"];
 		results['DT'] = d['DT'];
 		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";

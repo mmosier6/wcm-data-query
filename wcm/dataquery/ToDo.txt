@@ -4,8 +4,6 @@ To Do List:
 3. Add maps
 4. Add first/last options
 5. Add wind damage as a report type
-6. Change chart-type-3 to magnitude/type based on what is being displayed
-7. Set chart-type-3 and chart-type-4 to disabled when LSR/Tornado is selected
 
 Data I am still waiting for:
 1. Watch file with all years combined

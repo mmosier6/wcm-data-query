@@ -30,17 +30,6 @@ if (page.chartType === "month") {
 		for (i=start_year; i<(end_year +1); i++) {
 			categories[i-start_year] = year_list[i-2000];
 			column_data[i-start_year+1] = total['year'][i];
-			console.log(total['year'][2000])
-			console.log(total['year'][2002])
-			console.log(total['year'][2004])
-			console.log(total['year'][2006])
-			console.log(total['year'][2008])
-			console.log(total['year'][2010])
-			console.log(total['year'][2012])
-			console.log(total['year'][2014])
-			console.log(total['year'][2016])
-			console.log(total['year'][2018])
-			console.log(total['year'][2020])
 		}
 } else if (page.chartType === "type" || page.chartType === "pie") {
 		if (page.dataType ==="watch") {
