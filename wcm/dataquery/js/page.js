@@ -2,7 +2,7 @@ function buildPage(page){
 	//Load default values for button select
 	page.chartType = "month";
 	page.reportSource = "LSR";
-	page.reportType = "T";
+	page.reportType = "ALL";
 	page.watchType = "TOR";
 	page.viewType = "table";
 
