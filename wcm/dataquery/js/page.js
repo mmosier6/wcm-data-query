@@ -1,3 +1,12 @@
+function hideResults() {
+	jQuery("#data-table").empty();
+	jQuery("#total-table").empty();
+	jQuery("#chart").empty();
+	jQuery("#view-type").hide();
+	jQuery("#chart-type").hide();
+	jQuery(".download").hide();
+}
+
 function buildPage(page){
 	//Load default values for button select
 	page.chartType = "month";
@@ -8,12 +17,9 @@ function buildPage(page){
 
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
-			//Clear out previous rearch data
-			jQuery("#data-table").empty();
-			jQuery("#total-table").empty();
-			jQuery("#chart").empty();
-			//Hide download button
-			jQuery(".download").hide();
+			//Clear out previous search data
+			hideResults();
+
 			//set value of checked radio button to v
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
@@ -48,12 +54,8 @@ function buildPage(page){
 
 	//Function when report-type-buttonset is changed
 	jQuery("#report-type-buttonset").buttonset().change(function(){
-			//Clear out previous rearch data
-			jQuery("#data-table").empty();
-			jQuery("#total-table").empty();
-			//Hide download button
-			jQuery(".download").hide();
-			jQuery("#chart").empty();
+			//Clear out previous search data
+			hideResults();
 
 		//set value of checked radio button to v
 		jQuery(this).find("input:radio").each(function(){
@@ -93,6 +95,9 @@ function buildPage(page){
 
 	//Function when watch-type-buttonset is changed
 	jQuery("#watch-type-buttonset").buttonset().change(function(){
+			//Clear out previous search data
+			hideResults();
+			
 		jQuery(this).find("input:radio").each(function(){
 			if(jQuery(this).prop("checked")){
 				v = jQuery(this).attr("value");
@@ -103,12 +108,8 @@ function buildPage(page){
 
 	//Function when report-source-buttonset is changed
 	jQuery("#report-source-buttonset").buttonset().change(function(){
-		//Clear out previous rearch data
-		jQuery("#data-table").empty();
-		jQuery("#total-table").empty();
-		//Hide download button
-		jQuery(".download").hide();
-		jQuery("#chart").empty();
+			//Clear out previous search data
+			hideResults();
 
 		jQuery("#report-type").show(); //show report type buttons
 		jQuery(this).find("input:radio").each(function(){
