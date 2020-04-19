@@ -182,31 +182,34 @@ function format ( c ) {
 	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);
 
 	//set total array equal to zero to start
-	total['type'] = [0,0,0,0];
+	total['type'] = [0,0,0,0,0,0];
 	total['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
 	total['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['mag'] = [0,0,0,0,0,0,0];
+	total['mag'] = [0,0,0,0,0,0,0,0];
 
 	//ranges that will be displayed in totals table
-	var torRange = ["Rating","EF0","EF1","EF2","EF3","EF4","EF5"];
-	var hailRange = ['Hail Size','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"'];
-	var windRange = ["Wind Speed","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
+	var torRange = ["Rating","EF0","EF1","EF2","EF3","EF4","EF5",""];
+	var hailRange = ['Hail Size','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"',""];
+	var windRange = ["Wind Speed","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
 	var windAllRange = ["Wind Speed","Damage","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
-	var allRange = ["Type","Tornado","Hail","All Wind","Wind Gust","Wind Damage"];
+	var allRange = ["Type","Tornado","Hail","Wind Gust","Wind Damage","All Wind"];
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
-		totalTitle = torRange;
+	totalTitle = torRange;		
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "A") {
-		totalTitle = hailRange;
+	totalTitle = hailRange;
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "G" || page.reportType === "W") {
-		totalTitle = windRange;
+	totalTitle = windRange;
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "ALL") {
-		totalTitle = allRange;
-		document.getElementById("chartType").innerHTML = '<span class="ui-button-text">By Type</span>';
+	totalTitle = allRange;
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	} else if (page.reportType === "ALLW") {
-		totalTitle = windAllRange;
-		document.getElementById("chartType").innerHTML = '<span class="ui-button-text">By Type</span>';
+	totalTitle = windAllRange;
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	}
 
 	console.log(page.reportType)
@@ -299,14 +302,20 @@ function format ( c ) {
 	if (d['TYPE'] === "T") {
 			total['type'][1]=total['type'][1]+1;
 	} 	else if (d['TYPE'] === "A") {
-			total['type'][2]=total['type'][2]+1
+			total['type'][2]=total['type'][2]+1;
 	} 	else if (d['TYPE'] === "G") {
-			total['type'][3]=total['type'][3]+1
-			total['type'][4]=total['type'][4]+1
+			total['type'][3]=total['type'][3]+1;
+			total['type'][5]=total['type'][5]+1;
 	}  	else if (d['TYPE'] === "W") {
+<<<<<<< HEAD
 			total['type'][3]=total['type'][3]+1
 			total['type'][5]=total['type'][5]+1
 	}
+=======
+			total['type'][4]=total['type'][4]+1;
+			total['type'][5]=total['type'][5]+1;
+	}
+>>>>>>> d1d4a172deab99e317550bcce5c76309e5b5d014
 
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
@@ -412,6 +421,10 @@ function format ( c ) {
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>"+totalTitle[6]+"</td>";
 	tot = tot + "<td id='results_cell'>"+total['mag'][6]+"</td>";
+	tot = tot + "</tr>";
+	tot = tot + "<tr>";
+	tot = tot + "<td id='results_cell'>"+totalTitle[7]+"</td>";
+	tot = tot + "<td id='results_cell'>"+total['mag'][7]+"</td>";
 	tot = tot + "</tr>";
 	tot = tot + "<tr>";
 	tot = tot + "<td id='results_cell'>Total</td>";
