@@ -6,8 +6,11 @@ var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct",
 var year_list = [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
 var today = new Date();
 var current_year = today.getFullYear();
-var total = [];
+var total = {};
+total['type'] = {};
+total['time'] = {};
 var totalTitle = Array();
+var magTitle;
 
 function displayFilteredData(page){
 //clear finalJSON every time the script is run
@@ -15,33 +18,33 @@ finalJSON = "";
 
 //table formaatting if data type is watch
 if (page.dataType === "watch") {
-
+	
 	//function used down below to change the order of the data based on the date
 	function compare(a,b){
 		const watchA = a["sel_issue_dt"];
 		const watchB = b["sel_issue_dt"];
-
+		
 		var comparison = 0;
 		if(watchA > watchB){
 			comparison = 1;
 		}else if(watchA < watchB){
 			comparison = -1;
 		}
-
+		
 		return comparison;
 	}
 
-	totalTitle = ["Watch Type","Tornado","Severe","PDS Tornado","PDS Severe"];
-
+	totalTitle = ["All Watches","Tornado","Severe","PDS Tornado","PDS Severe"];
+	
 	//after filter is run, use compare funtion to sort the data
-	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);
+	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);	
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0];
-	total['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['time']['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['time']['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
-	//create variables used to store data
+	//create variables used to store data 
 	var results;
 	var results_final = {};
 	results_final['data'] = [];
@@ -75,73 +78,60 @@ if (page.dataType === "watch") {
 		//this function counts the total number for each month
 		month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof total['month'][i] === 'undefined') {
-				total['month'][i] = 0;
+			if (typeof total['time']['month'][i] === 'undefined') {
+				total['time']['month'][i] = 0;
 			}
 			if (i=== month) {
-				total['month'][i] = total['month'][i] + 1;
+				total['time']['month'][i] = total['time']['month'][i] + 1;
 			}
 		}
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof total['year'][i] === 'undefined') {
-				total['year'][i] = 0;
+			if (typeof total['time']['year'][i] === 'undefined') {
+				total['time']['year'][i] = 0;
 			}
 			if (i=== year) {
-				total['year'][i] = total['year'][i] + 1;
+				total['time']['year'][i] = total['time']['year'][i] + 1;
 			}
 	}
 
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":["'+d["type"]+'"],"pds":["'+d["pds"]+'"],"expire_dt":["'+d["sel_expire_dt"]+'"],"threats":["'+d["threats"]+'"],"summary":["'+d["summary"]+'"],"areas":["'+d["areas"]+'"]}';
-
+	
 	}); //closing brackets for page.data['filtered-sorted'].forEach function
+
+	console.log(total)
+
+var total1;
+
+var totals_final = {};
+	totals_final['data'] = [];
+
+	for (i=0; i<total['type'].length; i++) {
+		total1 = {};
+		total1.title = totalTitle[i];
+		total1.totals = total['type'][i];
+		totals_final["data"].push(total1);
+	}
+
+console.log(totals_final)
 
 console.log(results_final)
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['month'][i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month'][i]+',';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+',';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';		
 		}
 	}
-
-	//make total table here
-	tot = "";
-	tot = tot + "<table id='total_table'>";
-	tot = tot + "<tr>";
-	tot = tot + "<th id='results_cell'>Type</th>";
-	tot = tot + "<th id='results_cell'> Total </th>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Watches</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Tornado</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][1]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Severe</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][2]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>PDS Tornado</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>PDS Severe</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "</table>";
 
 //return the html of the details section when you expand a row
 function format ( c ) {
@@ -168,48 +158,59 @@ function format ( c ) {
 	function compare(a,b){
 		const ReportA = a.DT;
 		const ReportB = b.DT;
-
+		
 		var comparison = 0;
 		if(ReportA > ReportB){
 			comparison = 1;
 		}else if(ReportA < ReportB){
 			comparison = -1;
 		}
-
+		
 		return comparison;
 	}
 	//after filter is run, use compare funtion to sort the data
-	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);
+	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);		
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0,0];
-	total['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['mag'] = [0,0,0,0,0,0,0,0];
+	total['time']['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['time']['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['mag'] = [0,0,0,0,0,0,0];
 
 	//ranges that will be displayed in totals table
-	var torRange = ["Rating","EF0","EF1","EF2","EF3","EF4","EF5",""];
-	var hailRange = ['Hail Size','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"',""];
-	var windRange = ["Wind Speed","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
-	var windAllRange = ["Wind Speed","Damage","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
-	var allRange = ["Type","Tornado","Hail","Wind Gust","Wind Damage","All Wind"];
+	var torRange = ["Total Tornadoes","EF0","EF1","EF2","EF3","EF4","EF5",""];
+	var hailRange = ['Total Hail Reports','<1"','1"-1.99"','2"-2.99"','3"-3.99"','4"-4.99"','5+"',""];
+	var windRange = ["Total Wind Gust Reports","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
+	var windDRange = ["Total Wind Damage Reports","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
+	var windAllRange = ["Total Wind Reports","Damage","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
+	var allRange = ["Total Reports","Tornado","Hail","Wind Gust","Wind Damage","All Wind"];
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
-	totalTitle = torRange;		
+	totalTitle = torRange;
+	MagTitle = "Rating";		
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "A") {
 	totalTitle = hailRange;
+	MagTitle = "Hail Size";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
-	} else if (page.reportType === "G" || page.reportType === "W") {
+	} else if (page.reportType === "G") {
 	totalTitle = windRange;
+	MagTitle = "Wind Speed";
+	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
+	} else if (page.reportType === "W") {
+	totalTitle = windDRange;
+	MagTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "ALL") {
 	totalTitle = allRange;
+	MagTitle = "Type";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	} else if (page.reportType === "ALLW") {
 	totalTitle = windAllRange;
+	MagTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
+	total['mag'] = [0,0,0,0,0,0,0,0];
 	}
 
 	console.log(page.reportType)
@@ -235,6 +236,7 @@ function format ( c ) {
 
 		//this is how totals are calculated. Add one each time you iterate through.
 			total['type'][0] = total['type'][0] +1;
+			total['mag'][0] = total['mag'][0] +1;
 
 		//add up the total number at each threshold by iterating through.
 		//start with tornado
@@ -299,139 +301,88 @@ function format ( c ) {
 			total['mag'][1]=total['mag'][1]+1;
 		}
 	}
-	if (d['TYPE'] === "T") {
-			total['type'][1]=total['type'][1]+1;
+	if (d['TYPE'] === "T") {	
+			total['type'][1]=total['type'][1]+1;		
 	} 	else if (d['TYPE'] === "A") {
 			total['type'][2]=total['type'][2]+1;
 	} 	else if (d['TYPE'] === "G") {
 			total['type'][3]=total['type'][3]+1;
 			total['type'][5]=total['type'][5]+1;
 	}  	else if (d['TYPE'] === "W") {
-<<<<<<< HEAD
-			total['type'][3]=total['type'][3]+1
-			total['type'][5]=total['type'][5]+1
-	}
-=======
 			total['type'][4]=total['type'][4]+1;
 			total['type'][5]=total['type'][5]+1;
-	}
->>>>>>> d1d4a172deab99e317550bcce5c76309e5b5d014
+	} 
 
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof total['month'][i] === 'undefined') {
+			if (typeof total['time']['month'][i] === 'undefined') {
 				total['month'][i] = 0;
 			}
 			if (i=== month) {
-				total['month'][i] = total['month'][i] + 1;
+				total['time']['month'][i] = total['time']['month'][i] + 1;
 			}
-		}
+		}	
 
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof total['year'][i] === 'undefined') {
-				total['year'][i] = 0;
+			if (typeof total['time']['year'][i] === 'undefined') {
+				total['time']['year'][i] = 0;
 			}
 			if (i=== year) {
-				total['year'][i] = total['year'][i] + 1;
+				total['time']['year'][i] = total['time']['year'][i] + 1;
 			}
 		}
 
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
-
+	
 	});	//closing brackets for page.data['filtered-sorted'].forEach function
+
+
+	console.log(total)
+
+var total1;
+
+var totals_final = {};
+	totals_final['data'] = [];
+
+	if (page.reportType != "ALL") {	
+	for (i=0; i<total['mag'].length; i++) {
+		total1 = {};
+		total1.title = totalTitle[i];	
+		total1.totals = total['mag'][i];
+		totals_final["data"].push(total1);
+	}
+} else {
+		for (i=0; i<total['type'].length; i++) {
+		total1 = {};
+		total1.title = totalTitle[i];	
+		total1.totals = total['type'][i];
+		totals_final["data"].push(total1);
+	}
+}
+
+console.log(totals_final)
+
+console.log(results_final)
 
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['month'][i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month'][i]+',';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['year'][i]+',';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';		
 		}
 	}
 
-	//make total table here
-	tot = "";
-	if (page.reportType === "ALL") {
-	tot = tot + "<table id='total_table'>";
-	tot = tot + "<tr>";
-	tot = tot + "<th id='results_cell'>Type</th>";
-	tot = tot + "<th id='results_cell'> Total </th>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[1]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][1]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[2]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][2]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[3]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][3]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[4]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][4]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[5]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][5]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Total</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "</table>";
-} else {
-	tot = tot + "<table id='total_table'>";
-	tot = tot + "<tr>";
-	tot = tot + "<th id='results_cell'>"+totalTitle[0]+"</th>";
-	tot = tot + "<th id='results_cell'> Total </th>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[1]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][1]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[2]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][2]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[3]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][3]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[4]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][4]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[5]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][5]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[6]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][6]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>"+totalTitle[7]+"</td>";
-	tot = tot + "<td id='results_cell'>"+total['mag'][7]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "<tr>";
-	tot = tot + "<td id='results_cell'>Total</td>";
-	tot = tot + "<td id='results_cell'>"+total['type'][0]+"</td>";
-	tot = tot + "</tr>";
-	tot = tot + "</table>";
-}
 //return the html of the details section when you expand a row
 function format ( c ) {
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
@@ -450,7 +401,7 @@ function format ( c ) {
 	//clear out total-table
 	jQuery("#total-table").empty();
 	//put variable tot into tot-table
-	jQuery("#total-table").html(tot);
+	jQuery("#total-table").html('<table id="total_table" class="display"></table><br>');
 
 if (page.dataType === "watch") {
 	//turn results table into DataTable
@@ -466,7 +417,7 @@ var table = jQuery('#results_table').DataTable({
 				title: "Date/Time"
 			},
 			{	data: "type",
-				title: totalTitle[0]
+				title: "Watch Type"
 			},
 			{	data: "num",
 				title: "Watch Number"
@@ -480,18 +431,35 @@ var table = jQuery('#results_table').DataTable({
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
-		"columnDefs": [
+		"columnDefs": [		
 			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
-      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>'
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
       		},
 			{	"targets": [4, 5],
 				"orderable": false
       		}
-		]
+		]		
 	}); //end of variable table
+
+var tableTotal = jQuery('#total_table').DataTable({
+		data: totals_final['data'],
+		columns: [
+			{	data: "title",
+				title: "Watch Type"
+			},
+			{	data: "totals",
+				title: "Totals"
+			}
+		],
+        "paging":   false,
+        "info": false,
+  		"searching": false,
+        "order": [[ 1, "desc" ]]
+});
+
 } else if (page.dataType === "report") {
 	//turn results table into DataTable
 var table = jQuery('#results_table').DataTable({
@@ -506,7 +474,7 @@ var table = jQuery('#results_table').DataTable({
 				title: "Date/Time"
 			},
 			{	data: "MAGNITUDE",
-				title: totalTitle[0]
+				title: magTitle
 			},
 			{	data: "LOCATION",
 				title: "Location"
@@ -529,25 +497,24 @@ var table = jQuery('#results_table').DataTable({
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
-		"columnDefs": [
-			{	"width" : "140px", "targets":1},
+		"columnDefs": [		
+			{	"width" : "140px", "targets":1},	
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
-      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>'
-      		},
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      		},			
       		{	"targets": [3, 4, 5, 6],
 				"orderable": false
       		}
-		]
+		]		
 	}); //end of variable table
-}
 
     // Add event listener for opening and closing details
     jQuery('i.details-control').on('click', function () {
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
-
+ 
         if ( row.child.isShown() ) {
             jQuery(this).addClass("fa-plus-square");
 			jQuery(this).removeClass("fa-minus-square");
@@ -563,6 +530,23 @@ var table = jQuery('#results_table').DataTable({
         }
     } );
 
+var tableTotal = jQuery('#total_table').DataTable({
+		data: totals_final['data'],
+		columns: [
+			{	data: "title",
+				title: "Watch Type"
+			},
+			{	data: "totals",
+				title: "Totals"
+			}
+		],
+        "paging":   false,
+        "info": false,
+  		"searching": false,
+        "order": [[ 1, "desc" ]]
+});
+
+}
 }
 //this function makes the JSON file which can be downloaded by the user
 function makeJSON(page) {
@@ -574,7 +558,8 @@ function makeJSON(page) {
 			if (page.dataType === "watch") {
 			JSONfile.download = ''+page.watchType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';
 			} else if (page.dataType === "report") {
-			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';
+			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';				
 			}
 			JSONfile.click();
 		}
+

@@ -163,8 +163,10 @@ function buildPage(page){
 	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR") {
 		jQuery("#chart-type-3").button("disable");
 		jQuery("#chart-type-4").button("disable");
-	}
-	else {
+	} else if (page.dataType === "report" && page.reportType === "W" && page.reportSource === "LSR") {
+		jQuery("#chart-type-3").button("disable");
+		jQuery("#chart-type-4").button("disable");		
+	} else {
 		jQuery("#chart-type-3").button("enable");
 		jQuery("#chart-type-4").button("enable");
 		}
