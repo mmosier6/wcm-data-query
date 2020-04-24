@@ -158,12 +158,12 @@ function buildPage(page){
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){
 	jQuery("#view-type").show(); //show view type selector
+	if (jQuery("#view-type-2").prop("checked")) {
+	jQuery("#chart-type").show(); //show view type selector
+	}
 	jQuery("#filter-opt-list").show(); //show results of filters
 
-	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR") {
-		jQuery("#chart-type-3").button("disable");
-		jQuery("#chart-type-4").button("disable");
-	} else if (page.dataType === "report" && page.reportType === "W" && page.reportSource === "LSR") {
+	if (page.dataType === "report" && page.reportType === "T" && page.reportSource === "LSR" || page.dataType === "report" && page.reportType === "W" && page.reportSource === "LSR" || page.dataType === "watch" && page.watchType != "ALL") {
 		jQuery("#chart-type-3").button("disable");
 		jQuery("#chart-type-4").button("disable");		
 	} else {

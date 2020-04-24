@@ -9,6 +9,8 @@ var current_year = today.getFullYear();
 var total = {};
 total['type'] = {};
 total['time'] = {};
+total['time']['month'] = {};
+total['time']['year'] = {};
 var totalTitle = Array();
 var magTitle;
 
@@ -41,8 +43,16 @@ if (page.dataType === "watch") {
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0];
-	total['time']['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['time']['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['time']['month']['total'] = [];
+	total['time']['month']['TOR'] = [];
+	total['time']['month']['SVR'] = [];
+	total['time']['month']['PDS TOR'] = [];
+	total['time']['month']['PDS SVR'] = [];
+	total['time']['year']['total'] = [];
+	total['time']['year']['TOR'] = [];
+	total['time']['year']['SVR'] = [];
+	total['time']['year']['PDS TOR'] = [];
+	total['time']['year']['PDS SVR'] = [];
 
 	//create variables used to store data 
 	var results;
@@ -78,30 +88,57 @@ if (page.dataType === "watch") {
 		//this function counts the total number for each month
 		month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof total['time']['month'][i] === 'undefined') {
-				total['time']['month'][i] = 0;
+			if (typeof total['time']['month']['total'][i] === 'undefined') {
+				total['time']['month']['total'][i] = 0;
+				total['time']['month']['TOR'][i]=0;
+				total['time']['month']['SVR'][i]=0;
+				total['time']['month']['PDS TOR'][i]=0;
+				total['time']['month']['PDS SVR'][i]=0;
 			}
 			if (i=== month) {
-				total['time']['month'][i] = total['time']['month'][i] + 1;
+				total['time']['month']['total'][i] = total['time']['month']['total'][i] + 1;
+				if (d['type'] === "TOR") {
+					total['time']['month']['TOR'][i] = total['time']['month']['TOR'][i] + 1;
+				} else if (d['type'] === "SVR") {
+					total['time']['month']['SVR'][i]= total['time']['month']['SVR'][i] + 1;
+				} else if (d['type'] === "PDS TOR") {
+					total['time']['month']['PDS TOR'][i] = total['time']['month']['PDS TOR'][i] + 1;
+				} else if (d['type'] === "PDS SVR") {
+					total['time']['month']['PDS SVR'][i] = total['time']['month']['PDS SVR'][i] + 1;
+				}
 			}
 		}
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof total['time']['year'][i] === 'undefined') {
-				total['time']['year'][i] = 0;
+			if (typeof total['time']['year']['total'][i] === 'undefined') {
+				total['time']['year']['total'][i] = 0;
+				total['time']['year']['TOR'][i]=0;
+				total['time']['year']['SVR'][i]=0;
+				total['time']['year']['PDS TOR'][i]=0;
+				total['time']['year']['PDS SVR'][i]=0;
 			}
 			if (i=== year) {
-				total['time']['year'][i] = total['time']['year'][i] + 1;
+				total['time']['year']['total'][i] = total['time']['year']['total'][i] + 1;
+				console.log('count')
+				if (d['type'] === "TOR") {
+					total['time']['year']['TOR'][i] = total['time']['year']['TOR'][i] + 1;
+				} else if (d['type'] === "SVR") {
+					total['time']['year']['SVR'][i] = total['time']['year']['SVR'][i] + 1;
+				} else if (d['type'] === "PDS TOR") {
+					total['time']['year']['PDS TOR'][i] = total['time']['year']['PDS TOR'][i] + 1;
+				} else if (d['type'] === "PDS SVR") {
+					total['time']['year']['PDS SVR'][i] = total['time']['year']['PDS SVR'][i] + 1;
+				}
 			}
 	}
-
+	
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":["'+d["type"]+'"],"pds":["'+d["pds"]+'"],"expire_dt":["'+d["sel_expire_dt"]+'"],"threats":["'+d["threats"]+'"],"summary":["'+d["summary"]+'"],"areas":["'+d["areas"]+'"]}';
 	
 	}); //closing brackets for page.data['filtered-sorted'].forEach function
 
-	console.log(total)
+console.log(total)
 
 var total1;
 
@@ -115,9 +152,6 @@ var totals_final = {};
 		totals_final["data"].push(total1);
 	}
 
-console.log(totals_final)
-
-console.log(results_final)
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
@@ -173,8 +207,18 @@ function format ( c ) {
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0,0];
-	total['time']['month'] = [0,0,0,0,0,0,0,0,0,0,0,0,0];
-	total['time']['year'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	total['time']['month']['total'] = [];
+	total['time']['month']['T'] = [];
+	total['time']['month']['A'] = [];
+	total['time']['month']['G'] = [];
+	total['time']['month']['W'] = [];
+	total['time']['month']['ALLW'] = [];
+	total['time']['year']['total'] = [];
+	total['time']['year']['T'] = [];
+	total['time']['year']['A'] = [];
+	total['time']['year']['G'] = [];
+	total['time']['year']['W'] = [];
+	total['time']['year']['ALLW'] = [];
 	total['mag'] = [0,0,0,0,0,0,0];
 
 	//ranges that will be displayed in totals table
@@ -212,9 +256,6 @@ function format ( c ) {
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	total['mag'] = [0,0,0,0,0,0,0,0];
 	}
-
-	console.log(page.reportType)
-	console.log(totalTitle)
 
 	var results = {};
 	var results_final = {};
@@ -316,22 +357,54 @@ function format ( c ) {
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
-			if (typeof total['time']['month'][i] === 'undefined') {
-				total['month'][i] = 0;
+			if (typeof total['time']['month']['total'][i] === 'undefined') {
+				total['time']['month']['total'][i] = 0;
+				total['time']['month']['T'][i]=0;
+				total['time']['month']['A'][i]=0;
+				total['time']['month']['W'][i]=0;
+				total['time']['month']['ALLW'][i]=0;
+				total['time']['month']['G'][i]=0;
 			}
 			if (i=== month) {
-				total['time']['month'][i] = total['time']['month'][i] + 1;
+				total['time']['month']['total'][i] = total['time']['month']['total'][i] + 1;
+				if (d['TYPE'] === "T") {
+					total['time']['month']['T'][i] = total['time']['month']['T'][i] + 1;
+				} else if (d['TYPE'] === "A") {
+					total['time']['month']['A'][i]= total['time']['month']['A'][i] + 1;
+				} else if (d['TYPE'] === "W") {
+					total['time']['month']['W'][i] = total['time']['month']['W'][i] + 1;
+					total['time']['month']['ALLW'][i] = total['time']['month']['ALLW'][i] + 1;
+				} else if (d['TYPE'] === "G") {
+					total['time']['month']['G'][i] = total['time']['month']['G'][i] + 1;
+					total['time']['month']['ALLW'][i] = total['time']['month']['ALLW'][i] + 1;
+				}
 			}
 		}	
 
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
 		for (i=2000; i<2021; i++) {
-			if (typeof total['time']['year'][i] === 'undefined') {
-				total['time']['year'][i] = 0;
+			if (typeof total['time']['year']['total'][i] === 'undefined') {
+				total['time']['year']['total'][i] = 0;
+				total['time']['year']['T'][i]=0;
+				total['time']['year']['A'][i]=0;
+				total['time']['year']['W'][i]=0;
+				total['time']['year']['ALLW'][i]=0;
+				total['time']['year']['G'][i]=0;
 			}
 			if (i=== year) {
-				total['time']['year'][i] = total['time']['year'][i] + 1;
+				total['time']['year']['total'][i] = total['time']['year']['total'][i] + 1;
+				if (d['TYPE'] === "T") {
+					total['time']['year']['T'][i] = total['time']['year']['T'][i] + 1;
+				} else if (d['TYPE'] === "A") {
+					total['time']['year']['A'][i]= total['time']['year']['A'][i] + 1;
+				} else if (d['TYPE'] === "W") {
+					total['time']['year']['W'][i] = total['time']['year']['W'][i] + 1;
+					total['time']['year']['ALLW'][i] = total['time']['year']['ALLW'][i] + 1;
+				} else if (d['TYPE'] === "G") {
+					total['time']['year']['G'][i] = total['time']['year']['G'][i] + 1;
+					total['time']['year']['ALLW'][i] = total['time']['year']['ALLW'][i] + 1;
+				}
 			}
 		}
 
@@ -372,14 +445,14 @@ console.log(results_final)
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month'][i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month']['total'][i]+',';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';		
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+',';		
 		}
 	}
 
