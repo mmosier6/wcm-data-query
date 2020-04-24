@@ -20,16 +20,16 @@ if (page.chartType === "month") {
 	if (page.filters['date'][1].slice(0,4) === page.filters['date'][0].slice(0,4) ) {
 		for (i=start_month; i<(end_month +1); i++) {
 			categories[i-start_month] = month_abbrev[i-1];
-			column_data[i-start_month+1] = total['month'][i];
+			column_data[i-start_month+1] = total['time']['month'][i];
 		}
 	} else {
 		categories = month_abbrev;
-		column_data = [column_data[0],total['month'][1],total['month'][2],total['month'][3],total['month'][4],total['month'][5],total['month'][6],total['month'][7],total['month'][8],total['month'][9],total['month'][10],total['month'][11],total['month'][12]];
+		column_data = [column_data[0],total['time']['month'][1],total['time']['month'][2],total['time']['month'][3],total['time']['month'][4],total['time']['month'][5],total['time']['month'][6],total['time']['month'][7],total['time']['month'][8],total['time']['month'][9],total['time']['month'][10],total['time']['month'][11],total['time']['month'][12]];
 		}
 } else if (page.chartType === "year") {
 		for (i=start_year; i<(end_year +1); i++) {
 			categories[i-start_year] = year_list[i-2000];
-			column_data[i-start_year+1] = total['year'][i];
+			column_data[i-start_year+1] = total['time']['year'][i];
 		}
 } else if (page.chartType === "type" || page.chartType === "pie") {
 		if (page.dataType ==="watch") {
