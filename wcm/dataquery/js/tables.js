@@ -196,7 +196,7 @@ function format ( c ) {
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
-	totalTitle = torRange;		
+	totalTitle = torRange;
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "A") {
 	totalTitle = hailRange;
@@ -307,15 +307,9 @@ function format ( c ) {
 			total['type'][3]=total['type'][3]+1;
 			total['type'][5]=total['type'][5]+1;
 	}  	else if (d['TYPE'] === "W") {
-<<<<<<< HEAD
-			total['type'][3]=total['type'][3]+1
-			total['type'][5]=total['type'][5]+1
-	}
-=======
 			total['type'][4]=total['type'][4]+1;
 			total['type'][5]=total['type'][5]+1;
 	}
->>>>>>> d1d4a172deab99e317550bcce5c76309e5b5d014
 
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
