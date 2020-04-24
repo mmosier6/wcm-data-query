@@ -20,26 +20,26 @@ finalJSON = "";
 
 //table formaatting if data type is watch
 if (page.dataType === "watch") {
-	
+
 	//function used down below to change the order of the data based on the date
 	function compare(a,b){
 		const watchA = a["sel_issue_dt"];
 		const watchB = b["sel_issue_dt"];
-		
+
 		var comparison = 0;
 		if(watchA > watchB){
 			comparison = 1;
 		}else if(watchA < watchB){
 			comparison = -1;
 		}
-		
+
 		return comparison;
 	}
 
 	totalTitle = ["All Watches","Tornado","Severe","PDS Tornado","PDS Severe"];
-	
+
 	//after filter is run, use compare funtion to sort the data
-	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);	
+	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0];
@@ -54,7 +54,7 @@ if (page.dataType === "watch") {
 	total['time']['year']['PDS TOR'] = [];
 	total['time']['year']['PDS SVR'] = [];
 
-	//create variables used to store data 
+	//create variables used to store data
 	var results;
 	var results_final = {};
 	results_final['data'] = [];
@@ -135,7 +135,7 @@ if (page.dataType === "watch") {
 	
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":["'+d["type"]+'"],"pds":["'+d["pds"]+'"],"expire_dt":["'+d["sel_expire_dt"]+'"],"threats":["'+d["threats"]+'"],"summary":["'+d["summary"]+'"],"areas":["'+d["areas"]+'"]}';
-	
+
 	}); //closing brackets for page.data['filtered-sorted'].forEach function
 
 console.log(total)
@@ -163,7 +163,7 @@ var totals_final = {};
 		if (i===current_year) {
 		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+'}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';		
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';
 		}
 	}
 
@@ -192,18 +192,18 @@ function format ( c ) {
 	function compare(a,b){
 		const ReportA = a.DT;
 		const ReportB = b.DT;
-		
+
 		var comparison = 0;
 		if(ReportA > ReportB){
 			comparison = 1;
 		}else if(ReportA < ReportB){
 			comparison = -1;
 		}
-		
+
 		return comparison;
 	}
 	//after filter is run, use compare funtion to sort the data
-	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);		
+	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);
 
 	//set total array equal to zero to start
 	total['type'] = [0,0,0,0,0,0];
@@ -232,7 +232,10 @@ function format ( c ) {
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
 	totalTitle = torRange;
-	MagTitle = "Rating";		
+<<<<<<< HEAD
+=======
+	MagTitle = "Rating";
+>>>>>>> 1a7e2a67a9b5bb272eb83d934560331fdd7e2f10
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "A") {
 	totalTitle = hailRange;
@@ -342,8 +345,8 @@ function format ( c ) {
 			total['mag'][1]=total['mag'][1]+1;
 		}
 	}
-	if (d['TYPE'] === "T") {	
-			total['type'][1]=total['type'][1]+1;		
+	if (d['TYPE'] === "T") {
+			total['type'][1]=total['type'][1]+1;
 	} 	else if (d['TYPE'] === "A") {
 			total['type'][2]=total['type'][2]+1;
 	} 	else if (d['TYPE'] === "G") {
@@ -352,7 +355,7 @@ function format ( c ) {
 	}  	else if (d['TYPE'] === "W") {
 			total['type'][4]=total['type'][4]+1;
 			total['type'][5]=total['type'][5]+1;
-	} 
+	}
 
 		//this function counts the total number for each month
 		var month = Number(fulldt.slice(4,6));
@@ -379,7 +382,7 @@ function format ( c ) {
 					total['time']['month']['ALLW'][i] = total['time']['month']['ALLW'][i] + 1;
 				}
 			}
-		}	
+		}
 
 		//this function counts the total number for each year
 		year = Number(fulldt.slice(0,4));
@@ -410,7 +413,7 @@ function format ( c ) {
 
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
-	
+
 	});	//closing brackets for page.data['filtered-sorted'].forEach function
 
 
@@ -421,17 +424,17 @@ var total1;
 var totals_final = {};
 	totals_final['data'] = [];
 
-	if (page.reportType != "ALL") {	
+	if (page.reportType != "ALL") {
 	for (i=0; i<total['mag'].length; i++) {
 		total1 = {};
-		total1.title = totalTitle[i];	
+		total1.title = totalTitle[i];
 		total1.totals = total['mag'][i];
 		totals_final["data"].push(total1);
 	}
 } else {
 		for (i=0; i<total['type'].length; i++) {
 		total1 = {};
-		total1.title = totalTitle[i];	
+		total1.title = totalTitle[i];
 		total1.totals = total['type'][i];
 		totals_final["data"].push(total1);
 	}
@@ -452,7 +455,11 @@ console.log(results_final)
 		if (i===current_year) {
 		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+'}}';
 		} else {
+<<<<<<< HEAD
 		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+',';		
+=======
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';
+>>>>>>> 1ebb6bbe4fd75a3d5042e1459037afd5391451e7
 		}
 	}
 
@@ -504,17 +511,17 @@ var table = jQuery('#results_table').DataTable({
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
-		"columnDefs": [		
+		"columnDefs": [
 			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
-      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>'
       		},
 			{	"targets": [4, 5],
 				"orderable": false
       		}
-		]		
+		]
 	}); //end of variable table
 
 var tableTotal = jQuery('#total_table').DataTable({
@@ -570,24 +577,24 @@ var table = jQuery('#results_table').DataTable({
 		],
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
-		"columnDefs": [		
-			{	"width" : "140px", "targets":1},	
+		"columnDefs": [
+			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
-      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>' 
-      		},			
+      			"defaultContent": '<i class = "fa fa-plus-square details-control" orderable = "false" title = "Click to see additional'+page.dataType+' text"></i>'
+      		},
       		{	"targets": [3, 4, 5, 6],
 				"orderable": false
       		}
-		]		
+		]
 	}); //end of variable table
 
     // Add event listener for opening and closing details
     jQuery('i.details-control').on('click', function () {
         var tr = jQuery(this).closest('tr');
         var row = table.row(tr);
- 
+
         if ( row.child.isShown() ) {
             jQuery(this).addClass("fa-plus-square");
 			jQuery(this).removeClass("fa-minus-square");
@@ -631,8 +638,7 @@ function makeJSON(page) {
 			if (page.dataType === "watch") {
 			JSONfile.download = ''+page.watchType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';
 			} else if (page.dataType === "report") {
-			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';				
+			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';
 			}
 			JSONfile.click();
 		}
-
