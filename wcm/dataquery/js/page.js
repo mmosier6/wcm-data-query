@@ -118,6 +118,13 @@ function buildPage(page){
 			}
 		});
 		page.reportSource = v;
+		if (v === "stormData") {
+			jQuery("#report-type-5").button("disable");
+			jQuery("#report-type-6").button("disable");
+		} else {
+			jQuery("#report-type-5").button("enable");
+			jQuery("#report-type-6").button("enable");			
+		}
 	});//end of report-source-buttonset on change function
 
 	//Function when chart-type-buttonset is changed

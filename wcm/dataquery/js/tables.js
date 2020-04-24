@@ -227,6 +227,7 @@ function format ( c ) {
 	var windRange = ["Total Wind Gust Reports","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
 	var windDRange = ["Total Wind Damage Reports","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph",""];
 	var windAllRange = ["Total Wind Reports","Damage","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
+	var windAllRangeSD = ["Total Wind Reports","<58 mph","58-65 mph","66-74 mph","75-85 mph","85-95 mph","95-105 mph","105+ mph"];
 	var allRange = ["Total Reports","Tornado","Hail","Wind Gust","Wind Damage","All Wind"];
 
 	//populate the totalTitle Array for display in totals table based on what the report type is
@@ -251,7 +252,11 @@ function format ( c ) {
 	MagTitle = "Type";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	} else if (page.reportType === "ALLW") {
-	totalTitle = windAllRange;
+		if (page.reportSource === "stormData") {
+		totalTitle = windAllRangeSD;			
+		} else {
+		totalTitle = windAllRange;
+		}
 	MagTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	total['mag'] = [0,0,0,0,0,0,0,0];
