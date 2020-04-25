@@ -233,23 +233,23 @@ function format ( c ) {
 	//populate the totalTitle Array for display in totals table based on what the report type is
 	if (page.reportType === "T") {
 	totalTitle = torRange;
-	MagTitle = "Rating";		
+	magTitle = "Rating";		
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "A") {
 	totalTitle = hailRange;
-	MagTitle = "Hail Size";
+	magTitle = "Hail Size";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "G") {
 	totalTitle = windRange;
-	MagTitle = "Wind Speed";
+	magTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "W") {
 	totalTitle = windDRange;
-	MagTitle = "Wind Speed";
+	magTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 	} else if (page.reportType === "ALL") {
 	totalTitle = allRange;
-	MagTitle = "Type";
+	magTitle = "Type";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	} else if (page.reportType === "ALLW") {
 		if (page.reportSource === "stormData") {
@@ -257,7 +257,7 @@ function format ( c ) {
 		} else {
 		totalTitle = windAllRange;
 		}
-	MagTitle = "Wind Speed";
+	magTitle = "Wind Speed";
 	document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 	total['mag'] = [0,0,0,0,0,0,0,0];
 	}
@@ -271,7 +271,31 @@ function format ( c ) {
 		var fulldt = d["DT"];
 		results['DT'] = d['DT'];
 		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
-		results['MAGNITUDE'] = d['MAGNITUDE'];
+		if (page.reportType === "ALL") {
+		results['MAGNITUDE'] = d['TYPE'];
+			if (d['TYPE'] === "T") {
+				results['MAGNITUDE_dis'] = "Tornado";
+			} else if (d['TYPE'] === "A") {
+				results['MAGNITUDE_dis'] = "Hail";
+			} else if (d['TYPE'] === "G") {
+				results['MAGNITUDE_dis'] = "Wind Gust";
+			} else if (d['TYPE'] === "W") {
+				results['MAGNITUDE_dis'] = "Wind Damage";
+			}
+		} else if (d['MAGNITUDE'] === "UNK" && d['TYPE'] === "W") {
+		results['MAGNITUDE'] = -999;
+		results['MAGNITUDE_dis'] = "Wind Damage";
+		} else if (d['MAGNITUDE'].length === 2) {
+		results['MAGNITUDE'] = "0" + d['MAGNITUDE'];	
+		results['MAGNITUDE_dis'] = d['MAGNITUDE'];		
+		} else if (d['MAGNITUDE'] === "EFU") {
+		results['MAGNITUDE'] = -1;		
+		results['MAGNITUDE_dis'] = d['MAGNITUDE'];	
+		} else if (page.reportType === "T" && page.reportSource === "stormData") {
+		var magString = d['MAGNITUDE']
+		results['MAGNITUDE'] = magString.slice(2,3);		
+		results['MAGNITUDE_dis'] = d['MAGNITUDE'];	
+		}
 		results['LOCATION'] = d['LOCATION'];
 		results['COUNTY'] = d['COUNTY'].toString();
 		results['ST'] = d['ST'].toString();
@@ -510,6 +534,7 @@ var table = jQuery('#results_table').DataTable({
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
 		"columnDefs": [		
+			{ type: 'natural', targets: 1 },
 			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
 				"orderable": false,
@@ -551,7 +576,10 @@ var table = jQuery('#results_table').DataTable({
 				},
 				title: "Date/Time"
 			},
-			{	data: "MAGNITUDE",
+			{	data: {
+					_: "MAGNITUDE_dis",
+					sort: "MAGNITUDE"
+				},
 				title: magTitle
 			},
 			{	data: "LOCATION",
