@@ -1,11 +1,9 @@
 To Do List:
 1. Figure out PDS filter.
-2. Fix wind speed sorting
+2. Add magnitude as a filter option
 3. Add maps
 4. Add first/last options
 5. Why does 20 seconds dialog box only sometimes appear. 
 
 Data I am still waiting for:
-1. Watch file with all years combined
-2. Reports file with all years combined
-3. Outlook data
+1. Outlook data

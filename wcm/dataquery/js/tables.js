@@ -295,6 +295,9 @@ function format ( c ) {
 		var magString = d['MAGNITUDE']
 		results['MAGNITUDE'] = magString.slice(2,3);		
 		results['MAGNITUDE_dis'] = d['MAGNITUDE'];	
+		} else {
+		results['MAGNITUDE'] =  d['MAGNITUDE'];	
+		results['MAGNITUDE_dis'] = d['MAGNITUDE'];			
 		}
 		results['LOCATION'] = d['LOCATION'];
 		results['COUNTY'] = d['COUNTY'].toString();

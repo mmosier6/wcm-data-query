@@ -67,6 +67,20 @@ function buildPage(page){
 		//set page.reportType equal to the value of the checked radio button
 		page.reportType = v;
 
+		if ((page.reportType === "T" || page.reportType === "W") && page.reportSource === "LSR") {
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").hide();
+			jQuery("#hail-report-filters").hide();
+		} else if (page.reportType === "A") {
+			jQuery("#hail-report-filters").show();
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").hide();
+		} else if (page.reportType === "G") {
+			jQuery("#hail-report-filters").hide();
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").show();
+		}
+
 	});//end of report-type-buttonset on change function
 
 	//set page.viewType equal to whatever is checked on view-type-buttonset. Also hide and show different divs based on what is selected
