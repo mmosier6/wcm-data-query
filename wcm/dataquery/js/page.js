@@ -7,6 +7,30 @@ function hideResults() {
 	jQuery(".download").hide();
 }
 
+function showHideMagFilters(page) {
+		if ((page.reportType === "T" || page.reportType === "W") && page.reportSource === "LSR") {
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").hide();
+			jQuery("#hail-report-filters").hide();
+		} else if (page.reportType === "ALL") {
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").hide();
+			jQuery("#hail-report-filters").hide();
+		} else if (page.reportType === "A") {
+			jQuery("#hail-report-filters").show();
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").hide();
+		} else if (page.reportType === "G" || page.reportType === "ALLW") {
+			jQuery("#hail-report-filters").hide();
+			jQuery("#tor-report-filters").hide();
+			jQuery("#wind-report-filters").show();
+		} else if (page.reportType === "T") {
+			jQuery("#hail-report-filters").hide();
+			jQuery("#tor-report-filters").show();
+			jQuery("#wind-report-filters").hide();			
+		}
+}
+
 function buildPage(page){
 	//Load default values for button select
 	page.chartType = "month";
@@ -67,19 +91,7 @@ function buildPage(page){
 		//set page.reportType equal to the value of the checked radio button
 		page.reportType = v;
 
-		if ((page.reportType === "T" || page.reportType === "W") && page.reportSource === "LSR") {
-			jQuery("#tor-report-filters").hide();
-			jQuery("#wind-report-filters").hide();
-			jQuery("#hail-report-filters").hide();
-		} else if (page.reportType === "A") {
-			jQuery("#hail-report-filters").show();
-			jQuery("#tor-report-filters").hide();
-			jQuery("#wind-report-filters").hide();
-		} else if (page.reportType === "G") {
-			jQuery("#hail-report-filters").hide();
-			jQuery("#tor-report-filters").hide();
-			jQuery("#wind-report-filters").show();
-		}
+		showHideMagFilters(page);
 
 	});//end of report-type-buttonset on change function
 
@@ -139,6 +151,7 @@ function buildPage(page){
 			jQuery("#report-type-5").button("enable");
 			jQuery("#report-type-6").button("enable");			
 		}
+		showHideMagFilters(page);
 	});//end of report-source-buttonset on change function
 
 	//Function when chart-type-buttonset is changed
@@ -267,5 +280,4 @@ function buildPage(page){
           dialog.dialog( "open" );
         });
   } );
-
 } //end of buildPage function

@@ -145,48 +145,112 @@
 
 			<!--Report Filters by Tornado Rating-->
 			<div id = "tor-report-filters" class = "hidden">
-				<table width = "100%">
+				<table>
 					<col width = "150">
 					<col width = "150">
 					<tr>
-						<th> >=</th>
-						<th> <=</th>
+						<th> Min Magnitude</th>
+						<th> Max Magnitude</th>
 					</tr>
 					<tr>
-						<td id = "report-tor-min"></td>
-						<td id = "report-tor-max"></td>
+						<td id = "report-tor-min">
+							<select data-placeholder = '<=' class = 'report-filters'>
+								<option value = "">>=</option>
+								<option value = "0">>= EF0</option>
+								<option value = "1">>= EF1</option>
+								<option value = "2">>= EF2</option>
+								<option value = "3">>= EF3</option>
+								<option value = "4">>= EF4</option>
+								<option value = "5">EF5</option>
+							</select>
+						</td>
+						<td id = "report-tor-max">
+							<select data-placeholder = '<=' class = 'report-filters'>
+								<option value = ""><</option>
+								<option value = "1">< EF1</option>
+								<option value = "2">< EF2</option>
+								<option value = "3">< EF3</option>
+								<option value = "4">< EF4</option>
+								<option value = "5">< EF5</option>
+							</select>
+						</td>
 					</tr>
 				</table>
 			</div>
 
-			<!--Report Filters by Tornado Rating-->
+			<!--Report Filters by Wind Speed-->
 			<div id = "wind-report-filters" class = "hidden">
-				<table width = "100%">
+				<table>
 					<col width = "150">
 					<col width = "150">
 					<tr>
-						<th> >=</th>
-						<th> <=</th>
+						<th> Min Magnitude</th>
+						<th> Max Magnitude</th>
 					</tr>
 					<tr>
-						<td id = "report-wind-min"></td>
-						<td id = "report-wind-max"></td>
+						<td id = "report-wind-min">
+							<select data-placeholder = '<=' class = 'report-filters'>
+								<option value = "">>=</option>
+								<option value = '58'>>= 58 mph</option>
+								<option value = '65'>>= 65 mph</option>
+								<option value = '70'>>= 70 mph</option>
+								<option value = '75'>>= 75 mph</option>
+								<option value = '80'>>= 80 mph</option>
+								<option value = '85'>>= 85 mph</option>
+								<option value = '90'>>= 90 mph</option>
+								<option value = '95'>>= 95 mph</option>
+								<option value = '100'>>= 100 mph</option>
+							</select>
+						</td>
+						<td id = "report-wind-max">
+							<select data-placeholder = '<' class = 'report-filters'>
+								<option value = ""><</option>
+								<option value = '58'>< 58 mph</option>
+								<option value = '65'>< 65 mph</option>
+								<option value = '70'>< 70 mph</option>
+								<option value = '75'>< 75 mph</option>
+								<option value = '80'>< 80 mph</option>
+								<option value = '85'>< 85 mph</option>
+								<option value = '90'>< 90 mph</option>
+								<option value = '95'>< 95 mph</option>
+								<option value = '100'>< 100 mph</option>
+							</select>
+						</td>
 					</tr>
 				</table>
-			</div>
+			</div>		
 
-			<!--Report Filters by Tornado Rating-->
+			<!--Report Filters by Hail Size-->
 			<div id = "hail-report-filters" class = "hidden">
-				<table width = "100%">
+				<table>
 					<col width = "150">
 					<col width = "150">
 					<tr>
-						<th> >=</th>
-						<th> <=</th>
+						<th> Min Magnitude</th>
+						<th> Max Magnitude</th>
 					</tr>
 					<tr>
-						<td id = "report-hail-min"></td>
-						<td id = "report-hail-max"></td>
+						<td id = "report-hail-min">
+							<select data-placeholder = '<=' class = 'report-filters'>
+								<option value = "">>=</option>
+								<option value = "0">>= 0"</option>
+								<option value = "1">>= 1"</option>
+								<option value = "2">>= 2"</option>
+								<option value = "3">>= 3"</option>
+								<option value = "4">>= 4"</option>
+								<option value = "5">>= 5"</option>
+							</select>
+						</td>
+						<td id = "report-hail-max">
+							<select data-placeholder = '<=' class = 'report-filters'>
+								<option value = ""><</option>
+								<option value = "1"><= 1"</option>
+								<option value = "2"><= 2"</option>
+								<option value = "3"><= 3"</option>
+								<option value = "4"><= 4"</option>
+								<option value = "5"><= 5"</option>
+							</select>
+						</td>
 					</tr>
 				</table>
 			</div>
