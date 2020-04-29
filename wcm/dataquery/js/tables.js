@@ -13,6 +13,7 @@ total['time']['month'] = {};
 total['time']['year'] = {};
 var totalTitle = Array();
 var magTitle;
+var timesort = "dt";
 
 function displayFilteredData(page){
 //clear finalJSON every time the script is run
@@ -63,6 +64,7 @@ if (page.dataType === "watch") {
 		var fulldt = d["sel_issue_dt"];
 		results = {};
 		results['dt'] = d['sel_issue_dt'];
+		results['dt_min'] = fulldt.slice(4,12);
 		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
 		results['type'] = d['type'];
 		results['num'] = d['watch_num'];
@@ -270,6 +272,7 @@ function format ( c ) {
 		results = {};
 		var fulldt = d["DT"];
 		results['DT'] = d['DT'];
+		results['DT_min'] = fulldt.slice(4,12);
 		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
 		if (page.reportType === "ALL") {
 		results['MAGNITUDE'] = d['TYPE'];
@@ -510,14 +513,15 @@ function format ( c ) {
 
 if (page.dataType === "watch") {
 	//turn results table into DataTable
-var table = jQuery('#results_table').DataTable({
+var table = function() {
+	jQuery('#results_table').DataTable({
 		data: results_final['data'],
 		columns: [
 			{	data: ""
 			},
 			{	data: {
 					_: "dt_dis",
-					sort: "dt"
+					sort: timesort
 				},
 				title: "Date/Time"
 			},
@@ -549,7 +553,8 @@ var table = jQuery('#results_table').DataTable({
       		}
 		]		
 	}); //end of variable table
-
+}
+table();
 var tableTotal = jQuery('#total_table').DataTable({
 		data: totals_final['data'],
 		columns: [
@@ -565,6 +570,16 @@ var tableTotal = jQuery('#total_table').DataTable({
   		"searching": false,
         "order": [[ 1, "desc" ]]
 });
+
+jQuery("#firstlast").change(function() {
+        	if (jQuery(this).prop("checked", true)) {
+				timesort = "dt_min"
+			} else {
+				timesort = "dt"
+			}
+			jQuery('#results_table').DataTable().destroy();
+			table();
+		});
 
 } else if (page.dataType === "report") {
 	//turn results table into DataTable
