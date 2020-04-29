@@ -1,8 +1,7 @@
 To Do List:
 
 1. Add maps
-2. Add first/last options
-3. Why does 20 seconds dialog box only sometimes appear.
+2. Why does 20 seconds dialog box only sometimes appear.
 
 Things that can't be done until code moved away from crossfilter
 1. Configure PDS filter

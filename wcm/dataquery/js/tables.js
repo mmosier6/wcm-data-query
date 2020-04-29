@@ -13,7 +13,7 @@ total['time']['month'] = {};
 total['time']['year'] = {};
 var totalTitle = Array();
 var magTitle;
-var timesort = "dt";
+var timesort;
 
 function displayFilteredData(page){
 //clear finalJSON every time the script is run
@@ -21,6 +21,7 @@ finalJSON = "";
 
 //table formaatting if data type is watch
 if (page.dataType === "watch") {
+	timesort = "dt";
 	
 	//function used down below to change the order of the data based on the date
 	function compare(a,b){
@@ -122,7 +123,6 @@ if (page.dataType === "watch") {
 			}
 			if (i=== year) {
 				total['time']['year']['total'][i] = total['time']['year']['total'][i] + 1;
-				console.log('count')
 				if (d['type'] === "TOR") {
 					total['time']['year']['TOR'][i] = total['time']['year']['TOR'][i] + 1;
 				} else if (d['type'] === "SVR") {
@@ -189,7 +189,7 @@ function format ( c ) {
 
 //end of watch section. Start of report section
 } else if (page.dataType === "report") {
-
+	timesort = "DT"
 	//function used down below to change the order of the data based on the date
 	function compare(a,b){
 		const ReportA = a.DT;
@@ -504,8 +504,6 @@ function format ( c ) {
 
 	//clear out data-table
 	jQuery("#data-table").empty();
-	//put variable st data into data-table
-	jQuery("#data-table").html('<table id="results_table" class="display" width="100%"></table>');
 	//clear out total-table
 	jQuery("#total-table").empty();
 	//put variable tot into tot-table
@@ -514,7 +512,8 @@ function format ( c ) {
 if (page.dataType === "watch") {
 	//turn results table into DataTable
 var table = function() {
-	jQuery('#results_table').DataTable({
+	jQuery("#data-table").html('<table id="watch_table" class="display" width="100%"></table>');
+	jQuery('#watch_table').DataTable({
 		data: results_final['data'],
 		columns: [
 			{	data: ""
@@ -571,26 +570,28 @@ var tableTotal = jQuery('#total_table').DataTable({
         "order": [[ 1, "desc" ]]
 });
 
-jQuery("#firstlast").change(function() {
-        	if (jQuery(this).prop("checked", true)) {
+jQuery("#firstlast").click(function() {
+        	if (jQuery(this).is(":checked")) {
 				timesort = "dt_min"
 			} else {
 				timesort = "dt"
 			}
-			jQuery('#results_table').DataTable().destroy();
+			jQuery('#watch_table').DataTable().destroy();
 			table();
 		});
 
 } else if (page.dataType === "report") {
+	jQuery("#data-table").html('<table id="report_table" class="display" width="100%"></table>');
 	//turn results table into DataTable
-var table = jQuery('#results_table').DataTable({
+var table = function() { 
+	jQuery('#report_table').DataTable({
 		data: results_final['data'],
 		columns: [
 			{	data: ""
 			},
 			{	data: {
 					_: "DT_dis",
-					sort: "DT"
+					sort: timesort
 				},
 				title: "Date/Time"
 			},
@@ -633,7 +634,8 @@ var table = jQuery('#results_table').DataTable({
       		}
 		]		
 	}); //end of variable table
-
+}
+table();
     // Add event listener for opening and closing details
     jQuery('i.details-control').on('click', function () {
         var tr = jQuery(this).closest('tr');
@@ -669,6 +671,16 @@ var tableTotal = jQuery('#total_table').DataTable({
   		"searching": false,
         "order": [[ 1, "desc" ]]
 });
+
+jQuery("#firstlast").click(function() {
+        	if (jQuery(this).is(":checked")) {
+				timesort = "DT_min"
+			} else {
+				timesort = "DT"
+			}
+			jQuery('#report_table').DataTable().destroy();
+			table();
+		});
 
 }
 }
