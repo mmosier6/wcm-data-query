@@ -5,6 +5,7 @@ function hideResults() {
 	jQuery("#view-type").hide();
 	jQuery("#chart-type").hide();
 	jQuery(".download").hide();
+	jQuery("#firstlastcheckbox").hide();
 }
 
 function showHideMagFilters(page) {
@@ -191,6 +192,8 @@ function buildPage(page){
 
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){
+	jQuery("#firstlastcheckbox").show();
+	jQuery("#firstlast").prop("checked",false);
 	jQuery("#view-type").show(); //show view type selector
 	if (jQuery("#view-type-2").prop("checked")) {
 	jQuery("#chart-type").show(); //show view type selector
