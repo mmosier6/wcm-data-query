@@ -1,5 +1,6 @@
 //global variables
 var finalJSON="";
+var finalCSV=[];
 var month_count=Array();
 var year_count=Array();
 var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -18,10 +19,10 @@ var timesort;
 function displayFilteredData(page){
 //clear finalJSON every time the script is run
 finalJSON = "";
-
+finalCSV = [];
 //table formaatting if data type is watch
 if (page.dataType === "watch") {
-	timesort = "dt";
+	timesort = "dt"; //set timesort equal to the format from the json file
 	
 	//function used down below to change the order of the data based on the date
 	function compare(a,b){
@@ -43,7 +44,7 @@ if (page.dataType === "watch") {
 	//after filter is run, use compare funtion to sort the data
 	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);	
 
-	//set total array equal to zero to start
+	//establish the total array with multiple dimensions to be used below.
 	total['type'] = [0,0,0,0,0];
 	total['time']['month']['total'] = [];
 	total['time']['month']['TOR'] = [];
@@ -60,13 +61,14 @@ if (page.dataType === "watch") {
 	var results;
 	var results_final = {};
 	results_final['data'] = [];
+
 	//build the entire javascript for input into the table here
 	page.data['filtered-sorted'].forEach(function(d,n){
 		var fulldt = d["sel_issue_dt"];
 		results = {};
 		results['dt'] = d['sel_issue_dt'];
-		results['dt_min'] = fulldt.slice(4,12);
-		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
+		results['dt_min'] = fulldt.slice(4,12); //this is the date with only month, day, hour, for sorting that does not include the year (first/last)
+		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST"; //this is the date display
 		results['type'] = d['type'];
 		results['num'] = d['watch_num'];
 		results['st'] = d['ST'].toString();
@@ -137,10 +139,15 @@ if (page.dataType === "watch") {
 	
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":["'+d["type"]+'"],"pds":["'+d["pds"]+'"],"expire_dt":["'+d["sel_expire_dt"]+'"],"threats":["'+d["threats"]+'"],"summary":["'+d["summary"]+'"],"areas":["'+d["areas"]+'"]}';
-	
-	}); //closing brackets for page.data['filtered-sorted'].forEach function
 
-console.log(total)
+	d["ST"] = d["ST"].toString().replace(/,/g, '/');
+	d["FIPS"] = d["FIPS"].toString().replace(/,/g, '/');
+	d["CWA"] = d["CWA"].toString().replace(/,/g, '/');
+	d["threats"] = d["threats"].toString().replace(/,/g, '...');
+	d["summary"] = d["summary"].toString().replace(/,/g, '...');
+	d["areas"] = d["areas"].toString().replace(/,/g, '...');
+		finalCSV[total["type"][0]] = [d["watch_num"],d["ST"],d["FIPS"],d["sel_issue_dt"],d["CWA"],d["type"],d["pds"],d["sel_expire_dt"],d["threats"],d["summary"],d["areas"]]
+	}); //closing brackets for page.data['filtered-sorted'].forEach function
 
 var total1;
 
@@ -444,12 +451,15 @@ function format ( c ) {
 		}
 
 		//create the finalJSON variable in the correct format
-		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
+		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURY"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
 	
+		d["ST"] = d["ST"].toString().replace(/,/g, '/');
+		d["FIPS"] = d["FIPS"].toString().replace(/,/g, '/');
+		d["CWA"] = d["CWA"].toString().replace(/,/g, '/');
+		d["LOCATION"] = d["LOCATION"].toString().replace(/,/g, '...');
+		finalCSV[total["type"][0]] = [d["TYPE"],d["ST"],d["FIPS"],d["DT"],d["CWA"],d["LOCATION"],d["MAGNITUDE"],d["INJURY"],d["FATALITIES"],d["COUNTY"]];
+
 	});	//closing brackets for page.data['filtered-sorted'].forEach function
-
-
-	console.log(total)
 
 var total1;
 
@@ -472,22 +482,18 @@ var totals_final = {};
 	}
 }
 
-console.log(totals_final)
-
-console.log(results_final)
-
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
-		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month']['total'][i]+',';
+		finalJSON = finalJSON + '"'+month_abbrev[i]+'":{"All":'+total['time']['month']['total'][i+1]+',"T":'+total['time']['month']['T'][i+1]+',"A":'+total['time']['month']['A'][i+1]+',"W":'+total['time']['month']['W'][i+1]+',"G":'+total['time']['month']['G'][i+1]+',"ALLW":'+total['time']['month']['ALLW'][i+1]+'},';
 	}
 	//iterate through the years to add years
 	for (i=2000; i<(current_year+1); i++) {
 		if (i===current_year) {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+'}}';
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":{"All":'+total['time']['year']['total'][i]+',"T":'+total['time']['year']['T'][i]+',"A":'+total['time']['year']['A'][i]+',"W":'+total['time']['year']['W'][i]+',"G":'+total['time']['year']['G'][i]+',"ALLW":'+total['time']['year']['ALLW'][i]+'}}}';
 		} else {
-		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year']['total'][i]+',';		
+		finalJSON = finalJSON + '"'+year_list[i-2000]+'":{"All":'+total['time']['year']['total'][i]+',"T":'+total['time']['year']['T'][i]+',"A":'+total['time']['year']['A'][i]+',"W":'+total['time']['year']['W'][i]+',"G":'+total['time']['year']['G'][i]+',"ALLW":'+total['time']['year']['ALLW'][i]+'},';		
 		}
 	}
 
@@ -510,9 +516,9 @@ function format ( c ) {
 	jQuery("#total-table").html('<table id="total_table" class="display"></table><br>');
 
 if (page.dataType === "watch") {
+	jQuery("#data-table").html('<table id="watch_table" class="display" width="100%"></table>');
 	//turn results table into DataTable
 var table = function() {
-	jQuery("#data-table").html('<table id="watch_table" class="display" width="100%"></table>');
 	jQuery('#watch_table').DataTable({
 		data: results_final['data'],
 		columns: [
@@ -697,5 +703,30 @@ function makeJSON(page) {
 			JSONfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.json';				
 			}
 			JSONfile.click();
+		}
+
+		finalJSON = finalJSON + ',{"TYPE":"'+d["TYPE"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"DATE":"'+d["DT"]+'","CWA":["'+d["CWA"]+'"],"LOCATION":"'+d["LOCATION"]+'","MAGNITUDE":"'+d["MAGNITUDE"]+'","INJURIES":"'+d["INJURIES"]+'","FATALITIES":"'+d["FATALITIES"]+'","COUNTY":"'+d["COUNTY"]+'"}';
+
+
+function makeCSV(page) {
+	console.log(finalCSV)
+		if (page.dataType === "watch") {
+			var csv = 'watch_num,ST,FIPS,issue_dt,CWA,type,pds,expire_dt,threats,summary,areas\n';
+		} else if (page.dataType === "report") {	
+			var csv = 'TYPE,ST,FIPS,DATE,CWA,LOCATION,MAGNITUDE,INJURIES,FATALITIES,COUNTY\n';		
+		}
+    		finalCSV.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+        	});
+			var CSVfile = document.createElement('a');		
+			CSVfile.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+			CSVfile.target = '_blank';
+			if (page.dataType === "watch") {
+			CSVfile.download = ''+page.watchType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.csv';
+			} else if (page.dataType === "report") {
+			CSVfile.download = ''+page.reportType+ '_' +page.dataType+ '_' +page.filters['date'][0]+ '_'+page.filters['date'][1]+ '.csv';				
+			}
+			CSVfile.click();
 		}
 

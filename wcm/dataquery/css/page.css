@@ -32,7 +32,11 @@
 	display: none;
 }
 
-.download{
+#downloadJSON{
 	position:relative;
 	left:850px;
+}
+#downloadCSV{
+	position:relative;
+	left:855px;
 }

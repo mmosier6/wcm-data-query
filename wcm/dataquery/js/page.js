@@ -1,3 +1,4 @@
+//function used to hide the the results table and corresponding divs
 function hideResults() {
 	jQuery("#data-table").empty();
 	jQuery("#total-table").empty();
@@ -8,6 +9,7 @@ function hideResults() {
 	jQuery("#firstlastcheckbox").hide();
 }
 
+//show or hide the correct magnitude filters based on what is selected
 function showHideMagFilters(page) {
 		if ((page.reportType === "T" || page.reportType === "W") && page.reportSource === "LSR") {
 			jQuery("#tor-report-filters").hide();
@@ -109,11 +111,13 @@ function buildPage(page){
 		jQuery(".download").show(); //show download button
 		jQuery("#data-table").show(); //show data table
 		jQuery("#total-table").show();//show total table
+		jQuery("#firstlastcheckbox").show(); //show firstlast checkbox
 		jQuery("#chart-type").hide();//hide chart type selector
 		jQuery("#chart").hide();//hide chart
 	} else if (page.viewType ==="chart") {
 		jQuery("#data-table").hide(); //hide data table
 		jQuery("#total-table").hide();//hide total table
+		jQuery("#firstlastcheckbox").hide(); //hide firstlast checkbox
 		jQuery(".download").hide();//hide download button
 		jQuery("#chart-type").show();//show chart type selector
 		jQuery("#chart").show(); //show chart
@@ -145,6 +149,7 @@ function buildPage(page){
 			}
 		});
 		page.reportSource = v;
+		//disable G and W if stormData is selected since all wind is combined.
 		if (v === "stormData") {
 			jQuery("#report-type-5").button("disable");
 			jQuery("#report-type-6").button("disable");
@@ -152,7 +157,7 @@ function buildPage(page){
 			jQuery("#report-type-5").button("enable");
 			jQuery("#report-type-6").button("enable");			
 		}
-		showHideMagFilters(page);
+		showHideMagFilters(page); //function to show/hide the correct magnitude filters based on what report type/source is selected
 	});//end of report-source-buttonset on change function
 
 	//Function when chart-type-buttonset is changed
@@ -166,8 +171,11 @@ function buildPage(page){
 		makeChart(page);//redraw chart anytime this button is changed.
 	});//end of chart-type-buttonset on change function
 
-	jQuery(".download").click(function() {
+	jQuery("#downloadJSON").click(function() {
 		makeJSON(page);
+	});
+	jQuery("#downloadCSV").click(function() {
+		makeCSV(page);
 	});
 
 	//Create dialog box when browser is unsupported
@@ -192,7 +200,6 @@ function buildPage(page){
 
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){
-	jQuery("#firstlastcheckbox").show();
 	jQuery("#firstlast").prop("checked",false);
 	jQuery("#view-type").show(); //show view type selector
 	if (jQuery("#view-type-2").prop("checked")) {
@@ -212,10 +219,8 @@ function buildPage(page){
 		if (page.dataType ==="watch"){
 			if(typeof(page.data) === 'undefined'){
 				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
-				//urlStr ="/wcm/data/collections/watch_collection_2020.json";
 			}else if(typeof(page.data['watch'])){
 				urlStr ="/wcm/data/collections/combined_watch_collections_2017-2020.json";
-				//urlStr ="/wcm/data/collections/watch_collection_2020.json";
 			}else{
 				urlStr = "";
 			}
@@ -240,9 +245,6 @@ function buildPage(page){
 			}
 		}//end of else if for page.dataType ==="report"
 
-		console.log(page.reportSource)
-		console.log("Data Source: "+ urlStr + "");
-
 		//Run AJAX call to pull the data as long as urlStr is valid
 		if(urlStr !== ''){
 			//Get watch data
@@ -266,6 +268,7 @@ function buildPage(page){
 		//Allow download button to be visible if the view type is table
 		if (page.viewType === "table") {
 			jQuery(".download").show();
+			jQuery("#firstlastcheckbox").show();
 		}
 
 	}); //end of on click function for go-btn
