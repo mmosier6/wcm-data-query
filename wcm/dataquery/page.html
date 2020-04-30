@@ -17,6 +17,12 @@
 		<!-- C3.css -->
   		<link rel="stylesheet" href="https://rawgit.com/c3js/c3/master/c3.min.css" type="text/css">
 
+  		<!-- Open Layers CSS -->
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" type="text/css">
+
+  		<!-- watchMap CSS-->
+		<link rel= "stylesheet" href="/wcm/dataquery/css/watchMap.css" text = "text/css" />
+
   		<!-- General Page CSS-->
 		<link rel= "stylesheet" href="/wcm/dataquery/css/page.css" text = "text/css" />
 	</head>
@@ -274,7 +280,7 @@
 				<div id = 'view-type-buttonset' style = "font-size: 9pt;">
 					<input type = 'radio' id = 'view-type-1' name ='view-type-radio' value = 'table' aria-pressed="true"><label for = 'view-type-1' class="ui-state-active" aria-pressed="true">Table</label>
 					<input type = 'radio' id = 'view-type-2' name ='view-type-radio' value = 'chart'><label for = 'view-type-2'>Chart</label>
-					<input type = 'radio' id = 'view-type-3' name ='view-type-radio' value = 'map' disabled><label for = 'view-type-3'>Map</label>
+					<input type = 'radio' id = 'view-type-3' name ='view-type-radio' value = 'map'><label for = 'view-type-3'>Map</label>
 				</div>
 			</div>
 
@@ -313,6 +319,24 @@
 
 			<!--Table with Data-->
 			<div id="data-table"></div>
+
+			<!--Div with the map-->
+			<div id="map" class="map">
+				
+				<div id="mapTitle">2019 SPC Watches</div>
+				<div id="info" style="top:3px; right:3px;">Hover For<br>Watch Count</div>
+				<div id="mapLegend"></div>
+				<div class="slidecontainer">
+					<div id="year">Use slider to see past years</div>
+					<input type="range" min="2006" max="2019" value="2019" class="slider" id="RangeSlider" onchange="selectYear()">
+				</div>
+				<div id="showMapSwitcher" onclick="showMapSwitcher()" style="display: none;">&gt;</div>
+				<div id="mapSwitcher" align="left">
+					<input type="radio" id="all" checked="checked" onchange="selectAll()">Total SPC Watches <a id="hideMapSwitcher" onclick="hideMapSwitcher()">&lt;</a><br>
+					<input type="radio" id="tornado" onchange="selectTornado()">Tornado Watches<br>
+					<input type="radio" id="severe" onchange="selectSevere()">Severe Watches<br>
+				</div>
+			</div>
 
 			<!--Chart div where chart is drawn-->
 			<div id = 'chart' style = "min-height: 300px;" class="hidden"></div>
@@ -358,11 +382,14 @@
 		<script src="/wcm/dataquery/js/tables.js"></script>
 		<script src="/wcm/dataquery/js/chart.js"></script>
 		<script src="/wcm/dataquery/js/jsonh.js"></script>
+		<script src="/wcm/dataquery/js/watchMap.js"></script>
 
 		<!--DataTables Date/Time Plugin for sorting-->
 		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>	
-
+		<!--Helps with sorting in DataTables-->
 		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/natural.js"></script>
+		<!--OpenLayers.js-->
+    	<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>
 
 		<script>
 		//format of table so it sorts correctly

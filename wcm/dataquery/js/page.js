@@ -42,6 +42,8 @@ function buildPage(page){
 	page.watchType = "TOR";
 	page.viewType = "table";
 
+	jQuery("#map").hide();
+
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 			//Clear out previous search data
@@ -114,6 +116,7 @@ function buildPage(page){
 		jQuery("#firstlastcheckbox").show(); //show firstlast checkbox
 		jQuery("#chart-type").hide();//hide chart type selector
 		jQuery("#chart").hide();//hide chart
+		jQuery("#map").hide();
 	} else if (page.viewType ==="chart") {
 		jQuery("#data-table").hide(); //hide data table
 		jQuery("#total-table").hide();//hide total table
@@ -121,6 +124,16 @@ function buildPage(page){
 		jQuery(".download").hide();//hide download button
 		jQuery("#chart-type").show();//show chart type selector
 		jQuery("#chart").show(); //show chart
+		jQuery("#map").hide();
+	} else if (page.viewType ==="map") {
+		jQuery("#data-table").hide(); //hide data table
+		jQuery("#total-table").hide();//hide total table
+		jQuery("#firstlastcheckbox").hide(); //hide firstlast checkbox
+		jQuery(".download").hide();//hide download button
+		jQuery("#chart-type").hide();//show chart type selector
+		jQuery("#chart").hide(); //show chart
+		jQuery("#map").show();
+		redrawMap();
 	}
 	});//end of on change function for view-type-buttonset
 
