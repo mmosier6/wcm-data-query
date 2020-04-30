@@ -2,6 +2,7 @@ To Do List:
 
 1. Add maps
 2. Why does 20 seconds dialog box only sometimes appear.
+3. Add links to watch numbers
 
 Things that can't be done until code moved away from crossfilter
 1. Configure PDS filter

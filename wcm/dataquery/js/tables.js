@@ -70,7 +70,7 @@ if (page.dataType === "watch") {
 		results['dt_min'] = fulldt.slice(4,12); //this is the date with only month, day, hour, for sorting that does not include the year (first/last)
 		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST"; //this is the date display
 		results['type'] = d['type'];
-		results['num'] = d['watch_num'];
+		results['num'] = "<a href = 'https://www.spc.noaa.gov/products/watch/"+fulldt.slice(0,4)+"/ww"+d['watch_num']+".html' target='_blank'>"+d['watch_num']+"</a>";
 		results['st'] = d['ST'].toString();
 		results['cwa'] = d['CWA'].toString();
 		results['threats'] = d['threats'].toString();
