@@ -12,9 +12,9 @@ if (firstTime < 1) {
                 url:"/wcm/data/topojson/2019-county-watch-counts.json", 
                 dataType: "json"
         }).done(function(geoJSON){
-                data = geoJSON;
+                data = mapJSONfinal;
 
-        vectorSource = new ol.source.Vector({features: (new ol.format.TopoJSON()).readFeatures(data, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
+        vectorSource = new ol.source.Vector({features: (new ol.format.GeoJSON()).readFeatures(mapJSON, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
      
       var mapData = new ol.layer.Vector({
                         source: vectorSource,
@@ -59,19 +59,19 @@ var displayFeatureInfo = function(pixel) {
 
     var info = document.getElementById('info');
     if (feature) {
-        if (type==='SPC' & feature.get('ST') === 'LA') {
-        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('ALL');
-        } else if (type==='Tornado' & feature.get('ST') === 'LA') {
-        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('TORNADO');
-        } else if (type==='Severe' & feature.get('ST') === 'LA') {
-        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('SEVERE');
+        if (type==='SPC' & feature.get('STATE') === "22") {
+        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('ALLWATCH');
+        } else if (type==='Tornado' & feature.get('STATE') === "22") {
+        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('TOR');
+        } else if (type==='Severe' & feature.get('STATE') === "22") {
+        info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('SVR');
         }
         else if (type==='SPC') {
-        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('ALL');
+        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('ALLWATCH');
         } else if (type==='Tornado') {
-        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('TORNADO');
+        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('TOR');
         } else if (type==='Severe') {
-        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('SEVERE');
+        info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('SVR');
         }
     } else {
         info.innerHTML = 'Hover For<br>Watch Count';
@@ -134,12 +134,11 @@ document.getElementById('export-png').addEventListener('click', function() {
   });
   map.renderSync();
 });
-
 } //end function drawMapElements()
 
 var getStyle = function (feature) {
 if (type=== "Tornado") {
-        x = feature.get('TORNADO')
+        x = feature.get('TOR')
         switch(true) {
         case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:.5,color:'#808080'})});
         case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 204, 204, 0.5]}), stroke: new ol.style.Stroke({width:.5,color:'#808080'})});
@@ -155,7 +154,7 @@ if (type=== "Tornado") {
                 }
         }
 else if (type=== "SPC") {
-        x = feature.get('ALL')
+        x = feature.get('ALLWATCH')
         switch(true) {
         case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:.5, color:'#808080'})});
         case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [0, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:.5, color:'#808080'})});
@@ -170,7 +169,7 @@ else if (type=== "SPC") {
                 }
         }
 else if (type=== "Severe") {
-        x = feature.get('SEVERE')
+        x = feature.get('SVR')
         switch(true) {
         case (x<1):return new ol.style.Style({fill: new ol.style.Fill({color: [255, 255, 255, 0.5]}), stroke: new ol.style.Stroke({width:.5,color:'#808080'})});
         case (x<2):return new ol.style.Style({fill: new ol.style.Fill({color: [204, 204, 255, 0.5]}), stroke: new ol.style.Stroke({width:.5,color:'#808080'})});
@@ -186,30 +185,33 @@ else if (type=== "Severe") {
                 }
         }
 };
-                        
+                       
 function selectSevere() {
 type= "Severe";
 jQuery("#all").prop( "checked", false);
 jQuery("#tornado").prop( "checked", false);
+jQuery("#severe").prop( "checked", true);
 firstTime= 0;
 drawMapElements();
-jQuery("#mapTitle").html("" + year + " Severe Watches");
+jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" Severe Watches");
 } //end selectSevere
 function selectAll() {
 type= "SPC";
 jQuery("#severe").prop( "checked", false);
 jQuery("#tornado").prop( "checked", false);
+jQuery("#all").prop( "checked", true);
 firstTime= 0;
 drawMapElements();
-jQuery("#mapTitle").html("" + year + " SPC Watches");
+jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" SPC Watches");
 } //end selectAll
 function selectTornado() {
 type= "Tornado";
 jQuery("#all").prop( "checked", false);
 jQuery("#severe").prop( "checked", false);
+jQuery("#tornado").prop( "checked", true);
 firstTime= 0;
 drawMapElements();
-jQuery("#mapTitle").html("" + year + " Tornado Watches");
+jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" Tornado Watches");
 } //end selectTornado
 
 function selectYear() {
@@ -274,14 +276,14 @@ function makeLegend() {
 if (type==="SPC") {
 document.getElementById('mapLegend').style.bottom = 30 + "px";
 document.getElementById('mapLegend').style.right = 2 + "px";
-document.getElementById('mapLegend').style.height = 203 + "px";
+document.getElementById('mapLegend').style.height = 185 + "px";
 document.getElementById('mapLegend').style.width = 95 + "px";
 
 var div = document.getElementById('mapLegend'),
 count = [0,1,2,4,7,10,15,20,25],
 labels = [];
 
-div.innerHTML= '<b>2019<br>Total Watches</b><br>'
+div.innerHTML= '<b>Total Watches</b><br>'
 
 for (var i= 0; i < count.length; i++) {
 div.innerHTML +=
@@ -294,13 +296,13 @@ return div;
 else {
 document.getElementById('mapLegend').style.bottom = 30 + "px";
 document.getElementById('mapLegend').style.right = 2 + "px";
-document.getElementById('mapLegend').style.height = 203 + "px";
+document.getElementById('mapLegend').style.height = 185 + "px";
 document.getElementById('mapLegend').style.width = 115 + "px";
 var div = document.getElementById('mapLegend'),
 count = [0,1,2,4,6,9,12,16,20],
 labels = [];
 
-div.innerHTML= '<b>' + year + '<br>' + type + ' Watches</b><br>'
+div.innerHTML= '<b>' + type + ' Watches</b><br>'
 
 for (var i= 0; i < count.length; i++) {
 div.innerHTML +=

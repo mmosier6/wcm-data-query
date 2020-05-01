@@ -1,3 +1,5 @@
+var startDate;
+var endDate;
 function filterStates(page){
 	//var astr = '';
 	//astr = astr + "<div>";
@@ -339,8 +341,8 @@ function listFilters(page){
 function getFilters(page){
 	console.log("getFilters");
 	var filters = new Object();
-	var startDate = jQuery("#startCalInput").val();
-	var endDate = jQuery("#endCalInput").val();
+	startDate = jQuery("#startCalInput").val();
+	endDate = jQuery("#endCalInput").val();
 	var tmpArray = new Array();
 	if(checkDate(startDate)){
 		tmpArray.push(startDate);

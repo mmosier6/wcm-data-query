@@ -15,6 +15,12 @@ total['time']['year'] = {};
 var totalTitle = Array();
 var magTitle;
 var timesort;
+var mapJSON;
+var mapJSONfinal;
+
+jQuery.getJSON( "/wcm/data/topojson/output.json", function( json ) {
+	mapJSON = json;
+ });
 
 function displayFilteredData(page){
 //clear finalJSON every time the script is run
@@ -90,6 +96,22 @@ if (page.dataType === "watch") {
 			total['type'][4]=total['type'][4]+1;
 		}
 
+		for (i=0; i<mapJSON.features.length; i++) {
+			if (d['FIPS'].includes(mapJSON.features[i].properties.FIPS)) {
+				mapJSON.features[i].properties.ALLWATCH = mapJSON.features[i].properties.ALLWATCH + 1;
+				if (d['type'] === "TOR") {
+					mapJSON.features[i].properties.TOR = mapJSON.features[i].properties.TOR+ 1;
+				}else if (d['type'] === "SVR") {
+					mapJSON.features[i].properties.SVR = mapJSON.features[i].properties.SVR+ 1;
+				}else if (d['type'] === "PDS TOR") {
+					mapJSON.features[i].properties.PDSTOR = mapJSON.features[i].properties.PDSTOR+ 1;
+				}else if (d['type'] === "PDS SVR") {
+					mapJSON.features[i].properties.PDSSVR = mapJSON.features[i].properties.PDSSVR+ 1;
+				}
+
+			}
+		}
+
 		//this function counts the total number for each month
 		month = Number(fulldt.slice(4,6));
 		for (i=1; i<13; i++) {
@@ -163,6 +185,7 @@ var totals_final = {};
 
 	//add totals to the JSON file
 	finalJSON = finalJSON + ',{"Totals":{';
+
 	//iterate through months to add months
 	for (i=0; i<12; i++) {
 		finalJSON = finalJSON + '"'+month_abbrev[i]+'":'+total['time']['month'][i]+',';
@@ -175,7 +198,7 @@ var totals_final = {};
 		finalJSON = finalJSON + '"'+year_list[i-2000]+'":'+total['time']['year'][i]+',';		
 		}
 	}
-
+	mapJSONfinal = JSON.stringify(mapJSON);
 //return the html of the details section when you expand a row
 function format ( c ) {
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+

@@ -7,6 +7,7 @@ function hideResults() {
 	jQuery("#chart-type").hide();
 	jQuery(".download").hide();
 	jQuery("#firstlastcheckbox").hide();
+	jQuery("#map").hide();
 }
 
 //show or hide the correct magnitude filters based on what is selected
@@ -150,6 +151,13 @@ function buildPage(page){
 			}
 		});
 		page.watchType = v;
+		if (page.watchType === "TOR") {
+		selectTornado();
+		} else if (page.watchType === "SVR") {
+		selectSevere();
+		} else {	
+		selectAll();
+		}
 	});//end of watch-type-buttonset on change function
 
 	//Function when report-source-buttonset is changed
@@ -215,10 +223,13 @@ function buildPage(page){
 
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){
+
 	jQuery("#firstlast").prop("checked",false);
 	jQuery("#view-type").show(); //show view type selector
 	if (jQuery("#view-type-2").prop("checked")) {
 	jQuery("#chart-type").show(); //show view type selector
+	} else if (jQuery("#view-type-3").prop("checked")) {
+	jQuery("#map").show();
 	}
 	jQuery("#filter-opt-list").show(); //show results of filters
 
@@ -285,7 +296,7 @@ function buildPage(page){
 			jQuery(".download").show();
 			jQuery("#firstlastcheckbox").show();
 		}
-
+		redrawMap();
 	}); //end of on click function for go-btn
 
 	//Show dialog box when go-button is clicked
