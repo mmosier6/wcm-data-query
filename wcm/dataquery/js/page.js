@@ -70,6 +70,7 @@ function buildPage(page){
 			jQuery("#all-watch-filters").show();
 			jQuery("#watch-type").show();
 			jQuery("#date-pickers").show();
+			jQuery("#view-type-3").button("enable");
 			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 		}
 		if(v === 'report'){
@@ -79,6 +80,7 @@ function buildPage(page){
 			jQuery("#report-source").show();
 			jQuery("#report-type").show();
 			jQuery("#date-pickers").show();
+			jQuery("#view-type-3").button("disable");
 			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 		}
 
@@ -136,7 +138,16 @@ function buildPage(page){
 		jQuery("#chart-type").hide();//show chart type selector
 		jQuery("#chart").hide(); //show chart
 		jQuery("#map").show();
+		if (page.watchType === "TOR") {
+		selectTornado();
 		redrawMap();
+		} else if (page.watchType === "SVR") {
+		selectSevere();
+		redrawMap();
+		} else {	
+		selectAll();
+		redrawMap();
+		}
 	}
 	});//end of on change function for view-type-buttonset
 
@@ -151,13 +162,6 @@ function buildPage(page){
 			}
 		});
 		page.watchType = v;
-		if (page.watchType === "TOR") {
-		selectTornado();
-		} else if (page.watchType === "SVR") {
-		selectSevere();
-		} else {	
-		selectAll();
-		}
 	});//end of watch-type-buttonset on change function
 
 	//Function when report-source-buttonset is changed
@@ -296,7 +300,17 @@ function buildPage(page){
 			jQuery(".download").show();
 			jQuery("#firstlastcheckbox").show();
 		}
+
+		if (page.watchType === "TOR") {
+		selectTornado();
 		redrawMap();
+		} else if (page.watchType === "SVR") {
+		selectSevere();
+		redrawMap();
+		} else {	
+		selectAll();
+		redrawMap();
+		}
 	}); //end of on click function for go-btn
 
 	//Show dialog box when go-button is clicked

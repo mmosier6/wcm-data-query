@@ -23,6 +23,14 @@ jQuery.getJSON( "/wcm/data/topojson/output.json", function( json ) {
  });
 
 function displayFilteredData(page){
+	for (i=0; i<mapJSON.features.length; i++) {
+				mapJSON.features[i].properties.ALLWATCH = 0;
+				mapJSON.features[i].properties.TOR = 0;
+				mapJSON.features[i].properties.SVR = 0;
+				mapJSON.features[i].properties.PDSTOR = 0;
+				mapJSON.features[i].properties.PDSSVR = 0;
+	}
+	
 //clear finalJSON every time the script is run
 finalJSON = "";
 finalCSV = [];
@@ -710,7 +718,6 @@ jQuery("#firstlast").click(function() {
 			jQuery('#report_table').DataTable().destroy();
 			table();
 		});
-
 }
 }
 //this function makes the JSON file which can be downloaded by the user

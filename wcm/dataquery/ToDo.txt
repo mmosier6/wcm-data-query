@@ -2,9 +2,8 @@ To Do List:
 
 1. Add maps for reports
 2. Make legends on maps dynamic.
-3. Figure out how map can be redrawn correctly on the first time.
-4. Why does 20 seconds dialog box only sometimes appear.
-5. Add links to watch numbers
+3. Why does 20 seconds dialog box only sometimes appear.
+4. Add links to watch numbers
 
 Things that can't be done until code moved away from crossfilter
 1. Configure PDS filter
