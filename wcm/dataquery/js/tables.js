@@ -1,6 +1,6 @@
 //global variables
-var finalJSON="";
-var finalCSV=[];
+var finalJSON;
+var finalCSV;
 var month_count=Array();
 var year_count=Array();
 var month_abbrev = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];

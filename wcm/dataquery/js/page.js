@@ -43,6 +43,8 @@ function buildPage(page){
 	page.viewType = "table";
 
 	jQuery("#map").hide();
+	jQuery("#downloadJSON").hide();
+	jQuery("#downloadCSV").hide();
 
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
@@ -276,7 +278,7 @@ function buildPage(page){
 				createFilteredData(page);
 				getFilteredData(page);
 			});//end of AJAX call
-		}//end of if function containing AJAX call
+		}//end of if function containing AJAX call              
 
 		//Allow download button to be visible if the view type is table
 		if (page.viewType === "table") {

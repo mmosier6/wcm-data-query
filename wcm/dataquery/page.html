@@ -25,6 +25,9 @@
 
   		<!-- General Page CSS-->
 		<link rel= "stylesheet" href="/wcm/dataquery/css/page.css" text = "text/css" />
+
+		<!--Bootstrap-->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	</head>
 
 	<body>
@@ -302,11 +305,11 @@
 			</div>
 
 			<!--Button to Download Data in JSON-->
-			<button id="downloadJSON" type = "button" class="download hidden btn btn-primary">Download JSON</button>
+			<button id="downloadJSON" type = "button" class="download btn btn-primary">Download JSON</button>
 			<br>
 			
 			<!--Button to Download Data in JSON-->
-			<button id="downloadCSV" type = "button" class="download hidden btn btn-primary">Download CSV</button>
+			<button id="downloadCSV" type = "button" class="download btn btn-primary">Download CSV</button>
 
 			<!--Table with total data-->
 			<div id = 'total-table'></div>
@@ -326,17 +329,16 @@
 				<div id="mapTitle">2019 SPC Watches</div>
 				<div id="info" style="top:3px; right:3px;">Hover For<br>Watch Count</div>
 				<div id="mapLegend"></div>
-				<div class="slidecontainer">
-					<div id="year">Use slider to see past years</div>
-					<input type="range" min="2006" max="2019" value="2019" class="slider" id="RangeSlider" onchange="selectYear()">
-				</div>
+			    <a id="export-png" class="btn btn-default"><i class="fa fa-download"></i> Download PNG</a>
+    			<a id="image-download" download="map.png"></a>
 				<div id="showMapSwitcher" onclick="showMapSwitcher()" style="display: none;">&gt;</div>
 				<div id="mapSwitcher" align="left">
-					<input type="radio" id="all" checked="checked" onchange="selectAll()">Total SPC Watches <a id="hideMapSwitcher" onclick="hideMapSwitcher()">&lt;</a><br>
-					<input type="radio" id="tornado" onchange="selectTornado()">Tornado Watches<br>
-					<input type="radio" id="severe" onchange="selectSevere()">Severe Watches<br>
+					<input type="radio" id="all" checked="checked" onchange="selectAll()"> Total SPC Watches <a id="hideMapSwitcher" onclick="hideMapSwitcher()">&lt;</a><br>
+					<input type="radio" id="tornado" onchange="selectTornado()"> Tornado Watches<br>
+					<input type="radio" id="severe" onchange="selectSevere()"> Severe Watches<br>
 				</div>
 			</div>
+
 
 			<!--Chart div where chart is drawn-->
 			<div id = 'chart' style = "min-height: 300px;" class="hidden"></div>
