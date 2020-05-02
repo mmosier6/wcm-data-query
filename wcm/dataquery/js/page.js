@@ -47,6 +47,8 @@ function buildPage(page){
 	jQuery("#downloadJSON").hide();
 	jQuery("#downloadCSV").hide();
 
+	drawMapElements();
+
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){
 			//Clear out previous search data
@@ -115,7 +117,7 @@ function buildPage(page){
 		page.viewType = v;
 
 	if (page.viewType === "table") {
-		jQuery(".download").show(); //show download button
+		jQuery(".download").show(); //show download button		
 		jQuery("#data-table").show(); //show data table
 		jQuery("#total-table").show();//show total table
 		jQuery("#firstlastcheckbox").show(); //show firstlast checkbox

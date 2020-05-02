@@ -314,8 +314,6 @@ return div;
 }
 };
 
-drawMapElements();
-
 function redrawMap() {
 setTimeout(function() {
 	map.updateSize();

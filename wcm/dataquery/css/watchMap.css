@@ -157,11 +157,19 @@ option {
 #export-png {
         position:absolute;
         bottom:2px;
-        left:45%;
+        left:30%;
         border-color:#808080;
         background: rgba(255,255,255,0.8);
         z-index:1;
         cursor: pointer;
+}
+#downloadGeoJSON{
+    position:absolute;
+    bottom:2px;
+    left:50%;
+    border-color:#808080;
+    background: rgba(255,255,255,0.8);
+    z-index:1;
 }
 #all { 
         margin-left:3px;
