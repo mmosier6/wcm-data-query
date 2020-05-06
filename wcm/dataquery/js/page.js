@@ -47,7 +47,7 @@ function buildPage(page){
 	jQuery("#downloadJSON").hide();
 	jQuery("#downloadCSV").hide();
 
-	drawMapElements();
+	//drawMapElements();
 
 	//Data type buttonset on change function
 	jQuery("#data-type-buttonset").buttonset().change(function(){

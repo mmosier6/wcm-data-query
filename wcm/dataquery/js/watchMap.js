@@ -4,25 +4,21 @@ var data;
 var map;
 var vectorSource;
 function drawMapElements() { 
-jQuery("#showMapSwitcher").hide();
-if (firstTime < 1) {
-        vectorSource.clear();
-}
-        jQuery.ajax({ 
-                url:"/wcm/data/topojson/2019-county-watch-counts.json", 
-                dataType: "json"
-        }).done(function(geoJSON){
-                data = mapJSONfinal;
+  jQuery("#showMapSwitcher").hide();
+  if (firstTime < 1) {
+    vectorSource.clear();
+  }
 
-        vectorSource = new ol.source.Vector({features: (new ol.format.GeoJSON()).readFeatures(mapJSON, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
+    vectorSource = new ol.source.Vector({features: (new ol.format.GeoJSON()).readFeatures(mapJSON, {featureProjection: 'EPSG:3857', dataProjection:'EPSG:4326'})});
      
-      var mapData = new ol.layer.Vector({
-                        source: vectorSource,
-                        style: function (feature) {
-                                return getStyle(feature);
+    var mapData = new ol.layer.Vector({
+          source: vectorSource,
+          style: function (feature) {
+                  return getStyle(feature);
                         }
-                });
-        if (firstTime === 1) {    
+    });
+    
+    if (firstTime === 1) {    
       map = new ol.Map({
         target: 'map',
         layers: [
@@ -35,30 +31,29 @@ if (firstTime < 1) {
           zoom: 4
         })
       }); //end var map
-          }
-        else {
-                map.addLayer(mapData);
-                }
-var highlightStyle = new ol.style.Style({
+    } else {
+      map.addLayer(mapData);
+      }
+    var highlightStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({width:2,color:'#000000'})
-})
-var featureOverlay = new ol.layer.Vector({
+    });
+    var featureOverlay = new ol.layer.Vector({
         source: new ol.source.Vector(),
         map: map,
         style: function() {
         return highlightStyle;
         }
-});
- 
-var highlight;
-var displayFeatureInfo = function(pixel) {
-
-    var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
-        return feature;
     });
+ 
+    var highlight;
+    var displayFeatureInfo = function(pixel) {
 
-    var info = document.getElementById('info');
-    if (feature) {
+      var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+        return feature;
+      });
+
+      var info = document.getElementById('info');
+      if (feature) {
         if (type==='SPC' & feature.get('STATE') === "22") {
         info.innerHTML = '' + feature.get('NAME') + ' Parish<br>' + feature.get('ALLWATCH');
         } else if (type==='Tornado' & feature.get('STATE') === "22") {
@@ -73,10 +68,10 @@ var displayFeatureInfo = function(pixel) {
         } else if (type==='Severe') {
         info.innerHTML = '' + feature.get('NAME') + ' County<br>' + feature.get('SVR');
         }
-    } else {
+      } else {
         info.innerHTML = 'Hover For<br>Watch Count';
-    }
-if (feature !== highlight) {
+      }
+      if (feature !== highlight) {
         if (highlight) {
             featureOverlay.getSource().removeFeature(highlight);
         }
@@ -84,8 +79,8 @@ if (feature !== highlight) {
             featureOverlay.getSource().addFeature(feature);
         }
         highlight = feature;
-    }
-};
+      }
+    };
 
 
 map.on('pointermove', function(evt) {
@@ -101,7 +96,6 @@ map.on('singleclick', function(evt) {
         map.getView().setZoom(8);
 }, 100);
         });
-  }); //end ajax call  
 makeLegend();
 
 document.getElementById('export-png').addEventListener('click', function() {
@@ -191,8 +185,8 @@ type= "Severe";
 jQuery("#all").prop( "checked", false);
 jQuery("#tornado").prop( "checked", false);
 jQuery("#severe").prop( "checked", true);
-firstTime= 0;
 drawMapElements();
+firstTime= 0;
 jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" Severe Watches");
 } //end selectSevere
 function selectAll() {
@@ -200,8 +194,8 @@ type= "SPC";
 jQuery("#severe").prop( "checked", false);
 jQuery("#tornado").prop( "checked", false);
 jQuery("#all").prop( "checked", true);
-firstTime= 0;
 drawMapElements();
+firstTime= 0;
 jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" SPC Watches");
 } //end selectAll
 function selectTornado() {
@@ -209,15 +203,15 @@ type= "Tornado";
 jQuery("#all").prop( "checked", false);
 jQuery("#severe").prop( "checked", false);
 jQuery("#tornado").prop( "checked", true);
-firstTime= 0;
 drawMapElements();
+firstTime= 0;
 jQuery("#mapTitle").html("" + startDate.slice(4,6) +"/"+ startDate.slice(6,8) +"/"+ startDate.slice(0,4) +" to "+endDate.slice(4,6) +"/"+ endDate.slice(6,8) +"/"+ endDate.slice(0,4) +" Tornado Watches");
 } //end selectTornado
 
 function selectYear() {
 year = jQuery("#RangeSlider").val();
-firstTime= 0;
 drawMapElements();
+firstTime= 0;
 jQuery("#mapTitle").html("" + year + " " + type + " Watches");
 jQuery("#year").html("" + year + "");
 } //end selectYear
