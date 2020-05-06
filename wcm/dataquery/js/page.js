@@ -225,7 +225,7 @@ function buildPage(page){
 	createCalendars(page);
 	filterStates(page);
 	filterCWAs(page);
-	//filterFIPSandZIP(page);
+	filterFIPSandZIP(page);
 
 	//Start long function that is activated when Generate Button is pressed
 	jQuery("#go-btn").button().on('click', function(){

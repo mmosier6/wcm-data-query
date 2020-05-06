@@ -82,7 +82,7 @@ if (page.dataType === "watch") {
 		results = {};
 		results['dt'] = d['sel_issue_dt'];
 		results['dt_min'] = fulldt.slice(4,12); //this is the date with only month, day, hour, for sorting that does not include the year (first/last)
-		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST"; //this is the date display
+		results['dt_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + ""; //this is the date display
 		results['type'] = d['type'];
 		results['num'] = "<a href = 'https://www.spc.noaa.gov/products/watch/"+fulldt.slice(0,4)+"/ww"+d['watch_num']+".html' target='_blank'>"+d['watch_num']+"</a>";
 		results['st'] = d['ST'].toString();
@@ -311,7 +311,7 @@ function format ( c ) {
 		var fulldt = d["DT"];
 		results['DT'] = d['DT'];
 		results['DT_min'] = fulldt.slice(4,12);
-		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + " CST";
+		results['DT_dis'] =  "" + fulldt.slice(4,6) +"/"+ fulldt.slice(6,8) +"/"+ fulldt.slice(0,4) +" "+ fulldt.slice(8,12) + "";
 		if (page.reportType === "ALL") {
 		results['MAGNITUDE'] = d['TYPE'];
 			if (d['TYPE'] === "T") {
@@ -553,13 +553,14 @@ var table = function() {
 	jQuery('#watch_table').DataTable({
 		data: results_final['data'],
 		columns: [
+
 			{	data: ""
 			},
 			{	data: {
 					_: "dt_dis",
 					sort: timesort
 				},
-				title: "Date/Time"
+				title: "Date/Time (CST)"
 			},
 			{	data: "type",
 				title: "Watch Type"
@@ -577,8 +578,9 @@ var table = function() {
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
 		"columnDefs": [		
+			{	className:"dt-center", targets: "_all"
+			},
 			{ type: 'natural', targets: 1 },
-			{	"width" : "140px", "targets":1},
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
@@ -604,7 +606,10 @@ var tableTotal = jQuery('#total_table').DataTable({
         "paging":   false,
         "info": false,
   		"searching": false,
-        "order": [[ 1, "desc" ]]
+        "order": [[ 1, "desc" ]],
+        "columnDefs": [
+			{	"className":"dt-center", targets: "_all" }
+		]
 });
 
 jQuery("#firstlast").click(function() {
@@ -630,7 +635,7 @@ var table = function() {
 					_: "DT_dis",
 					sort: timesort
 				},
-				title: "Date/Time"
+				title: "Date/Time (CST)"
 			},
 			{	data: {
 					_: "MAGNITUDE_dis",
@@ -660,7 +665,8 @@ var table = function() {
 		"lengthMenu": [[10,25, 50, 100, -1], [10, 25, 50, 100, "All"]], //different types of lengths available (-1 equals all)
 		"pageLength": 50, //default page length
 		"columnDefs": [		
-			{	"width" : "140px", "targets":1},	
+			{	"className":"dt-center", targets: "_all"
+			},	
 			{	"targets": 0,
 				"orderable": false,
 				"data": null,
@@ -706,7 +712,10 @@ var tableTotal = jQuery('#total_table').DataTable({
         "paging":   false,
         "info": false,
   		"searching": false,
-        "order": [[ 1, "desc" ]]
+        "order": [[ 1, "desc" ]],
+        "columnDefs": [
+			{	"className":"dt-center", targets: "_all" }
+		]
 });
 
 jQuery("#firstlast").click(function() {
