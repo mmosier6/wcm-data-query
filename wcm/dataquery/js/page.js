@@ -71,7 +71,6 @@ function buildPage(page){
 			jQuery("#report-type").hide();
 			jQuery("#all-watch-filters").show();
 			jQuery("#watch-type").show();
-			jQuery("#date-pickers").show();
 			jQuery("#view-type-3").button("enable");
 			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Type</span>';
 		}
@@ -81,10 +80,11 @@ function buildPage(page){
 			jQuery("#all-report-filters").show();
 			jQuery("#report-source").show();
 			jQuery("#report-type").show();
-			jQuery("#date-pickers").show();
 			jQuery("#view-type-3").button("disable");
 			document.getElementById("chartType3").innerHTML = '<span class="ui-button-text">By Magnitude</span>';
 		}
+			jQuery("#time-type").show();
+			jQuery("#date-pickers").show();
 
 	}); //End of data-type-buttonset on change function
 
@@ -165,6 +165,31 @@ function buildPage(page){
 		});
 		page.watchType = v;
 	});//end of watch-type-buttonset on change function
+
+	//Function when time-type-buttonset is changed
+	jQuery("#time-type-buttonset").buttonset().change(function(){
+			//Clear out previous search data
+			hideResults();
+			
+		jQuery(this).find("input:radio").each(function(){
+			if(jQuery(this).prop("checked")){
+				v = jQuery(this).attr("value");
+			}
+			jQuery("#date-pickers").hide();
+			jQuery("#month_dropdown").hide();
+			jQuery("#season_dropdown").hide();
+			jQuery("#date_dropdown").hide();
+			if (v === "range") {
+			jQuery("#date-pickers").show();
+			} else if (v === "month") {
+			jQuery("#month_dropdown").show();
+			} else if (v === "season") {
+			jQuery("#season_dropdown").show();
+			} else if (v === "date_range") {
+			jQuery("#date_dropdown").show();
+			}
+		});
+	});//end of time-type-buttonset on change function
 
 	//Function when report-source-buttonset is changed
 	jQuery("#report-source-buttonset").buttonset().change(function(){

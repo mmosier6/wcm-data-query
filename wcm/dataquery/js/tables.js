@@ -12,11 +12,18 @@ total['type'] = {};
 total['time'] = {};
 total['time']['month'] = {};
 total['time']['year'] = {};
+total['time']['consecutive'] = {};
+total['time']['drought'] = {};
 var totalTitle = Array();
 var magTitle;
 var timesort;
 var mapJSON;
 var mapJSONfinal;
+var totalType = Array();
+var prevDay = new Date();
+var nextDay = new Date();
+var consDays = 1;
+var consDaysEnd;
 
 jQuery.getJSON( "/wcm/data/topojson/output.json", function( json ) {
 	mapJSON = json;
@@ -54,22 +61,23 @@ if (page.dataType === "watch") {
 	}
 
 	totalTitle = ["All Watches","Tornado","Severe","PDS Tornado","PDS Severe"];
+
+	totalType = ["total","TOR","SVR","PDS TOR","PDS SVR"];
 	
 	//after filter is run, use compare funtion to sort the data
 	page.data['filtered-sorted'] = page.data['filtered'].slice().sort(compare);	
 
 	//establish the total array with multiple dimensions to be used below.
 	total['type'] = [0,0,0,0,0];
-	total['time']['month']['total'] = [];
-	total['time']['month']['TOR'] = [];
-	total['time']['month']['SVR'] = [];
-	total['time']['month']['PDS TOR'] = [];
-	total['time']['month']['PDS SVR'] = [];
-	total['time']['year']['total'] = [];
-	total['time']['year']['TOR'] = [];
-	total['time']['year']['SVR'] = [];
-	total['time']['year']['PDS TOR'] = [];
-	total['time']['year']['PDS SVR'] = [];
+	totalType.forEach(function(d) {
+		total['time']['month'][d] = [];
+		total['time']['year'][d] = [];
+	});
+
+		total['time']['consecutive']['count'] = [];
+		total['time']['consecutive']['endDate'] = [];
+		total['time']['drought']['count'] = [];
+		total['time']['drought']['endDate'] = [];
 
 	//create variables used to store data 
 	var results;
@@ -104,6 +112,7 @@ if (page.dataType === "watch") {
 			total['type'][4]=total['type'][4]+1;
 		}
 
+		//build GeoJSON file
 		for (i=0; i<mapJSON.features.length; i++) {
 			if (d['FIPS'].includes(mapJSON.features[i].properties.FIPS)) {
 				mapJSON.features[i].properties.ALLWATCH = mapJSON.features[i].properties.ALLWATCH + 1;
@@ -119,6 +128,29 @@ if (page.dataType === "watch") {
 
 			}
 		}
+
+		//this function counts the number of consecutive days of each
+		nextDay.setTime(prevDay.getTime());
+		nextDay.setDate(prevDay.getDate()+1);
+
+		var nextCompare = "" + ("0" + (nextDay.getMonth() + 1)).slice(-2) + "" + ("0" + (nextDay.getDate())).slice(-2) + "";
+		var prevCompare = "" + ("0" + (prevDay.getMonth() + 1)).slice(-2) + "" + ("0" + (prevDay.getDate())).slice(-2) + "";
+		var dateCompare = results['dt_min'].slice(0,4);
+		console.log(dateCompare)
+		console.log(nextCompare)
+		if (dateCompare === nextCompare) {
+			consDays = consDays +1;
+		} else if (dateCompare === prevCompare) {
+		} else if (consDays >1){
+			total['time']['consecutive']['count'].push(consDays);
+			total['time']['consecutive']['endDate'].push(prevDay);
+			consDays = 1;
+		} else {
+			consDays = 1;
+		}
+
+
+		prevDay = new Date(fulldt.slice(0,4),fulldt.slice(4,6)-1,fulldt.slice(6,8));
 
 		//this function counts the total number for each month
 		month = Number(fulldt.slice(4,6));
@@ -166,6 +198,8 @@ if (page.dataType === "watch") {
 				}
 			}
 	}
+
+	console.log(total)
 	
 		//create the finalJSON variable in the correct format
 		finalJSON = finalJSON + ',{"watch_num":"'+d["watch_num"]+'","ST":["'+d["ST"]+'"],"FIPS":["'+d["FIPS"]+'"],"issue_dt":"'+d["sel_issue_dt"]+'","CWA":["'+d["CWA"]+'"],"type":["'+d["type"]+'"],"pds":["'+d["pds"]+'"],"expire_dt":["'+d["sel_expire_dt"]+'"],"threats":["'+d["threats"]+'"],"summary":["'+d["summary"]+'"],"areas":["'+d["areas"]+'"]}';

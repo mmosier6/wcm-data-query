@@ -77,6 +77,17 @@
 				</div>
 			</div>
 
+			<!--Time Type Selector-->
+			<div id="time-type" style = "margin: 5px;" class="hidden">
+				<h3> Select Time </h3>
+				<div id = 'time-type-buttonset' style = "font-size: 9pt;">
+					<input type = 'radio' id = 'time-type-1' name ='time-type-radio' class = 'time_type' value = 'range' aria-pressed="true" checked><label for = 'time-type-1' aria-pressed="true" class="ui-state-active">Time Range</label>
+					<input type = 'radio' id = 'time-type-2' name ='time-type-radio' class = 'time_type' value = 'month'><label for = 'time-type-2'>Month</label>
+					<input type = 'radio' id = 'time-type-3' name ='time-type-radio' class = 'time_type' value = 'season'><label for = 'time-type-3'>Season</label>
+					<input type = 'radio' id = 'time-type-4' name ='time-type-radio' class = 'time_type' value = 'date_range'><label for = 'time-type-4'>Date Range</label>
+				</div>
+			</div>
+
 			<!--Date Picker Calendars-->
 			<div id = "date-pickers" class = "hidden">
 				<table width = "100%">
@@ -114,6 +125,51 @@
 				</table>
 			</div>
 
+			<div id ="month_dropdown" class = "hidden">
+				<form>
+					<input id = 'startYear' type = 'text' placeholder = 'Start Year (YYYY)'>
+					<input id = 'endYear' type = 'text' placeholder = 'End Year (YYYY)'>
+				</form>
+
+				<select>
+    				<option value=''>--Select Month--</option>
+    				<option value='1'>January</option>
+    				<option value='2'>February</option>
+    				<option value='3'>March</option>
+    				<option value='4'>April</option>
+    				<option value='5'>May</option>
+    				<option value='6'>June</option>
+    				<option value='7'>July</option>
+    				<option value='8'>August</option>
+    				<option value='9'>September</option>
+    				<option value='10'>October</option>
+    				<option value='11'>November</option>
+    				<option value='12'>December</option>
+    			</select>
+			</div>
+
+			<div id ="season_dropdown" class = "hidden">
+				<form>
+					<input id = 'startYear' type = 'text' placeholder = 'Start Year (YYYY)'>
+					<input id = 'endYear' type = 'text' placeholder = 'End Year (YYYY)'>
+				</form>
+
+				<select>
+    				<option value=''>--Select Season--</option>
+    				<option value='MAM'>Spring (March-May)</option>
+    				<option value='JJA'>Summer (June-Aug</option>
+    				<option value='SON'>Fall (Sep-Nov)</option>
+    				<option value='DJF'>Winter (Dec-Feb)</option>
+    			</select>
+			</div>
+
+			<div id ="date_dropdown" class = "hidden">
+				<form>
+					<input id = 'startDate' type = 'text' placeholder = 'Start Date (mm-dd)'>
+					<input id = 'endDate' type = 'text' placeholder = 'End Year (mm-dd)'>
+				</form>
+			</div>
+<br>
 			<!--Watch Filters by State/CWA/FIPS-->
 			<div id = "all-watch-filters" class = "hidden">
 				<table width = "100%">
@@ -355,7 +411,6 @@
 				</p>
 			</div>
 
-		</div> <!--Ending div for mainContainer-->
 
 		<!--jQuery UI -->
 		<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
